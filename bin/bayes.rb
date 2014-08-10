@@ -10,7 +10,7 @@ end
 require 'madeleine'
 
 m = SnapshotMadeleine.new(File.expand_path("~/.bayes_data")) {
-	Classifier::Bayes.new 'Interesting', 'Uninteresting'
+	ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting'
 }
 
 case ARGV[0]
