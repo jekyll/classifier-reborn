@@ -1,22 +1,35 @@
-## Welcome to Classifier
+## Welcome to Classifier Reborn
 
 Classifier is a general module to allow Bayesian and other types of classifications.
 
+Classifier Reborn is a fork of cardmagic/classifier under more active development.
+
 ## Download
 
-* https://github.com/cardmagic/classifier
-* gem install classifier
-* git clone https://github.com/cardmagic/classifier.git
+Add this line to your application's Gemfile:
+
+    gem 'classifier-reborn'
+
+And then execute:
+
+    $ bundle
+
+Or install it yourself as:
+
+    $ gem install classifier-reborn
 
 ## Dependencies
 
-If you install Classifier from source, you'll need to install Roman Shterenzon's fast-stemmer gem with RubyGems as follows:
+The only runtime dependency you'll need to install is Roman Shterenzon's fast-stemmer gem:
 
     gem install fast-stemmer
 
+This should install automatically with RubyGems.
+
 If you would like to speed up LSI classification by at least 10x, please install the following libraries:
-GNU GSL:: http://www.gnu.org/software/gsl
-rb-gsl:: http://rb-gsl.rubyforge.org
+
+* [GNU GSL](http://www.gnu.org/software/gsl)
+* [rb-gsl](http://rb-gsl.rubyforge.org)
 
 Notice that LSI will work without these libraries, but as soon as they are installed, Classifier will make use of them. No configuration changes are needed, we like to keep things ridiculously easy for you.
 
@@ -33,7 +46,7 @@ b.train_interesting "here are some good words. I hope you love them"
 b.train_uninteresting "here are some bad words, I hate you"
 b.classify "I hate bad words and you" # returns 'Uninteresting'
 
-require 'madeleine'
+require 'madeleine' # use madeline to persist the data
 m = SnapshotMadeleine.new("bayes_data") {
   ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting'
 }
