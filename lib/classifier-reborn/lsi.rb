@@ -6,16 +6,16 @@ begin
   raise LoadError if ENV['NATIVE_VECTOR'] == "true" # to test the native vector class, try `rake test NATIVE_VECTOR=true`
 
   require 'gsl' # requires http://rb-gsl.rubyforge.org/
-  require 'classifier/extensions/vector_serialize'
+  require 'classifier-reborn/extensions/vector_serialize'
   $GSL = true
 
 rescue LoadError
-  require 'classifier/extensions/vector'
+  require 'classifier-reborn/extensions/vector'
 end
 
-require 'classifier/lsi/word_list'
-require 'classifier/lsi/content_node'
-require 'classifier/lsi/summary'
+require 'classifier-reborn/lsi/word_list'
+require 'classifier-reborn/lsi/content_node'
+require 'classifier-reborn/lsi/summary'
 
 module ClassifierReborn
 

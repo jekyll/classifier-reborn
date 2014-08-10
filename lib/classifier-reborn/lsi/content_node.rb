@@ -2,7 +2,7 @@
 # Copyright:: Copyright (c) 2005 David Fayram II
 # License::   LGPL
 
-module Classifier
+module ClassifierReborn
 
 # This is an internal data structure class for the LSI node. Save for
 # raw_vector_with, it should be fairly straightforward to understand.

@@ -2,7 +2,7 @@
 # Copyright:: Copyright (c) 2005 David Fayram II
 # License::   LGPL
 
-module Classifier
+module ClassifierReborn
   # This class keeps a word => index mapping. It is used to map stemmed words
   # to dimensions of a vector.
 
