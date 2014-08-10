@@ -42,9 +42,8 @@ module ClassifierReborn
                   @category_counts[category] -= 1
       text.word_hash.each do |word, count|
         if @total_words >= 0
-          orig = @categories[category][word]
-          @categories[category][word]     ||=     0
-          @categories[category][word]      -=     count
+          orig = @categories[category][word] || 0
+          @categories[category][word] -= count
           if @categories[category][word] <= 0
             @categories[category].delete(word)
             count = orig
