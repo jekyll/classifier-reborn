@@ -46,9 +46,11 @@ module ClassifierReborn
       # Perform the scaling transform
       total_words = vec.sum
 
+      total_unique_words = vec.count{|word| word != 0}
+
       # Perform first-order association transform if this vector has more
-      # than one word in it.
-      if total_words > 1.0
+      # then one word in it.
+      if total_words > 1.0 && total_unique_words > 1
         weighted_total = 0.0
         vec.each do |term|
           if ( term > 0 )
