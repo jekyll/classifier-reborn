@@ -29,7 +29,7 @@ module ClassifierReborn
 
     # Create a fresh index.
     # If you want to call #build_index manually, use
-    #      Classifier::LSI.new :auto_rebuild => false
+    #      ClassifierReborn::LSI.new :auto_rebuild => false
     #
     def initialize(options = {})
       @auto_rebuild = true unless options[:auto_rebuild] == false
@@ -51,7 +51,7 @@ module ClassifierReborn
     # so the item may only be a reference to a URL or file name.
     #
     # For example:
-    #   lsi = Classifier::LSI.new
+    #   lsi = ClassifierReborn::LSI.new
     #   lsi.add_item "This is just plain text"
     #   lsi.add_item "/home/me/filename.txt" { |x| File.read x }
     #   ar = ActiveRecordObject.find( :all )

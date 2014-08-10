@@ -27,14 +27,14 @@ A Bayesian classifier by Lucas Carlson. Bayesian Classifiers are accurate, fast,
 ### Usage
 
     require 'classifier'
-    b = Classifier::Bayes.new 'Interesting', 'Uninteresting'
+    b = ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting'
     b.train_interesting "here are some good words. I hope you love them"
     b.train_uninteresting "here are some bad words, I hate you"
     b.classify "I hate bad words and you" # returns 'Uninteresting'
     
     require 'madeleine'
     m = SnapshotMadeleine.new("bayes_data") {
-        Classifier::Bayes.new 'Interesting', 'Uninteresting'
+        ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting'
     }
     m.system.train_interesting "here are some good words. I hope you love them"
     m.system.train_uninteresting "here are some bad words, I hate you"
@@ -59,7 +59,7 @@ theoretically simulates human learning.
 ### Usage
 
     require 'classifier'
-    lsi = Classifier::LSI.new
+    lsi = ClassifierReborn::LSI.new
     strings = [ ["This text deals with dogs. Dogs.", :dog],
               ["This text involves dogs too. Dogs! ", :dog],
               ["This text revolves around cats. Cats.", :cat],
@@ -77,7 +77,7 @@ theoretically simulates human learning.
     lsi.classify "This text is also about dogs!"
     # returns => :dog
   
-Please see the Classifier::LSI documentation for more information. It is possible to index, search and classify
+Please see the ClassifierReborn::LSI documentation for more information. It is possible to index, search and classify
 with more than just simple strings. 
 
 ### Latent Semantic Indexing

@@ -22,7 +22,7 @@ class String
   private
 
   def perform_lsi(chunks, count, separator)
-    lsi = Classifier::LSI.new :auto_rebuild => false
+    lsi = ClassifierReborn::LSI.new :auto_rebuild => false
     chunks.each { |chunk| lsi << chunk unless chunk.strip.empty? || chunk.strip.split.size == 1 }
     lsi.build_index
     summaries = lsi.highest_relative_content count

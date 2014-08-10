@@ -6,7 +6,7 @@ module ClassifierReborn
   class Bayes
     # The class can be created with one or more categories, each of which will be
     # initialized and given a training method. E.g.,
-    #      b = Classifier::Bayes.new 'Interesting', 'Uninteresting', 'Spam'
+    #      b = ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting', 'Spam'
     def initialize(*categories)
       @categories = Hash.new
       categories.each { |category| @categories[category.prepare_category_name] = Hash.new }
@@ -16,7 +16,7 @@ module ClassifierReborn
 
     # Provides a general training method for all categories specified in Bayes#new
     # For example:
-    #     b = Classifier::Bayes.new 'This', 'That', 'the_other'
+    #     b = ClassifierReborn::Bayes.new 'This', 'That', 'the_other'
     #     b.train :this, "This text"
     #     b.train "that", "That text"
     #     b.train "The other", "The other text"
@@ -34,7 +34,7 @@ module ClassifierReborn
     # Be very careful with this method.
     #
     # For example:
-    #     b = Classifier::Bayes.new 'This', 'That', 'the_other'
+    #     b = ClassifierReborn::Bayes.new 'This', 'That', 'the_other'
     #     b.train :this, "This text"
     #     b.untrain :this, "This text"
     def untrain(category, text)
@@ -85,7 +85,7 @@ module ClassifierReborn
 
     # Provides training and untraining methods for the categories specified in Bayes#new
     # For example:
-    #     b = Classifier::Bayes.new 'This', 'That', 'the_other'
+    #     b = ClassifierReborn::Bayes.new 'This', 'That', 'the_other'
     #     b.train_this "This text"
     #     b.train_that "That text"
     #     b.untrain_that "That text"
