@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
 
   s.name             = 'classifier-reborn'
   s.version          = ClassifierReborn::VERSION
-  s.license          = 'MIT'
+  s.license          = 'LGPL'
   s.summary          = "A general classifier module to allow Bayesian and other types of classifications."
   s.authors          = ["Lucas Carlson", "Parker Moore"]
   s.email            = ["lucas@rufy.com", "parkrmoore@gmail.com"]
