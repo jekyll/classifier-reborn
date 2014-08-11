@@ -15,7 +15,7 @@ end
 
 require 'classifier-reborn/lsi/word_list'
 require 'classifier-reborn/lsi/content_node'
-require 'classifier-reborn/lsi/summary'
+require 'classifier-reborn/lsi/summarizer'
 
 module ClassifierReborn
 

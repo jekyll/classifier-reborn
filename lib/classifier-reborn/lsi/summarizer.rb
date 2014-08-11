@@ -2,24 +2,24 @@
 # Copyright:: Copyright (c) 2005 Lucas Carlson
 # License::   LGPL
 
-class String
-  def summary( count=10, separator=" [...] " )
-    perform_lsi split_sentences, count, separator
+module Summarizer
+  extend self
+
+  def summary( str, count=10, separator=" [...] " )
+    perform_lsi split_sentences(str), count, separator
   end
 
   def paragraph_summary( count=1, separator=" [...] " )
     perform_lsi split_paragraphs, count, separator
   end
 
-  def split_sentences
-    split /(\.|\!|\?)/ # TODO: make this less primitive
+  def split_sentences(str)
+    str.split /(\.|\!|\?)/ # TODO: make this less primitive
   end
 
-  def split_paragraphs
-    split /(\n\n|\r\r|\r\n\r\n)/ # TODO: make this less primitive
+  def split_paragraphs(str)
+    str.split /(\n\n|\r\r|\r\n\r\n)/ # TODO: make this less primitive
   end
-
-  private
 
   def perform_lsi(chunks, count, separator)
     lsi = ClassifierReborn::LSI.new :auto_rebuild => false
