@@ -43,8 +43,8 @@ module ClassifierReborn
         vec[word_list[word]] = @word_hash[word] if word_list[word]
       end
 
-      # Perform the scaling transform
-      total_words = vec.sum
+      # Perform the scaling transform and force floating point arithmetic
+      total_words = vec.sum.to_f
 
       total_unique_words = vec.count{|word| word != 0}
 
