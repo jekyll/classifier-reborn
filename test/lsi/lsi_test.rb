@@ -117,7 +117,7 @@ class LSITest < Test::Unit::TestCase
 	end
 
 	def test_summary
-	   assert_equal "This text involves dogs too [...] This text also involves cats", [@str1, @str2, @str3, @str4, @str5].join.summary(2)
+	   assert_equal "This text involves dogs too [...] This text also involves cats", Summarizer.summary([@str1, @str2, @str3, @str4, @str5].join, 2)
 	end
 
 end
