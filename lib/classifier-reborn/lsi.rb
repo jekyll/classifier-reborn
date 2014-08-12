@@ -6,16 +6,16 @@ begin
   raise LoadError if ENV['NATIVE_VECTOR'] == "true" # to test the native vector class, try `rake test NATIVE_VECTOR=true`
 
   require 'gsl' # requires http://rb-gsl.rubyforge.org/
-  require 'classifier-reborn/extensions/vector_serialize'
+  require_relative 'extensions/vector_serialize'
   $GSL = true
 
 rescue LoadError
-  require 'classifier-reborn/extensions/vector'
+  require_relative 'extensions/vector'
 end
 
-require 'classifier-reborn/lsi/word_list'
-require 'classifier-reborn/lsi/content_node'
-require 'classifier-reborn/lsi/summary'
+require_relative 'lsi/word_list'
+require_relative 'lsi/content_node'
+require_relative 'lsi/summarizer'
 
 module ClassifierReborn
 
@@ -58,7 +58,7 @@ module ClassifierReborn
     #   lsi.add_item ar, *ar.categories { |x| ar.content }
     #
     def add_item( item, *categories, &block )
-      clean_word_hash = block ? block.call(item).clean_word_hash : item.to_s.clean_word_hash
+      clean_word_hash = Hasher.clean_word_hash(block ? block.call(item) : item.to_s)
       @items[item] = ContentNode.new(clean_word_hash, *categories)
       @version += 1
       build_index if @auto_rebuild
@@ -293,7 +293,7 @@ module ClassifierReborn
       if @items[item]
         return @items[item]
       else
-        clean_word_hash = block ? block.call(item).clean_word_hash : item.to_s.clean_word_hash
+        clean_word_hash = Hasher.clean_word_hash(block ? block.call(item) : item.to_s)
 
         cn = ContentNode.new(clean_word_hash, &block) # make the node and extract the data
 

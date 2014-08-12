@@ -3,7 +3,7 @@
 # License::   LGPL
 
 require 'fast_stemmer'
-require 'classifier-reborn/extensions/word_hash'
+require 'classifier-reborn/extensions/hasher'
 
 class Object
   def prepare_category_name; to_s.gsub("_"," ").capitalize.intern end

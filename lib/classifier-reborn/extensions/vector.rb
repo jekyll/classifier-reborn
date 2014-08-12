@@ -13,7 +13,7 @@ class Array
     if block_given?
       map(&block).sum
     else
-      reduce(:+)
+      reduce(:+) || 0
     end
   end
 end
