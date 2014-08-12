@@ -308,7 +308,7 @@ module ClassifierReborn
     def make_word_list
       @word_list = WordList.new
       @items.each_value do |node|
-        Hasher.word_hash(node).each_key { |key| @word_list.add_word key }
+        node.word_hash.each_key { |key| @word_list.add_word key }
       end
     end
 
