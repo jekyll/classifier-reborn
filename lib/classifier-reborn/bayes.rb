@@ -2,6 +2,8 @@
 # Copyright:: Copyright (c) 2005 Lucas Carlson
 # License::   LGPL
 
+require_relative 'extensions/string'
+
 module ClassifierReborn
   class Bayes
     # The class can be created with one or more categories, each of which will be
@@ -23,7 +25,7 @@ module ClassifierReborn
     def train(category, text)
       category = category.prepare_category_name
                   @category_counts[category] += 1
-      text.word_hash.each do |word, count|
+      Hasher.word_hash(text).each do |word, count|
         @categories[category][word]     ||=     0
         @categories[category][word]      +=     count
         @total_words += count
@@ -40,7 +42,7 @@ module ClassifierReborn
     def untrain(category, text)
       category = category.prepare_category_name
                   @category_counts[category] -= 1
-      text.word_hash.each do |word, count|
+      Hasher.word_hash(text).each do |word, count|
         if @total_words >= 0
           orig = @categories[category][word] || 0
           @categories[category][word] ||= 0
@@ -64,7 +66,7 @@ module ClassifierReborn
       @categories.each do |category, category_words|
         score[category.to_s] = 0
         total = category_words.values.inject(0) {|sum, element| sum+element}
-        text.word_hash.each do |word, count|
+        Hasher.word_hash(text).each do |word, count|
           s = category_words.has_key?(word) ? category_words[word] : 0.1
           score[category.to_s] += Math.log(s/total.to_f)
         end
