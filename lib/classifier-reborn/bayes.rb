@@ -41,7 +41,7 @@ module ClassifierReborn
     #     b.untrain :this, "This text"
     def untrain(category, text)
       category = category.prepare_category_name
-                  @category_counts[category] -= 1
+      @category_counts[category] -= 1
       Hasher.word_hash(text).each do |word, count|
         if @total_words >= 0
           orig = @categories[category][word] || 0
