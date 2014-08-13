@@ -2,6 +2,7 @@ require 'rubygems'
 require 'rake'
 require 'rake/testtask'
 require 'rdoc/task'
+require 'bundler/gem_tasks'
 
 desc "Default Task"
 task :default => [ :test ]
