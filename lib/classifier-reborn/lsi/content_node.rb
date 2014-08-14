@@ -45,8 +45,13 @@ module ClassifierReborn
 
       # Perform the scaling transform and force floating point arithmetic
       total_words = vec.sum.to_f
+      total_unique_words = 0
 
-      total_unique_words = vec.count{|word| word != 0}
+      if $GSL
+        vec.each { |word| total_unique_words += 1 if word != 0 }
+      else
+        total_unique_words = vec.count{ |word| word != 0 }
+      end
 
       # Perform first-order association transform if this vector has more
       # then one word in it.
