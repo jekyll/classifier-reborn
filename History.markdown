@@ -1,3 +1,9 @@
+## HEAD
+
+### Bug Fixes
+
+  * Count total unique words using methods supported by `Vector` and `GSL::Vector` (#11)
+
 ## 2.0.0 / 2014-08-13
 
 ### Bug Fixes
