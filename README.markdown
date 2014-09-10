@@ -40,7 +40,7 @@ A Bayesian classifier by Lucas Carlson. Bayesian Classifiers are accurate, fast,
 ### Usage
 
 ```ruby
-require 'classifier'
+require 'classifier-reborn'
 b = ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting'
 b.train_interesting "here are some good words. I hope you love them"
 b.train_uninteresting "here are some bad words, I hate you"
@@ -74,7 +74,7 @@ theoretically simulates human learning.
 ### Usage
 
 ```ruby
-require 'classifier'
+require 'classifier-reborn'
 lsi = ClassifierReborn::LSI.new
 strings = [ ["This text deals with dogs. Dogs.", :dog],
             ["This text involves dogs too. Dogs! ", :dog],
