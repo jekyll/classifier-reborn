@@ -29,12 +29,3 @@ Rake::RDocTask.new("doc") { |rdoc|
   rdoc.rdoc_files.include('README.markdown')
   rdoc.rdoc_files.include('lib/**/*.rb')
 }
-
-desc "Report code statistics (KLOCs, etc) from the application"
-task :stats do
-  require 'code_statistics/code_statistics'
-  puts CodeStatistics::CodeStatistics.new([
-    ["Library", "lib"],
-    ["Units", "test"]
-  ]).to_s
-end
