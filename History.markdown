@@ -7,6 +7,7 @@
 ### Development Fixes
 
   * Remove `stats` rake task (#17)
+  * Add some tests for `ClassifierRebord::WordList` (#15)
 
 ## 2.0.0 / 2014-08-13
 
