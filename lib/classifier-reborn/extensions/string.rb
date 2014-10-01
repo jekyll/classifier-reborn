@@ -5,6 +5,11 @@
 require 'fast_stemmer'
 require 'classifier-reborn/extensions/hasher'
 
-class Object
-  def prepare_category_name; to_s.gsub("_"," ").capitalize.intern end
+module ClassifierReborn
+  module CategoryNamer
+    extend self
+    def prepare_name(name) 
+      name.to_s.gsub("_"," ").capitalize.intern 
+    end
+  end
 end

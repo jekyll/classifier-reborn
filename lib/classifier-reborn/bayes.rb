@@ -11,7 +11,7 @@ module ClassifierReborn
     #      b = ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting', 'Spam'
     def initialize(*categories)
       @categories = Hash.new
-      categories.each { |category| @categories[category.prepare_category_name] = Hash.new }
+      categories.each { |category| @categories[CategoryNamer.prepare_name(category)] = Hash.new }
       @total_words = 0
       @category_counts = Hash.new(0)
     end
@@ -23,7 +23,7 @@ module ClassifierReborn
     #     b.train "that", "That text"
     #     b.train "The other", "The other text"
     def train(category, text)
-      category = category.prepare_category_name
+      category = CategoryNamer.prepare_name(category)
                   @category_counts[category] += 1
       Hasher.word_hash(text).each do |word, count|
         @categories[category][word]     ||=     0
@@ -40,7 +40,7 @@ module ClassifierReborn
     #     b.train :this, "This text"
     #     b.untrain :this, "This text"
     def untrain(category, text)
-      category = category.prepare_category_name
+      category = CategoryNamer.prepare_name(category)
       @category_counts[category] -= 1
       Hasher.word_hash(text).each do |word, count|
         if @total_words >= 0
@@ -93,7 +93,8 @@ module ClassifierReborn
     #     b.untrain_that "That text"
     #     b.train_the_other "The other text"
     def method_missing(name, *args)
-      category = name.to_s.gsub(/(un)?train_([\w]+)/, '\2').prepare_category_name
+      cleaned_name = name.to_s.gsub(/(un)?train_([\w]+)/, '\2')
+      category = CategoryNamer.prepare_name(cleaned_name)
       if @categories.has_key? category
         args.each { |text| eval("#{$1}train(category, text)") }
       elsif name.to_s =~ /(un)?train_([\w]+)/
@@ -120,7 +121,7 @@ module ClassifierReborn
     # more criteria than the trained selective categories. In short,
     # try to initialize your categories at initialization.
     def add_category(category)
-      @categories[category.prepare_category_name] = Hash.new
+      @categories[CategoryNamer.prepare_name(category)] = Hash.new
     end
 
     alias append_category add_category
