@@ -2,7 +2,7 @@
 # Copyright:: Copyright (c) 2005 Lucas Carlson
 # License::   LGPL
 
-require_relative 'extensions/category_namer'
+require_relative 'category_namer'
 
 module ClassifierReborn
   class Bayes
