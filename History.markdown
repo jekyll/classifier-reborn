@@ -2,6 +2,7 @@
 
 ### Bug Fixes
 
+  * Replace `Object` monkey patch with `CategoryNamer` method (#18)
   * Count total unique words using methods supported by `Vector` and `GSL::Vector` (#11)
 
 ### Development Fixes
