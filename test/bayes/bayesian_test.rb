@@ -30,4 +30,15 @@ class BayesianTest < Test::Unit::TestCase
 		@classifier.train_uninteresting "here are some bad words, I hate you"
 		assert_equal 'Uninteresting', @classifier.classify("I hate bad words and you")
 	end
+
+	def test_untrain
+		@classifier.train_interesting "here are some good words. I hope you love them"
+		@classifier.train_uninteresting "here are some bad words, I hate you"
+		@classifier.add_category 'colors'
+		@classifier.train_colors "red orange green blue seven"
+		classification_of_bad_data = @classifier.classify "seven"
+		@classifier.untrain_colors "seven"
+		classification_after_untrain = @classifier.classify "seven"
+		assert_not_equal classification_of_bad_data, classification_after_untrain
+	end
 end
