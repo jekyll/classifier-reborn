@@ -1,3 +1,9 @@
+## HEAD
+
+### Development Fixes
+
+  * Add a test for `Bayes#untrain_*`. (#21)
+
 ## 2.0.1 / 2014-08-14
 
 ### Bug Fixes
