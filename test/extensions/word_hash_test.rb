@@ -12,24 +12,3 @@ class StringExtensionsTest < Test::Unit::TestCase
 	end
 
 end
-
-
-class ArrayExtensionsTest < Test::Unit::TestCase
-
-  def test_plays_nicely_with_any_array
-    assert_equal [Array].sum, Array
-  end
-
-  def test_monkey_path_array_sum
-    assert_equal [1,2,3].sum, 6
-  end
-
-  def test_summing_an_array_of_nil
-    assert_equal 0, [nil].sum
-  end
-
-  def test_summing_an_empty_array
-    assert_equal 0, Array[].sum
-  end
-
-end
