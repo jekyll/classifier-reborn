@@ -5,18 +5,6 @@
 
 require 'matrix'
 
-class Array
-  def sum(identity = 0, &block)
-    return identity unless size > 0
-
-    if block_given?
-      map(&block).sum
-    else
-      reduce(:+) || 0
-    end
-  end
-end
-
 class Vector
   def magnitude
     sumsqs = 0.0
