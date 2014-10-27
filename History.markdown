@@ -1,5 +1,9 @@
 ## HEAD
 
+### Minor Enhancements
+
+  * Remove `Array#sum` monkey patch in favour of `#reduce(0, :+)` (#20)
+
 ### Development Fixes
 
   * Add a test for `Bayes#untrain_*`. (#21)
