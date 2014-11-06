@@ -7,6 +7,7 @@
 ### Development Fixes
 
   * Add a test for `Bayes#untrain_*`. (#21)
+  * Fix link to rb-gsl gem (#24)
 
 ## 2.0.1 / 2014-08-14
 
