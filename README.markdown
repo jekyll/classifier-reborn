@@ -29,7 +29,7 @@ This should install automatically with RubyGems.
 If you would like to speed up LSI classification by at least 10x, please install the following libraries:
 
 * [GNU GSL](http://www.gnu.org/software/gsl)
-* [rb-gsl](http://rb-gsl.rubyforge.org)
+* [rb-gsl](https://rubygems.org/gems/rb-gsl)
 
 Notice that LSI will work without these libraries, but as soon as they are installed, Classifier will make use of them. No configuration changes are needed, we like to keep things ridiculously easy for you.
 
