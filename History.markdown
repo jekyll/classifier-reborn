@@ -1,4 +1,4 @@
-## HEAD
+## 2.0.2 / 2014-11-08
 
 ### Minor Enhancements
 
