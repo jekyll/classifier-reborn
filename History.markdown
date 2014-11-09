@@ -3,6 +3,7 @@
 ### Minor Enhancements
 
   * Remove `Array#sum` monkey patch in favour of `#reduce(0, :+)` (#20)
+  * Cache total word counts per category for speed (#4)
 
 ### Development Fixes
 
