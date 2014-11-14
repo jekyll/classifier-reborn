@@ -1,3 +1,7 @@
+## HEAD
+
+  * Handle `GSL::Vector`'s which don't have `#reduce` in `ContentNode#raw_vector_with` (#28)
+
 ## 2.0.2 / 2014-11-08
 
 ### Minor Enhancements
