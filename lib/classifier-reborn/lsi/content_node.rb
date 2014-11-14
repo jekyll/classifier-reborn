@@ -44,7 +44,14 @@ module ClassifierReborn
       end
 
       # Perform the scaling transform and force floating point arithmetic
-      total_words = vec.reduce(0, :+).to_f
+      if $GSL
+        sum = 0.0
+        vec.collect{|v| sum += v}
+        total_words = sum
+      else
+        total_words = vec.reduce(0, :+).to_f
+      end
+
       total_unique_words = 0
 
       if $GSL
