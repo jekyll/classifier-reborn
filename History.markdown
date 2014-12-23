@@ -1,4 +1,6 @@
-## HEAD
+## 2.0.3 / 2014-12-23
+
+### Bug Fixes
 
   * Handle `GSL::Vector`'s which don't have `#reduce` in `ContentNode#raw_vector_with` (#28)
   * Remove unnecessary `Vector` monkey-patch (#29)
