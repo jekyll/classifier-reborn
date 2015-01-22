@@ -41,22 +41,21 @@ A Bayesian classifier by Lucas Carlson. Bayesian Classifiers are accurate, fast,
 
 ```ruby
 require 'classifier-reborn'
-b = ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting'
-b.train_interesting "here are some good words. I hope you love them"
-b.train_uninteresting "here are some bad words, I hate you"
-b.classify "I hate bad words and you" # returns 'Uninteresting'
+classifier = ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting'
+classifier.train_interesting "here are some good words. I hope you love them"
+classifier.train_uninteresting "here are some bad words, I hate you"
+classifier.classify "I hate bad words and you" # returns 'Uninteresting'
 
-require 'madeleine' # use madeline to persist the data
-m = SnapshotMadeleine.new("bayes_data") {
-  ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting'
-}
-m.system.train_interesting "here are some good words. I hope you love them"
-m.system.train_uninteresting "here are some bad words, I hate you"
-m.take_snapshot
-m.system.classify "I love you" # returns 'Interesting'
+classifier_snapshot = Marshal.dump classifier
+# This is a bytestring, you can persist it anywhere you like
+Redis.current.save "classifier", classifier_snapshot
+
+# Later
+
+data = Redis.current.get "classifier"
+trained_classifier = Marshal.load data
+trained_classifier.classify "I love" # returns 'Interesting'
 ```
-
-Using Madeleine, your application can persist the learned data over time.
 
 ### Bayesian Classification
 
