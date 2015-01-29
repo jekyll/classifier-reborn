@@ -52,7 +52,7 @@ classifier_snapshot = Marshal.dump classifier
 File.open("classifier.dat", "w") {|f| f.write(classifier_snapshot) }
 # Or Redis.current.save "classifier", classifier_snapshot
 
-# This is now saved to a file, and you could restart the application
+# This is now saved to a file, and you can safely restart the application
 data = File.read("classifier.dat")
 # Or data = Redis.current.get "classifier"
 trained_classifier = Marshal.load data
