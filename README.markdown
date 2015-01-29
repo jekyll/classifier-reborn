@@ -47,12 +47,14 @@ classifier.train_uninteresting "here are some bad words, I hate you"
 classifier.classify "I hate bad words and you" # returns 'Uninteresting'
 
 classifier_snapshot = Marshal.dump classifier
-# This is a bytestring, you can persist it anywhere you like
-Redis.current.save "classifier", classifier_snapshot
+# This is a string of bytes, you can persist it anywhere you like
 
-# Later
+File.open("classifier.dat", "w") {|f| f.write(classifier_snapshot) }
+# Or Redis.current.save "classifier", classifier_snapshot
 
-data = Redis.current.get "classifier"
+# This is now saved to a file, and you could restart the application
+data = File.read("classifier.dat")
+# Or data = Redis.current.get "classifier"
 trained_classifier = Marshal.load data
 trained_classifier.classify "I love" # returns 'Interesting'
 ```
