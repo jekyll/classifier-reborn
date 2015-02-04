@@ -1,3 +1,9 @@
+## HEAD
+
+### Documentation
+
+  * Remove references to Madeline in the Read Me and replace it with Marshal or Redis (#32)
+
 ## 2.0.3 / 2014-12-23
 
 ### Bug Fixes
