@@ -1,5 +1,11 @@
 ## HEAD
 
+### Deprecation Warning
+  *Fixed deprecation warning for `<=>` in ls.rb (#33)
+
+### Ruby Version Support
+  *Added development dependency on `mini_test` and added 2.2 to travis.yml (#36)
+ 
 ### Documentation
 
   * Remove references to Madeline in the Read Me and replace it with Marshal or Redis (#32)
