@@ -15,11 +15,11 @@ module ClassifierReborn
     end
 
     def split_sentences(str)
-      str.split /(\.|\!|\?)/ # TODO: make this less primitive
+      str.split(/(\.|\!|\?)/) # TODO: make this less primitive
     end
 
     def split_paragraphs(str)
-      str.split /(\n\n|\r\r|\r\n\r\n)/ # TODO: make this less primitive
+      str.split(/(\n\n|\r\r|\r\n\r\n)/) # TODO: make this less primitive
     end
 
     def perform_lsi(chunks, count, separator)
