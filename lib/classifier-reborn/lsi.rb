@@ -94,13 +94,6 @@ module ClassifierReborn
       @items.keys
     end
 
-    # Returns the categories for a given indexed items. You are free to add and remove
-    # items from this as you see fit. It does not invalide an index to change its categories.
-    def categories_for(item)
-      return [] unless @items[item]
-      return @items[item].categories
-    end
-
     # This function rebuilds the index if needs_rebuild? returns true.
     # For very large document spaces, this indexing operation may take some
     # time to complete, so it may be wise to place the operation in another
