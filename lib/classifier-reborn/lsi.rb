@@ -32,7 +32,7 @@ module ClassifierReborn
     #      ClassifierReborn::LSI.new :auto_rebuild => false
     #
     def initialize(options = {})
-      @auto_rebuild = true unless options[:auto_rebuild] == false
+      @auto_rebuild = options[:auto_rebuild] != false
       @word_list, @items = WordList.new, {}
       @version, @built_at_version = 0, -1
       @language = options[:language] || 'en'
