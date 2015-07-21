@@ -21,7 +21,6 @@ class Matrix
 
     qrot    = q.dup
     v       = Matrix.identity(q.row_size)
-    azrot   = nil
     mzrot   = nil
     cnt     = 0
     s_old   = nil
