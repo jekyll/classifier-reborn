@@ -149,7 +149,7 @@ module ClassifierReborn
        return [] if needs_rebuild?
 
        avg_density = Hash.new
-       @items.each_key { |x| avg_density[x] = proximity_array_for_content(x).inject(0.0) { |x,y| x + y[1]} }
+       @items.each_key { |item| avg_density[item] = proximity_array_for_content(item).inject(0.0) { |x,y| x + y[1]} }
 
        avg_density.keys.sort_by { |x| avg_density[x] }.reverse[0..max_chunks-1].map
     end
