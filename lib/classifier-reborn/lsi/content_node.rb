@@ -18,6 +18,7 @@ module ClassifierReborn
     def initialize( word_hash, *categories )
       @categories = categories || []
       @word_hash = word_hash
+      @lsi_norm = nil
     end
 
     # Use this to fetch the appropriate search vector.
