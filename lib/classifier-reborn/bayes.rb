@@ -87,11 +87,16 @@ module ClassifierReborn
     end
 
     # Returns the classification of the provided +text+, which is one of the
-    # categories given in the initializer. E.g.,
+    # categories given in the initializer along with the score. E.g.,
     #    b.classify "I hate bad words and you"
-    #    =>  'Uninteresting'
+    #    =>  ['Uninteresting', -4.852030263919617]
+    def classify_with_score(text)
+      (classifications(text).sort_by { |a| -a[1] })[0]
+    end
+
+    # Return the classification without the score
     def classify(text)
-      (classifications(text).sort_by { |a| -a[1] })[0][0]
+      classify_with_score(text)[0]
     end
 
     # Provides training and untraining methods for the categories specified in Bayes#new

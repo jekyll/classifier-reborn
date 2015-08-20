@@ -38,7 +38,19 @@ class LSITest < Test::Unit::TestCase
 
 	  assert_equal "Dog", lsi.classify( @str1 )
 	  assert_equal "Cat", lsi.classify( @str3 )
-     assert_equal "Bird", lsi.classify( @str5 )
+    assert_equal "Bird", lsi.classify( @str5 )
+	end
+
+	def test_basic_categorizing_with_score
+	  lsi = ClassifierReborn::LSI.new
+	  lsi.add_item @str2, "Dog"
+	  lsi.add_item @str3, "Cat"
+	  lsi.add_item @str4, "Cat"
+	  lsi.add_item @str5, "Bird"
+
+	  assert_in_delta 2.49, lsi.classify_with_score( @str1 )[1], 0.1
+	  assert_in_delta 1.41, lsi.classify_with_score( @str3 )[1], 0.1
+    assert_in_delta 1.99, lsi.classify_with_score( @str5 )[1], 0.1
 	end
 
 	def test_external_classifying

@@ -248,7 +248,7 @@ module ClassifierReborn
     # text. A cutoff of 1 means that every document in the index votes on
     # what category the document is in. This may not always make sense.
     #
-    def classify( doc, cutoff=0.30, &block )
+    def classify_with_score( doc, cutoff=0.30, &block)
       icutoff = (@items.size * cutoff).round
       carry = proximity_array_for_content( doc, &block )
       carry = carry[0..icutoff-1]
@@ -261,8 +261,13 @@ module ClassifierReborn
         end
       end
 
-      ranking = votes.keys.sort_by { |x| votes[x] }
-      return ranking[-1]
+      top_ranked = votes.keys.sort_by { |x| votes[x] }.last
+      return [top_ranked, votes[top_ranked]]
+    end
+
+    # Return just the most obvious category without the score
+    def classify( doc, cutoff=0.30, &block )
+      return classify_with_score(doc, cutoff, &block).first
     end
 
     # Prototype, only works on indexed documents.
