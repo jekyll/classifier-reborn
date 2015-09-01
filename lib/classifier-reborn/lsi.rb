@@ -35,6 +35,7 @@ module ClassifierReborn
       @auto_rebuild = true unless options[:auto_rebuild] == false
       @word_list, @items = WordList.new, {}
       @version, @built_at_version = 0, -1
+      @language = options[:language] || 'en'
     end
 
     # Returns true if the index needs to be rebuilt.  The index needs
@@ -58,7 +59,7 @@ module ClassifierReborn
     #   lsi.add_item ar, *ar.categories { |x| ar.content }
     #
     def add_item( item, *categories, &block )
-      clean_word_hash = Hasher.clean_word_hash(block ? block.call(item) : item.to_s)
+      clean_word_hash = Hasher.clean_word_hash((block ? block.call(item) : item.to_s), @language)
       @items[item] = ContentNode.new(clean_word_hash, *categories)
       @version += 1
       build_index if @auto_rebuild
@@ -293,7 +294,7 @@ module ClassifierReborn
       if @items[item]
         return @items[item]
       else
-        clean_word_hash = Hasher.clean_word_hash(block ? block.call(item) : item.to_s)
+        clean_word_hash = Hasher.clean_word_hash((block ? block.call(item) : item.to_s), @language)
 
         cn = ContentNode.new(clean_word_hash, &block) # make the node and extract the data
 

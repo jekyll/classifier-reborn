@@ -9,12 +9,20 @@ module ClassifierReborn
     # The class can be created with one or more categories, each of which will be
     # initialized and given a training method. E.g.,
     #      b = ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting', 'Spam'
-    def initialize(*categories)
+    def initialize(*args)
       @categories = Hash.new
-      categories.each { |category| @categories[CategoryNamer.prepare_name(category)] = Hash.new }
+      options = { language: 'en' }
+      args.each { |arg|
+        if arg.kind_of?(Hash)
+          options.merge!(arg)
+        else
+          @categories[CategoryNamer.prepare_name(arg)] = Hash.new
+        end
+      }
       @total_words = 0
       @category_counts = Hash.new(0)
       @category_word_count = Hash.new
+      @language = options[:language]
     end
 
     # Provides a general training method for all categories specified in Bayes#new
@@ -27,7 +35,7 @@ module ClassifierReborn
       category = CategoryNamer.prepare_name(category)
       @category_word_count[category] ||= 0
       @category_counts[category] += 1
-      Hasher.word_hash(text).each do |word, count|
+      Hasher.word_hash(text, @language).each do |word, count|
         @categories[category][word]     ||=     0
         @categories[category][word]      +=     count
         @category_word_count[category]   += count
@@ -46,7 +54,7 @@ module ClassifierReborn
       category = CategoryNamer.prepare_name(category)
       @category_word_count[category] ||= 0
       @category_counts[category] -= 1
-      Hasher.word_hash(text).each do |word, count|
+      Hasher.word_hash(text, @language).each do |word, count|
         if @total_words >= 0
           orig = @categories[category][word] || 0
           @categories[category][word]     ||=     0
@@ -70,7 +78,7 @@ module ClassifierReborn
     # The largest of these scores (the one closest to 0) is the one picked out by #classify
     def classifications(text)
       score = Hash.new
-      word_hash = Hasher.word_hash(text)
+      word_hash = Hasher.word_hash(text, @language)
       training_count = @category_counts.values.reduce(:+).to_f
       @categories.each do |category, category_words|
         score[category.to_s] = 0

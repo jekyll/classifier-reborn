@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 class BayesianTest < Test::Unit::TestCase
 	def setup
-		@classifier = ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting'
+		@classifier = ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting', language: 'en'
 	end
 	
 	def test_good_training
@@ -41,4 +41,5 @@ class BayesianTest < Test::Unit::TestCase
 		classification_after_untrain = @classifier.classify "seven"
 		assert_not_equal classification_of_bad_data, classification_after_untrain
 	end
+
 end
