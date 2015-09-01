@@ -53,6 +53,19 @@ class LSITest < Test::Unit::TestCase
     assert_in_delta 1.99, lsi.classify_with_score( @str5 )[1], 0.1
 	end
 
+  def test_scored_categories
+	  lsi = ClassifierReborn::LSI.new
+	  lsi.add_item @str1, "Dog"
+	  lsi.add_item @str2, "Dog"
+	  lsi.add_item @str3, "Cat"
+	  lsi.add_item @str4, "Cat"
+	  lsi.add_item @str5, "Bird"
+
+    scored_categories = lsi.scored_categories("dog bird cat")
+    assert_equal 2, scored_categories.size
+    assert_equal ["Bird", "Dog"], scored_categories.map(&:first)
+  end
+
 	def test_external_classifying
 	  lsi = ClassifierReborn::LSI.new
 	  bayes = ClassifierReborn::Bayes.new 'Dog', 'Cat', 'Bird'
