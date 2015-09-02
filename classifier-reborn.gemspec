@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.homepage         = 'https://github.com/jekyll/classifier-reborn'
 
   all_files          = `git ls-files -z`.split("\x0")
-  s.files            = all_files.grep(%r{^(bin|lib)/})
+  s.files            = all_files.grep(%r{^(bin|lib|data)/})
   s.executables      = all_files.grep(%r{^bin/}) { |f| File.basename(f) }
   s.require_paths    = ["lib"]
 
