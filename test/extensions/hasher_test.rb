@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class HasherTest < Test::Unit::TestCase
   def setup
-    @original_stopwords_path = Hasher.stopwords_path.dup
+    @original_stopwords_path = Hasher::STOPWORDS_PATH.dup
   end
 
   def test_word_hash
@@ -29,7 +29,7 @@ class HasherTest < Test::Unit::TestCase
     Hasher::STOPWORDS.delete('en')
 
     # Add a custom stopwords path
-    Hasher.stopwords_path.unshift File.expand_path(File.dirname(__FILE__) + '/../data/stopwords')
+    Hasher::STOPWORDS_PATH.unshift File.expand_path(File.dirname(__FILE__) + '/../data/stopwords')
 
     custom_english_stopwords = Hasher::STOPWORDS['en']
 
@@ -38,6 +38,6 @@ class HasherTest < Test::Unit::TestCase
 
   def teardown
     Hasher::STOPWORDS.clear
-    Hasher.stopwords_path.clear.concat @original_stopwords_path
+    Hasher::STOPWORDS_PATH.clear.concat @original_stopwords_path
   end
 end

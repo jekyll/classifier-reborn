@@ -2,15 +2,11 @@
 # Copyright:: Copyright (c) 2005 Lucas Carlson
 # License::   LGPL
 
-require "set"
-
 module ClassifierReborn
   module Hasher
-    @stopwords_path = [File.expand_path(File.dirname(__FILE__) + '/../../../data/stopwords')]
+    STOPWORDS_PATH = [File.expand_path(File.dirname(__FILE__) + '/../../../data/stopwords')]
 
     extend self
-
-    def stopwords_path; @stopwords_path; end
 
     # Removes common punctuation symbols, returning a new string.
     # E.g.,
@@ -56,7 +52,7 @@ module ClassifierReborn
     STOPWORDS = Hash.new do |hash, language|
       hash[language] = []
 
-      @stopwords_path.each do |path|
+      STOPWORDS_PATH.each do |path|
         if File.exists?(File.join(path, language))
           hash[language] = File.read(File.join(path, language.to_s)).split
           break
