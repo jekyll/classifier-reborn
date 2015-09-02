@@ -1,14 +1,17 @@
 ## HEAD
 
-### Deprecation Warning
-  *Fixed deprecation warning for `<=>` in ls.rb (#33)
+### Minor Enhancements
 
-### Ruby Version Support
-  *Added development dependency on `mini_test` and added 2.2 to travis.yml (#36)
- 
-### Documentation
+  * Add multiple language stopwords with customizable stop word paths (#40)
 
-  * Remove references to Madeline in the Read Me and replace it with Marshal or Redis (#32)
+### Bug Fixes
+
+  * Fixed deprecation warning for `<=>` in ls.rb (#33)
+  * Remove references to Madeline in the README and replace it with Marshal or Redis (#32)
+
+### Development Fixes
+
+  * Added development dependency on `mini_test` and added 2.2 to travis.yml (#36)
 
 ## 2.0.3 / 2014-12-23
 
