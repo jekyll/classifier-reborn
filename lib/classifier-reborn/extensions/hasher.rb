@@ -20,14 +20,13 @@ module ClassifierReborn
 
     # Return a word hash without extra punctuation or short symbols, just stemmed words
     def clean_word_hash(str, language = 'en')
-      word_hash_for_words str.gsub(/[^\w\s]/,"").split, language
+      word_hash_for_words str.gsub(/[^\p{WORD}\s]/,'').downcase.split, language
     end
 
     def word_hash_for_words(words, language = 'en')
       d = Hash.new(0)
       words.each do |word|
-        word.downcase!
-        if ! STOPWORDS[language].include?(word) && word.length > 2
+        if word.length > 2 && !STOPWORDS[language].include?(word)
           d[word.stem.intern] += 1
         end
       end
