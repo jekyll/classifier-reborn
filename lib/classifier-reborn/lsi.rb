@@ -240,30 +240,37 @@ module ClassifierReborn
       return result[0..max_nearest-1]
     end
 
+    # Return the most obvious category with the score
+    def classify_with_score( doc, cutoff=0.30, &block)
+      return scored_categories(doc, cutoff, &block).last
+    end
+
+    # Return the most obvious category without the score
+    def classify( doc, cutoff=0.30, &block )
+      return scored_categories(doc, cutoff, &block).last.first
+    end
+
     # This function uses a voting system to categorize documents, based on
     # the categories of other documents. It uses the same logic as the
     # find_related function to find related documents, then returns the
-    # most obvious category from this list.
+    # list of sorted categories.
     #
     # cutoff signifies the number of documents to consider when clasifying
     # text. A cutoff of 1 means that every document in the index votes on
     # what category the document is in. This may not always make sense.
     #
-    def classify( doc, cutoff=0.30, &block )
+    def scored_categories( doc, cutoff=0.30, &block )
       icutoff = (@items.size * cutoff).round
       carry = proximity_array_for_content( doc, &block )
       carry = carry[0..icutoff-1]
-      votes = {}
+      votes = Hash.new(0.0)
       carry.each do |pair|
-        categories = @items[pair[0]].categories
-        categories.each do |category|
-          votes[category] ||= 0.0
+        @items[pair[0]].categories.each do |category|
           votes[category] += pair[1]
         end
       end
 
-      ranking = votes.keys.sort_by { |x| votes[x] }
-      return ranking[-1]
+      return votes.sort_by { |_, score| score }
     end
 
     # Prototype, only works on indexed documents.
