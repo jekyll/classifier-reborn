@@ -13,9 +13,9 @@ module ClassifierReborn
     # Return a Hash of strings => ints. Each word in the string is stemmed,
     # interned, and indexes to its frequency in the document.
     def word_hash(str, language = 'en')
-      word_hash   = clean_word_hash(str, language)
-      symbol_hash = word_hash_for_symbols(str.gsub(/[\w]/," ").split)
-      return clean_word_hash(str, language).merge(symbol_hash)
+      cleaned_word_hash = clean_word_hash(str, language)
+      symbol_hash = word_hash_for_symbols(str.scan(/[^\s\p{WORD}]/))
+      return cleaned_word_hash.merge(symbol_hash)
     end
 
     # Return a word hash without extra punctuation or short symbols, just stemmed words
