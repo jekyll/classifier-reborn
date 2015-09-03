@@ -10,14 +10,6 @@ module ClassifierReborn
 
     extend self
 
-    # Removes common punctuation symbols, returning a new string.
-    # E.g.,
-    #   "Hello (greeting's), with {braces} < >...?".without_punctuation
-    #   => "Hello  greetings   with  braces         "
-    def without_punctuation(str)
-      str .tr( ',?.!;:"@#$%^&*()_=+[]{}\|<>/`~', " " ) .tr( "'\-", "")
-    end
-
     # Return a Hash of strings => ints. Each word in the string is stemmed,
     # interned, and indexes to its frequency in the document.
     def word_hash(str, language = 'en')
