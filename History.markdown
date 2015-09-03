@@ -1,11 +1,11 @@
 ## HEAD
 
 ### Major Enhancements
- * Classification with a threshold has been added to the api
+ * Classification with a threshold has been added to the api (#39)
  
 ### Minor Enhancements
-  * Simple performance improvements for the Hasher process
-  * Fixes for broken regex splitting for non-ascii characters and removal of the unused punctuation filter
+  * Simple performance improvements for the Hasher process (#41)
+  * Fixes for broken regex splitting for non-ascii characters and removal of the unused punctuation filter (#41)
   * Add multiple language stopwords with customizable stop word paths (#40)
 
 ### Bug Fixes
