@@ -4,6 +4,7 @@
  * Classification with a threshold has been added to the api (#39)
  
 ### Minor Enhancements
+  * Eliminated several Ruby :warning:s when run with RUBYOPT="-w". (#38)
   * Simple performance improvements for the Hasher process (#41)
   * Fixes for broken regex splitting for non-ascii characters and removal of the unused punctuation filter (#41)
   * Add multiple language stopwords with customizable stop word paths (#40)
