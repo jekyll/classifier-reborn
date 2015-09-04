@@ -32,7 +32,7 @@ module ClassifierReborn
     #      ClassifierReborn::LSI.new :auto_rebuild => false
     #
     def initialize(options = {})
-      @auto_rebuild = true unless options[:auto_rebuild] == false
+      @auto_rebuild = options[:auto_rebuild] != false
       @word_list, @items = WordList.new, {}
       @version, @built_at_version = 0, -1
       @language = options[:language] || 'en'
@@ -94,13 +94,6 @@ module ClassifierReborn
       @items.keys
     end
 
-    # Returns the categories for a given indexed items. You are free to add and remove
-    # items from this as you see fit. It does not invalide an index to change its categories.
-    def categories_for(item)
-      return [] unless @items[item]
-      return @items[item].categories
-    end
-
     # This function rebuilds the index if needs_rebuild? returns true.
     # For very large document spaces, this indexing operation may take some
     # time to complete, so it may be wise to place the operation in another
@@ -156,7 +149,7 @@ module ClassifierReborn
        return [] if needs_rebuild?
 
        avg_density = Hash.new
-       @items.each_key { |x| avg_density[x] = proximity_array_for_content(x).inject(0.0) { |x,y| x + y[1]} }
+       @items.each_key { |item| avg_density[item] = proximity_array_for_content(item).inject(0.0) { |x,y| x + y[1]} }
 
        avg_density.keys.sort_by { |x| avg_density[x] }.reverse[0..max_chunks-1].map
     end
