@@ -12,7 +12,7 @@ module ClassifierReborn
     def initialize(*args)
       @categories = Hash.new
       options = { language: 'en' }
-      args.each { |arg|
+      args.flatten.each { |arg|
         if arg.kind_of?(Hash)
           options.merge!(arg)
         else
