@@ -33,6 +33,7 @@ module ClassifierReborn
     #     b.train "The other", "The other text"
     def train(category, text)
       category = CategoryNamer.prepare_name(category)
+      @categories[category] = Hash.new unless @categories.include?(category)
       @category_word_count[category] ||= 0
       @category_counts[category] += 1
       Hasher.word_hash(text, @language).each do |word, count|
