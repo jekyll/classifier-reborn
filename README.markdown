@@ -86,7 +86,6 @@ puts classifier.classify "javascript is bad" #=> 'Uninteresting'
 
 puts classifier.classify "all you need is ruby" #=> 'Interesting'
 puts classifier.classify "i love ruby" #=> 'Interesting'
-puts classifier.classify "i love ruby" #=> 'Interesting'
 
 puts classifier.classify "which is better dogs or cats" #=> 'dog'
 puts classifier.classify "what do I need to kill rats and mice" #=> 'cat'
@@ -95,7 +94,7 @@ __END__
 Interesting, Uninteresting
 interesting: here are some good words. I hope you love them
 interesting: all you need is love
-interesting: the love boat, soon we will bre taking another ride
+interesting: the love boat, soon we will be taking another ride
 interesting: ruby don't take your love to town
 
 uninteresting: here are some bad words, I hate you
