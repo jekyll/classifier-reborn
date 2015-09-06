@@ -12,7 +12,7 @@ module ClassifierReborn
     def initialize(*args)
       @categories = Hash.new
       options = { language: 'en' }
-      args.each { |arg|
+      args.flatten.each { |arg|
         if arg.kind_of?(Hash)
           options.merge!(arg)
         else
@@ -33,6 +33,7 @@ module ClassifierReborn
     #     b.train "The other", "The other text"
     def train(category, text)
       category = CategoryNamer.prepare_name(category)
+      @categories[category] = Hash.new unless @categories.include?(category)
       @category_word_count[category] ||= 0
       @category_counts[category] += 1
       Hasher.word_hash(text, @language).each do |word, count|

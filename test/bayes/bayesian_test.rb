@@ -19,10 +19,20 @@ class BayesianTest < Test::Unit::TestCase
 	def test_categories
 		assert_equal ['Interesting', 'Uninteresting'].sort, @classifier.categories.sort
 	end
+	
+	def test_categproes_from_array
+		another_classifier = ClassifierReborn::Bayes.new ['Interesting', 'Uninteresting']
+		assert_equal another_classifier.categories.sort, @classifier.categories.sort
+	end
 
 	def test_add_category
 		@classifier.add_category 'Test'
 		assert_equal ['Test', 'Interesting', 'Uninteresting'].sort, @classifier.categories.sort
+	end
+	
+	def test_dynamic_category_thru_training
+		@classifier.train('Ruby', 'I really sweet language')
+		assert @classifier.categories.include?('Ruby')
 	end
 
 	def test_classification
