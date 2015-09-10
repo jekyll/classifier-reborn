@@ -30,9 +30,17 @@ class BayesianTest < Test::Unit::TestCase
 		assert_equal ['Test', 'Interesting', 'Uninteresting'].sort, @classifier.categories.sort
 	end
 	
-	def test_dynamic_category_thru_training
-		@classifier.train('Ruby', 'I really sweet language')
-		assert @classifier.categories.include?('Ruby')
+	def test_dynamic_category_succeeds_with_auto_categorize
+		classifier = ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting', auto_categorize: true
+		classifier.train('Ruby', 'I really sweet language')
+		assert classifier.categories.include?('Ruby')
+	end
+
+	def test_dynamic_category_fails_without_auto_categorize
+		assert_raises(ClassifierReborn::Bayes::CategoryNotFound) {
+		  @classifier.train('Ruby', 'I really sweet language')
+		}
+		refute @classifier.categories.include?('Ruby')
 	end
 
 	def test_classification
