@@ -16,12 +16,12 @@ module ClassifierReborn
         if arg.kind_of?(Hash)
           options.merge!(arg)
         else
-          @categories[CategoryNamer.prepare_name(arg)] = Hash.new
+          @categories[CategoryNamer.prepare_name(arg)] = Hash.new(0)
         end
       }
       @total_words = 0
       @category_counts = Hash.new(0)
-      @category_word_count = Hash.new
+      @category_word_count = Hash.new(0)
       @language = options[:language]
     end
 
@@ -33,11 +33,9 @@ module ClassifierReborn
     #     b.train "The other", "The other text"
     def train(category, text)
       category = CategoryNamer.prepare_name(category)
-      @categories[category] = Hash.new unless @categories.include?(category)
-      @category_word_count[category] ||= 0
+      @categories[category] = Hash.new(0) unless @categories.has_key?(category)
       @category_counts[category] += 1
       Hasher.word_hash(text, @language).each do |word, count|
-        @categories[category][word]     ||=     0
         @categories[category][word]      +=     count
         @category_word_count[category]   += count
         @total_words += count
@@ -53,12 +51,10 @@ module ClassifierReborn
     #     b.untrain :this, "This text"
     def untrain(category, text)
       category = CategoryNamer.prepare_name(category)
-      @category_word_count[category] ||= 0
       @category_counts[category] -= 1
       Hasher.word_hash(text, @language).each do |word, count|
         if @total_words >= 0
           orig = @categories[category][word] || 0
-          @categories[category][word]     ||=     0
           @categories[category][word]      -=     count
           if @categories[category][word] <= 0
             @categories[category].delete(word)
@@ -144,7 +140,7 @@ module ClassifierReborn
     # more criteria than the trained selective categories. In short,
     # try to initialize your categories at initialization.
     def add_category(category)
-      @categories[CategoryNamer.prepare_name(category)] = Hash.new
+      @categories[CategoryNamer.prepare_name(category)] = Hash.new(0)
     end
 
     alias append_category add_category
