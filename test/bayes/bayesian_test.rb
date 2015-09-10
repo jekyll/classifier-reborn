@@ -20,7 +20,7 @@ class BayesianTest < Test::Unit::TestCase
 		assert_equal ['Interesting', 'Uninteresting'].sort, @classifier.categories.sort
 	end
 	
-	def test_categproes_from_array
+	def test_categories_from_array
 		another_classifier = ClassifierReborn::Bayes.new ['Interesting', 'Uninteresting']
 		assert_equal another_classifier.categories.sort, @classifier.categories.sort
 	end

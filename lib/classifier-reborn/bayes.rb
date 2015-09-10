@@ -6,23 +6,26 @@ require_relative 'category_namer'
 
 module ClassifierReborn
   class Bayes
+    class CategoryNotFound < StandardError; end
+
     # The class can be created with one or more categories, each of which will be
     # initialized and given a training method. E.g.,
     #      b = ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting', 'Spam'
     def initialize(*args)
       @categories = Hash.new
-      options = { language: 'en' }
+      options = { language: 'en', auto_categorize: false }
       args.flatten.each { |arg|
         if arg.kind_of?(Hash)
           options.merge!(arg)
         else
-          @categories[CategoryNamer.prepare_name(arg)] = Hash.new(0)
+          add_category(arg)
         end
       }
       @total_words = 0
       @category_counts = Hash.new(0)
       @category_word_count = Hash.new(0)
       @language = options[:language]
+      @auto_categorize = options[:auto_categorize]
     end
 
     # Provides a general training method for all categories specified in Bayes#new
@@ -33,7 +36,16 @@ module ClassifierReborn
     #     b.train "The other", "The other text"
     def train(category, text)
       category = CategoryNamer.prepare_name(category)
-      @categories[category] = Hash.new(0) unless @categories.has_key?(category)
+
+      # Add the category dynamically or raise an error
+      if !@categories.has_key?(category)
+        if @auto_categorize
+          add_category(category)
+        else
+          raise CategoryNotFound.new("Cannot train; category #{category} does not exist")
+        end
+      end
+
       @category_counts[category] += 1
       Hasher.word_hash(text, @language).each do |word, count|
         @categories[category][word]      +=     count
