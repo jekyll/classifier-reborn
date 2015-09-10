@@ -140,7 +140,7 @@ module ClassifierReborn
     # more criteria than the trained selective categories. In short,
     # try to initialize your categories at initialization.
     def add_category(category)
-      @categories[CategoryNamer.prepare_name(category)] = Hash.new(0)
+      @categories[CategoryNamer.prepare_name(category)] ||= Hash.new(0)
     end
 
     alias append_category add_category
