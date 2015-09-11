@@ -6,7 +6,7 @@ require_relative 'category_namer'
 
 module ClassifierReborn
   class Bayes
-    class CategoryNotFoundError < StandardError; end
+    CategoryNotFoundError = Class.new(StandardError)
 
     # The class can be created with one or more categories, each of which will be
     # initialized and given a training method. E.g.,
