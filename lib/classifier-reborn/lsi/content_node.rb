@@ -26,6 +26,11 @@ module ClassifierReborn
       @lsi_vector || @raw_vector
     end
 
+    # Method to access the transposed search vector
+    def transposed_search_vector
+      search_vector.col
+    end
+
     # Use this to fetch the appropriate search vector in normalized form.
     def search_norm
       @lsi_norm || @raw_norm
@@ -47,7 +52,7 @@ module ClassifierReborn
       # Perform the scaling transform and force floating point arithmetic
       if $GSL
         sum = 0.0
-        vec.collect{|v| sum += v}
+        vec.each {|v| sum += v }
         total_words = sum
       else
         total_words = vec.reduce(0, :+).to_f
@@ -56,7 +61,7 @@ module ClassifierReborn
       total_unique_words = 0
 
       if $GSL
-        vec.each { |word| total_unique_words += 1 if word != 0 }
+        vec.each { |word| total_unique_words += 1 if word != 0.0 }
       else
         total_unique_words = vec.count{ |word| word != 0 }
       end
@@ -65,20 +70,31 @@ module ClassifierReborn
       # then one word in it.
       if total_words > 1.0 && total_unique_words > 1
         weighted_total = 0.0
+        # Cache calculations, this takes too long on large indexes
+        cached_calcs = Hash.new { |hash, term|
+          hash[term] = (( term / total_words ) * Math.log( term / total_words ))
+        }
+
         vec.each do |term|
-          if ( term > 0 )
-            weighted_total += (( term / total_words ) * Math.log( term / total_words ))
-          end
+          weighted_total += cached_calcs[term] if term > 0.0
         end
-        vec = vec.collect { |val| Math.log( val + 1 ) / -weighted_total }
+
+        # Cache calculations, this takes too long on large indexes
+        cached_calcs = Hash.new do |hash, val|
+          hash[val] = Math.log( val + 1 ) / -weighted_total
+        end
+
+        vec.collect! { |val|
+          cached_calcs[val]
+        }
       end
 
       if $GSL
-         @raw_norm   = vec.normalize
-         @raw_vector = vec
+        @raw_norm   = vec.normalize
+        @raw_vector = vec
       else
-         @raw_norm   = Vector[*vec].normalize
-         @raw_vector = Vector[*vec]
+        @raw_norm   = Vector[*vec].normalize
+        @raw_vector = Vector[*vec]
       end
     end
 
