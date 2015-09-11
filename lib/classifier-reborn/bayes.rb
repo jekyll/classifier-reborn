@@ -6,7 +6,7 @@ require_relative 'category_namer'
 
 module ClassifierReborn
   class Bayes
-    class CategoryNotFound < StandardError; end
+    class CategoryNotFoundError < StandardError; end
 
     # The class can be created with one or more categories, each of which will be
     # initialized and given a training method. E.g.,
@@ -42,7 +42,7 @@ module ClassifierReborn
         if @auto_categorize
           add_category(category)
         else
-          raise CategoryNotFound.new("Cannot train; category #{category} does not exist")
+          raise CategoryNotFoundError.new("Cannot train; category #{category} does not exist")
         end
       end
 
