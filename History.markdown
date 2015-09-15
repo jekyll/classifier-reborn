@@ -7,7 +7,12 @@
  * Classification with a threshold has been added to the api (#39)
  
 ### Minor Enhancements
-
+  * Removed some unnecessary methods (#43)
+  * Add optional `CachedContentNode` (GSL only) (#43)
+  * Caches the transposed `search_vector` (#43)
+  * Added custom marshal_ methods to not save the cache when dumping/loading (#43)
+  * Optimized some numeric comparisons and iterators (#43)
+  * Added cached calculation table when computing raw_vectors (#43)
   * If a category name is already a symbol, just return it (#45)
   * Various Hash improvements (#45)
   * Eliminated several Ruby :warning:s when run with RUBYOPT="-w" (#38)
