@@ -15,6 +15,7 @@ end
 
 require_relative 'lsi/word_list'
 require_relative 'lsi/content_node'
+require_relative 'lsi/cached_content_node'
 require_relative 'lsi/summarizer'
 
 module ClassifierReborn
@@ -24,25 +25,30 @@ module ClassifierReborn
   # please consult Wikipedia[http://en.wikipedia.org/wiki/Latent_Semantic_Indexing].
   class LSI
 
-    attr_reader :word_list
+    attr_reader :word_list, :cache_node_vectors
     attr_accessor :auto_rebuild
 
     # Create a fresh index.
     # If you want to call #build_index manually, use
     #      ClassifierReborn::LSI.new :auto_rebuild => false
+    # If you want to use ContentNodes with cached vector transpositions, use
+    #      lsi = ClassifierReborn::LSI.new :cache_node_vectors => true
     #
     def initialize(options = {})
       @auto_rebuild = options[:auto_rebuild] != false
       @word_list, @items = WordList.new, {}
       @version, @built_at_version = 0, -1
       @language = options[:language] || 'en'
+      if @cache_node_vectors = options[:cache_node_vectors]
+        extend CachedContentNode::InstanceMethods
+      end
     end
 
     # Returns true if the index needs to be rebuilt.  The index needs
     # to be built after all informaton is added, but before you start
     # using it for search, classification and cluster detection.
     def needs_rebuild?
-      (@items.keys.size > 1) && (@version != @built_at_version)
+      (@items.size > 1) && (@version != @built_at_version)
     end
 
     # Adds an item to the index. item is assumed to be a string, but
@@ -60,7 +66,11 @@ module ClassifierReborn
     #
     def add_item( item, *categories, &block )
       clean_word_hash = Hasher.clean_word_hash((block ? block.call(item) : item.to_s), @language)
-      @items[item] = ContentNode.new(clean_word_hash, *categories)
+      @items[item] = if @cache_node_vectors
+        CachedContentNode.new(clean_word_hash, *categories)
+      else
+        ContentNode.new(clean_word_hash, *categories)
+      end
       @version += 1
       build_index if @auto_rebuild
     end
@@ -173,9 +183,9 @@ module ClassifierReborn
       result =
         @items.keys.collect do |item|
           if $GSL
-             val = content_node.search_vector * @items[item].search_vector.col
+            val = content_node.search_vector * @items[item].transposed_search_vector
           else
-             val = (Matrix[content_node.search_vector] * @items[item].search_vector)[0]
+            val = (Matrix[content_node.search_vector] * @items[item].search_vector)[0]
           end
           [item, val]
         end

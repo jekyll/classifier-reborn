@@ -131,6 +131,40 @@ class LSITest < Test::Unit::TestCase
     assert_equal lsi_m.find_related(@str1, 3), lsi.find_related(@str1, 3)
   end
 
+  def test_uncached_content_node_option
+    lsi = ClassifierReborn::LSI.new
+    [@str1, @str2, @str3, @str4, @str5].each { |x| lsi << x }
+    lsi.instance_variable_get(:@items).values.each { |node|
+      assert node.instance_of?(ContentNode)
+    }
+  end
+
+  def test_cached_content_node_option
+    lsi = ClassifierReborn::LSI.new(cache_node_vectors: true)
+    [@str1, @str2, @str3, @str4, @str5].each { |x| lsi << x }
+    lsi.instance_variable_get(:@items).values.each { |node|
+      assert node.instance_of?(CachedContentNode)
+    }
+  end
+
+  def test_clears_cached_content_node_cache
+    if $GSL
+      lsi = ClassifierReborn::LSI.new(cache_node_vectors: true)
+      lsi.add_item @str1, "Dog"
+      lsi.add_item @str2, "Dog"
+      lsi.add_item @str3, "Cat"
+      lsi.add_item @str4, "Cat"
+      lsi.add_item @str5, "Bird"
+
+      assert_equal "Dog", lsi.classify( "something about dogs, but not an exact dog string" )
+
+      first_content_node = lsi.instance_variable_get(:@items).values.first
+      refute_nil first_content_node.instance_variable_get(:@transposed_search_vector)
+      lsi.clear_cache!
+      assert_nil first_content_node.instance_variable_get(:@transposed_search_vector)
+    end
+  end
+
   def test_keyword_search
     lsi = ClassifierReborn::LSI.new
     lsi.add_item @str1, "Dog"
