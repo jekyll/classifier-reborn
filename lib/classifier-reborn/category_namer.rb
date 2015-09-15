@@ -9,7 +9,9 @@ module ClassifierReborn
   module CategoryNamer
     extend self
     def prepare_name(name) 
-      name.to_s.gsub("_"," ").capitalize.intern 
+      return name if name.is_a?(Symbol)
+
+      name.to_s.gsub("_"," ").capitalize.intern
     end
   end
 end
