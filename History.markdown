@@ -1,10 +1,15 @@
 ## HEAD
 
 ### Major Enhancements
+
+ * Made auto-categorization optional, defaulting to false (#45)
  * Added the ability to handle an array of classifications to the constructor (#44)
  * Classification with a threshold has been added to the api (#39)
  
 ### Minor Enhancements
+
+  * If a category name is already a symbol, just return it (#45)
+  * Various Hash improvements (#45)
   * Eliminated several Ruby :warning:s when run with RUBYOPT="-w" (#38)
   * Simple performance improvements for the Hasher process (#41)
   * Fixes for broken regex splitting for non-ascii characters and removal of the unused punctuation filter (#41)
@@ -12,6 +17,7 @@
 
 ### Bug Fixes
 
+  * Fixed the bug where adding the same category a second time would clobber the category that was already there (#45)
   * Fixed deprecation warning for `<=>` in ls.rb (#33)
   * Remove references to Madeline in the README and replace it with Marshal or Redis (#32)
 
