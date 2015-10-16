@@ -1,3 +1,4 @@
+# encoding: utf-8
 # Author::    Lucas Carlson  (mailto:lucas@rufy.com)
 # Copyright:: Copyright (c) 2005 Lucas Carlson
 # License::   LGPL
