@@ -1,5 +1,6 @@
 # encoding: utf-8
 
+
 require File.dirname(__FILE__) + '/../test_helper'
 class BayesianTest < Test::Unit::TestCase
 	def setup
@@ -44,7 +45,7 @@ class BayesianTest < Test::Unit::TestCase
 
 	def test_dynamic_category_fails_without_auto_categorize
 		assert_raises(ClassifierReborn::Bayes::CategoryNotFoundError) {
-		  @classifier.train('Ruby', 'I really sweet language')
+		  @classifier.train('Ruby', 'A really sweet language')
 		}
 		refute @classifier.categories.include?('Ruby')
 	end
@@ -53,6 +54,54 @@ class BayesianTest < Test::Unit::TestCase
 		@classifier.train_interesting "here are some good words. I hope you love them"
 		@classifier.train_uninteresting "here are some bad words, I hate you"
 		assert_equal 'Uninteresting', @classifier.classify("I hate bad words and you")
+	end
+
+	def test_classification_with_threshold
+		b = ClassifierReborn::Bayes.new 'Digit'
+		assert_equal 1, b.categories.size
+
+		refute b.threshold_enabled?
+		b.enable_threshold
+		assert b.threshold_enabled?
+		assert_equal 0.0, b.threshold  # default
+
+		b.threshold = -7.0
+
+		10.times do |a_number|
+			b.train_digit(a_number.to_s)
+			b.train_digit(a_number.to_s)
+		end
+
+		10.times do |a_number|
+			assert_equal 'Digit', b.classify(a_number.to_s)
+		end
+
+		refute b.classify("xyzzy")
+	end
+
+	def test_classification_with_threshold_again
+		b = ClassifierReborn::Bayes.new 'Normal'
+		assert_equal 1, b.categories.size
+
+		refute b.threshold_enabled?
+		b.enable_threshold
+		assert b.threshold_enabled?
+		assert_equal 0.0, b.threshold  # default
+
+		%w{
+			http://example.com/about
+			http://example.com/contact
+			http://example.com/download
+			http://example.com/login
+			http://example.com/logout
+			http://example.com/blog/2015-04-01
+		}.each do |url|
+			b.train_normal(url)
+		end
+
+		assert 'Normal', b.classify('http://example.com')
+		refute b.classify("http://example.com/login/?user='select * from users;'")
+
 	end
 
 	def test_classification_with_score
