@@ -1,25 +1,31 @@
+# encoding: utf-8
+
 require File.dirname(__FILE__) + '/../test_helper'
 class BayesianTest < Test::Unit::TestCase
 	def setup
 		@classifier = ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting'
 	end
-	
+
 	def test_good_training
 		assert_nothing_raised { @classifier.train_interesting "love" }
+	end
+
+	def test_training_with_utf8
+		assert_nothing_raised { @classifier.train_interesting "Água" }
 	end
 
 	def test_bad_training
 		assert_raise(StandardError) { @classifier.train_no_category "words" }
 	end
-	
+
 	def test_bad_method
 		assert_raise(NoMethodError) { @classifier.forget_everything_you_know "" }
 	end
-	
+
 	def test_categories
 		assert_equal ['Interesting', 'Uninteresting'].sort, @classifier.categories.sort
 	end
-	
+
 	def test_categories_from_array
 		another_classifier = ClassifierReborn::Bayes.new ['Interesting', 'Uninteresting']
 		assert_equal another_classifier.categories.sort, @classifier.categories.sort
@@ -29,7 +35,7 @@ class BayesianTest < Test::Unit::TestCase
 		@classifier.add_category 'Test'
 		assert_equal ['Test', 'Interesting', 'Uninteresting'].sort, @classifier.categories.sort
 	end
-	
+
 	def test_dynamic_category_succeeds_with_auto_categorize
 		classifier = ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting', auto_categorize: true
 		classifier.train('Ruby', 'I really sweet language')
