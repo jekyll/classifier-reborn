@@ -6,6 +6,7 @@ require_relative 'category_namer'
 
 module ClassifierReborn
   class Bayes
+    attr_reader :language, :auto_categorize
     CategoryNotFoundError = Class.new(StandardError)
 
     # The class can be created with one or more categories, each of which will be
@@ -14,13 +15,13 @@ module ClassifierReborn
     def initialize(*args)
       @categories = Hash.new
       options = { language: 'en', auto_categorize: false }
-      args.flatten.each { |arg|
+      args.flatten.each do |arg|
         if arg.kind_of?(Hash)
           options.merge!(arg)
         else
           add_category(arg)
         end
-      }
+      end
       @total_words = 0
       @category_counts = Hash.new(0)
       @category_word_count = Hash.new(0)

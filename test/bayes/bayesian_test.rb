@@ -42,10 +42,15 @@ class BayesianTest < Test::Unit::TestCase
 		assert classifier.categories.include?('Ruby')
 	end
 
+	def test_language_changing
+		classifier = ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting', language: "pt"
+		assert_equal "pt", classifier.language
+	end
+
 	def test_dynamic_category_fails_without_auto_categorize
-		assert_raises(ClassifierReborn::Bayes::CategoryNotFoundError) {
+		assert_raises(ClassifierReborn::Bayes::CategoryNotFoundError) do
 		  @classifier.train('Ruby', 'I really sweet language')
-		}
+		end
 		refute @classifier.categories.include?('Ruby')
 	end
 
