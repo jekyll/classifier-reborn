@@ -25,21 +25,19 @@ module ClassifierReborn
     end
 
     def word_hash_for_words(words, language = 'en')
-      d = Hash.new(0)
-      words.each do |word|
+      words.inject({}) do |memo, word|
         if word.length > 2 && !STOPWORDS[language].include?(word)
-          d[word.stem.intern] += 1
+          memo[word.stem.intern] = memo[word.stem.intern].to_i + 1
         end
+        memo
       end
-      return d
     end
 
     def word_hash_for_symbols(words)
-      d = Hash.new(0)
-      words.each do |word|
-        d[word.intern] += 1
+      words.inject({}) do |memo, word|
+        memo[word.intern] = memo[word.intern].to_i + 1
+        memo
       end
-      return d
     end
 
     # Create a lazily-loaded hash of stopword data
