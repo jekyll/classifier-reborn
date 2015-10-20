@@ -2,11 +2,13 @@
 
 ### Major Enhancements
 
+ *  Classification thresholds can be enabled or disabled. The default is disabled. The threshold value can be set at initialization time or dynamically during processing.
  * Made auto-categorization optional, defaulting to false (#45)
  * Added the ability to handle an array of classifications to the constructor (#44)
  * Classification with a threshold has been added to the api (#39)
  
 ### Minor Enhancements
+
   * Fixed UTF-8 encoding for `hasher.rb` (#50)
   * Removed some unnecessary methods (#43)
   * Add optional `CachedContentNode` (GSL only) (#43)
