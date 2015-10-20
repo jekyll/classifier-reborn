@@ -11,9 +11,19 @@ module ClassifierReborn
     # The class can be created with one or more categories, each of which will be
     # initialized and given a training method. E.g.,
     #      b = ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting', 'Spam'
+    #
+    # Options available are:
+    #   language:         'en'   Used to select language specific stop words
+    #   auto_categorize:  false  When true, enables ability to dynamically declare a category
+    #   enable_threshold: false  When true, enables a threshold requirement for classifition
+    #   threshold:        0.0    Default threshold, only used when enabled
     def initialize(*args)
       @categories = Hash.new
-      options = { language: 'en', auto_categorize: false }
+      options = { language:         'en', 
+                  auto_categorize:  false,
+                  enable_threshold: false,
+                  threshold:        0.0
+                }
       args.flatten.each { |arg|
         if arg.kind_of?(Hash)
           options.merge!(arg)
@@ -21,11 +31,15 @@ module ClassifierReborn
           add_category(arg)
         end
       }
-      @total_words = 0
-      @category_counts = Hash.new(0)
+
+      @total_words         = 0
+      @category_counts     = Hash.new(0)
       @category_word_count = Hash.new(0)
-      @language = options[:language]
-      @auto_categorize = options[:auto_categorize]
+
+      @language            = options[:language]
+      @auto_categorize     = options[:auto_categorize]
+      @enable_threshold    = options[:enable_threshold]
+      @threshold           = options[:threshold]
     end
 
     # Provides a general training method for all categories specified in Bayes#new
@@ -113,7 +127,41 @@ module ClassifierReborn
 
     # Return the classification without the score
     def classify(text)
-      classify_with_score(text)[0]
+      result, score = classify_with_score(text)
+      if threshold_enabled?
+        result = nil if score < @threshold || score == Float::INFINITY
+      end
+      return result
+    end
+
+    # Retrieve the current threshold value
+    def threshold
+      @threshold
+    end
+
+    # Dynamically set the threshold value
+    def threshold=(a_float)
+      @threshold = a_float
+    end
+
+    # Dynamically enable threshold for classify results
+    def enable_threshold
+      @enable_threshold = true
+    end
+
+    # Dynamically disable threshold for classify results
+    def disable_threshold
+      @enable_threshold = false
+    end
+
+    # Is threshold processing enabled?
+    def threshold_enabled?
+      @enable_threshold
+    end
+
+    # is threshold processing disabled?
+    def threshold_disabled?
+      !@enable_threshold
     end
 
     # Provides training and untraining methods for the categories specified in Bayes#new
