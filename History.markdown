@@ -2,7 +2,7 @@
 
 ### Major Enhancements
 
- *  Classification thresholds can be enabled or disabled. The default is disabled. The threshold value can be set at initialization time or dynamically during processing.
+ *  Classification thresholds can be enabled or disabled. The default is disabled. The threshold value can be set at initialization time or dynamically during processing (#47)
  * Made auto-categorization optional, defaulting to false (#45)
  * Added the ability to handle an array of classifications to the constructor (#44)
  * Classification with a threshold has been added to the api (#39)
