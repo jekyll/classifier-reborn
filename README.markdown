@@ -166,7 +166,7 @@ b.threshold            # get the current threshold
 b.threshold = -10.0    # set the threshold
 b.threshold_enabled?   # Boolean: is the threshold enabled?
 b.threshold_disabled?  # Boolean: is the threshold disabled?
-benable_threshold      # enables threshold processing
+b.enable_threshold     # enables threshold processing
 b.disable_threshold    # disables threshold processing
 ```
 
