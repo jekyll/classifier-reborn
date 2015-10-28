@@ -116,8 +116,65 @@ cat: cats never come when you call them
 cat: That dang cat keeps scratching the furniture
 ```
 
+#### Knowing the Score
+
+When you ask a bayesian classifier to classify text against a set of trained categories it does so by generating a score (as a Float) for each possible category.  The higher the score the closer the fit your text has with that category.  The category with the highest score is returned as the best matching category.
+
+In *ClassifierReborn* the methods *classifications* and *classify_with_score* give you access to the calculated scores.  The method *classify* only returns the best matching category.
+
+Knowing the score allows you to do some interesting things.  For example if your application is to generate tags for a blog post you could use the *classifications* method to get a hash of the categories and their scores.  You would sort on score and take only the top 3 or 4 categories as your tags for the blog post.
+
+You could within your application establish the smallest acceptable score and only use those categories whose score is greater than or equal to your smallest acceptable score as your tags for the blog post.
+
+But what if you only use the *classify* method?  It does not show you the score of the best category.  How do you know that the best category is really any good?
+
+You can use the threshold.
+
+#### Using the Threshold
+
+Some applications can have only one category.  The application wants to know if the text being classified is of that category or not.  For example consider a list of normal free text responses to some question or maybe a URL string coming to your web application.  You know what a normal response looks like; but, you have no idea how people might mis-use the response.  So what you want to do is create a bayesian classifier that just has one category, for example 'Good' and you want to know wither your text is classified as Good or Not Good.
+
+Or suppose you just want the ability to have multiple categories and a 'None of the Above' as a possibility.
+
+##### Threshold
+
+When you initialize the *ClassifierReborn::Bayes* classifier there are several options which can be set that control threshold processing.
+
+```ruby
+b = ClassifierRebor::Bayes.new(
+        'good',                 # one or more categories
+        enable_threshold: true, # default: false
+        threshold: -10.0        # default: 0.0
+      )
+b.train_good 'good stuff from Dobie Gillis' 
+# ...
+text = 'bad junk from Maynard G. Krebs'
+result = b.classify text
+if result.nil?
+  STDERR.puts "ALERT: This is not good: #{text}"
+  let_loose_the_dogs_of_war!  # method definition left to the reader
+end
+
+```
+
+In the *classify* method when the best category for the text has a score that is either less than the established threshold or is Float::INIFINITY, a nil category is returned.  When you see a nil value returned from the *classify* method it means that none of the trained categories (regardless or how many categories were trained) has a score that is above or equal to the established threshold.
+
+#### Other Threshold-related Convience Methods
+
+```ruby
+b.threshold            # get the current threshold
+b.threshold = -10.0    # set the threshold
+b.threshold_enabled?   # Boolean: is the threshold enabled?
+b.threshold_disabled?  # Boolean: is the threshold disabled?
+benable_threshold      # enables threshold processing
+b.disable_threshold    # disables threshold processing
+```
+
+Using these convience methods your applications can dynamically adjust threshold processing as required.
+
 ### Bayesian Classification
 
+* https://en.wikipedia.org/wiki/Naive_Bayes_classifier
 * http://www.process.com/precisemail/bayesian_filtering.htm
 * http://en.wikipedia.org/wiki/Bayesian_filtering
 * http://www.paulgraham.com/spam.html
