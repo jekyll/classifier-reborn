@@ -8,7 +8,7 @@
  * Classification with a threshold has been added to the api (#39)
  
 ### Minor Enhancements
-
+  * Documentation around threshold usage (#54)
   * Fixed UTF-8 encoding for `hasher.rb` (#50)
   * Removed some unnecessary methods (#43)
   * Add optional `CachedContentNode` (GSL only) (#43)
