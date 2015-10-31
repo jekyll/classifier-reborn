@@ -1,4 +1,4 @@
-## HEAD
+## 2.0.4 / 2015-10-31
 
 ### Major Enhancements
 
@@ -6,7 +6,7 @@
  * Made auto-categorization optional, defaulting to false (#45)
  * Added the ability to handle an array of classifications to the constructor (#44)
  * Classification with a threshold has been added to the api (#39)
- 
+
 ### Minor Enhancements
   * Documentation around threshold usage (#54)
   * Fixed UTF-8 encoding for `hasher.rb` (#50)
