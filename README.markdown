@@ -146,7 +146,7 @@ b = ClassifierRebor::Bayes.new(
         enable_threshold: true, # default: false
         threshold: -10.0        # default: 0.0
       )
-b.train_good 'good stuff from Dobie Gillis' 
+b.train_good 'good stuff from Dobie Gillis'
 # ...
 text = 'bad junk from Maynard G. Krebs'
 result = b.classify text
@@ -225,5 +225,6 @@ with more than just simple strings.
 * Cameron McBride (cameron.mcbride@gmail.com)
 * Ivan Acosta-Rubio (ivan@softwarecriollo.com)
 * Parker Moore (email@byparker.com)
+* Chase Gilliam (chase.gilliam@gmail.com)
 
 This library is released under the terms of the GNU LGPL. See LICENSE for more details.

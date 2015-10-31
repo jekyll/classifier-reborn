@@ -13,8 +13,8 @@ Gem::Specification.new do |s|
   s.version          = ClassifierReborn::VERSION
   s.license          = 'LGPL'
   s.summary          = "A general classifier module to allow Bayesian and other types of classifications."
-  s.authors          = ["Lucas Carlson", "Parker Moore"]
-  s.email            = ["lucas@rufy.com", "parkrmoore@gmail.com"]
+  s.authors          = ["Lucas Carlson", "Parker Moore", "Chase Gilliam"]
+  s.email            = ["lucas@rufy.com", "parkrmoore@gmail.com", "chase.gilliam@gmail.com"]
   s.homepage         = 'https://github.com/jekyll/classifier-reborn'
 
   all_files          = `git ls-files -z`.split("\x0")
