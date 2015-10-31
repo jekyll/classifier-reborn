@@ -9,29 +9,27 @@ module ClassifierReborn
   module Hasher
     STOPWORDS_PATH = [File.expand_path(File.dirname(__FILE__) + '/../../../data/stopwords')]
 
-    extend self
+    module_function
 
     # Return a Hash of strings => ints. Each word in the string is stemmed,
     # interned, and indexes to its frequency in the document.
     def word_hash(str, language = 'en')
       cleaned_word_hash = clean_word_hash(str, language)
       symbol_hash = word_hash_for_symbols(str.scan(/[^\s\p{WORD}]/))
-      return cleaned_word_hash.merge(symbol_hash)
+      cleaned_word_hash.merge(symbol_hash)
     end
 
     # Return a word hash without extra punctuation or short symbols, just stemmed words
     def clean_word_hash(str, language = 'en')
-      word_hash_for_words str.gsub(/[^\p{WORD}\s]/,'').downcase.split, language
+      word_hash_for_words str.gsub(/[^\p{WORD}\s]/, '').downcase.split, language
     end
 
     def word_hash_for_words(words, language = 'en')
       d = Hash.new(0)
       words.each do |word|
-        if word.length > 2 && !STOPWORDS[language].include?(word)
-          d[word.stem.intern] += 1
-        end
+        d[word.stem.intern] += 1 if word.length > 2 && !STOPWORDS[language].include?(word)
       end
-      return d
+      d
     end
 
     def word_hash_for_symbols(words)
@@ -39,7 +37,7 @@ module ClassifierReborn
       words.each do |word|
         d[word.intern] += 1
       end
-      return d
+      d
     end
 
     # Create a lazily-loaded hash of stopword data

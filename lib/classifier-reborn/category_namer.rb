@@ -7,11 +7,12 @@ require 'classifier-reborn/extensions/hasher'
 
 module ClassifierReborn
   module CategoryNamer
-    extend self
-    def prepare_name(name) 
+    module_function
+
+    def prepare_name(name)
       return name if name.is_a?(Symbol)
 
-      name.to_s.gsub("_"," ").capitalize.intern
+      name.to_s.tr('_', ' ').capitalize.intern
     end
   end
 end

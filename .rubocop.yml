@@ -1,0 +1,47 @@
+Style/IfUnlessModifier:
+  MaxLineLength: 150
+
+Metrics/LineLength:
+  Max: 146
+
+Metrics/AbcSize:
+  Max: 87
+
+Metrics/MethodLength:
+  Max: 54
+
+Metrics/CyclomaticComplexity:
+  Max: 12
+
+PerceivedComplexity:
+  Max: 14
+
+Style/GlobalVars:
+  AllowedVariables: [$GSL]
+
+Documentation:
+  Enabled: false
+
+Metrics/ClassLength:
+  Max: 170
+
+SingleLineBlockParams:
+  Enabled: false
+
+Lint/Eval:
+  Enabled: false
+
+Lint/AssignmentInCondition:
+  Enabled: false
+
+SignalException:
+  Enabled: false
+
+Style/FileName:
+  Enabled: false
+
+Style/MethodName:
+  Enabled: false
+
+Lint/UnusedBlockArgument:
+  Enabled: false

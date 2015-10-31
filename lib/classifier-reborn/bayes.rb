@@ -18,19 +18,19 @@ module ClassifierReborn
     #   enable_threshold: false  When true, enables a threshold requirement for classifition
     #   threshold:        0.0    Default threshold, only used when enabled
     def initialize(*args)
-      @categories = Hash.new
-      options = { language:         'en', 
+      @categories = {}
+      options = { language:         'en',
                   auto_categorize:  false,
                   enable_threshold: false,
                   threshold:        0.0
                 }
-      args.flatten.each { |arg|
-        if arg.kind_of?(Hash)
+      args.flatten.each do |arg|
+        if arg.is_a?(Hash)
           options.merge!(arg)
         else
           add_category(arg)
         end
-      }
+      end
 
       @total_words         = 0
       @category_counts     = Hash.new(0)
@@ -52,18 +52,18 @@ module ClassifierReborn
       category = CategoryNamer.prepare_name(category)
 
       # Add the category dynamically or raise an error
-      if !@categories.has_key?(category)
+      unless @categories.key?(category)
         if @auto_categorize
           add_category(category)
         else
-          raise CategoryNotFoundError.new("Cannot train; category #{category} does not exist")
+          raise CategoryNotFoundError, "Cannot train; category #{category} does not exist"
         end
       end
 
       @category_counts[category] += 1
       Hasher.word_hash(text, @language).each do |word, count|
-        @categories[category][word]      +=     count
-        @category_word_count[category]   += count
+        @categories[category][word] += count
+        @category_word_count[category] += count
         @total_words += count
       end
     end
@@ -79,19 +79,16 @@ module ClassifierReborn
       category = CategoryNamer.prepare_name(category)
       @category_counts[category] -= 1
       Hasher.word_hash(text, @language).each do |word, count|
-        if @total_words >= 0
-          orig = @categories[category][word] || 0
-          @categories[category][word]      -=     count
-          if @categories[category][word] <= 0
-            @categories[category].delete(word)
-            count = orig
-          end
-
-          if @category_word_count[category] >= count
-            @category_word_count[category] -= count
-          end
-          @total_words -= count
+        next if @total_words < 0
+        orig = @categories[category][word] || 0
+        @categories[category][word] -= count
+        if @categories[category][word] <= 0
+          @categories[category].delete(word)
+          count = orig
         end
+
+        @category_word_count[category] -= count if @category_word_count[category] >= count
+        @total_words -= count
       end
     end
 
@@ -100,21 +97,21 @@ module ClassifierReborn
     #    =>  {"Uninteresting"=>-12.6997928013932, "Interesting"=>-18.4206807439524}
     # The largest of these scores (the one closest to 0) is the one picked out by #classify
     def classifications(text)
-      score = Hash.new
+      score = {}
       word_hash = Hasher.word_hash(text, @language)
       training_count = @category_counts.values.reduce(:+).to_f
       @categories.each do |category, category_words|
         score[category.to_s] = 0
         total = (@category_word_count[category] || 1).to_f
-        word_hash.each do |word, count|
-          s = category_words.has_key?(word) ? category_words[word] : 0.1
-          score[category.to_s] += Math.log(s/total)
+        word_hash.each do |word, _count|
+          s = category_words.key?(word) ? category_words[word] : 0.1
+          score[category.to_s] += Math.log(s / total)
         end
         # now add prior probability for the category
-        s = @category_counts.has_key?(category) ? @category_counts[category] : 0.1
+        s = @category_counts.key?(category) ? @category_counts[category] : 0.1
         score[category.to_s] += Math.log(s / training_count)
       end
-      return score
+      score
     end
 
     # Returns the classification of the provided +text+, which is one of the
@@ -128,21 +125,15 @@ module ClassifierReborn
     # Return the classification without the score
     def classify(text)
       result, score = classify_with_score(text)
-      if threshold_enabled?
-        result = nil if score < @threshold || score == Float::INFINITY
-      end
-      return result
+      result = nil if score < @threshold || score == Float::INFINITY if threshold_enabled?
+      result
     end
 
     # Retrieve the current threshold value
-    def threshold
-      @threshold
-    end
+    attr_reader :threshold
 
     # Dynamically set the threshold value
-    def threshold=(a_float)
-      @threshold = a_float
-    end
+    attr_writer :threshold
 
     # Dynamically enable threshold for classify results
     def enable_threshold
@@ -174,12 +165,12 @@ module ClassifierReborn
     def method_missing(name, *args)
       cleaned_name = name.to_s.gsub(/(un)?train_([\w]+)/, '\2')
       category = CategoryNamer.prepare_name(cleaned_name)
-      if @categories.has_key? category
-        args.each { |text| eval("#{$1}train(category, text)") }
+      if @categories.key? category
+        args.each { |text| eval("#{Regexp.last_match(1)}train(category, text)") }
       elsif name.to_s =~ /(un)?train_([\w]+)/
         raise StandardError, "No such category: #{category}"
       else
-        super  #raise StandardError, "No such method: #{name}"
+        super # raise StandardError, "No such method: #{name}"
       end
     end
 
@@ -188,7 +179,7 @@ module ClassifierReborn
     #     b.categories
     #     =>   ['This', 'That', 'the_other']
     def categories # :nodoc:
-      @categories.keys.collect {|c| c.to_s}
+      @categories.keys.collect(&:to_s)
     end
 
     # Allows you to add categories to the classifier.
@@ -203,6 +194,6 @@ module ClassifierReborn
       @categories[CategoryNamer.prepare_name(category)] ||= Hash.new(0)
     end
 
-    alias append_category add_category
+    alias_method :append_category, :add_category
   end
 end
