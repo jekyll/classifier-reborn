@@ -4,13 +4,13 @@
 
 module ClassifierReborn
   module Summarizer
-    extend self
+    module_function
 
-    def summary( str, count=10, separator=" [...] " )
+    def summary(str, count = 10, separator = ' [...] ')
       perform_lsi split_sentences(str), count, separator
     end
 
-    def paragraph_summary( str, count=1, separator=" [...] " )
+    def paragraph_summary(str, count = 1, separator = ' [...] ')
       perform_lsi split_paragraphs(str), count, separator
     end
 
@@ -23,11 +23,11 @@ module ClassifierReborn
     end
 
     def perform_lsi(chunks, count, separator)
-      lsi = ClassifierReborn::LSI.new :auto_rebuild => false
+      lsi = ClassifierReborn::LSI.new auto_rebuild: false
       chunks.each { |chunk| lsi << chunk unless chunk.strip.empty? || chunk.strip.split.size == 1 }
       lsi.build_index
       summaries = lsi.highest_relative_content count
-      return summaries.reject { |chunk| !summaries.include? chunk }.map { |x| x.strip }.join(separator)
+      summaries.reject { |chunk| !summaries.include? chunk }.map(&:strip).join(separator)
     end
   end
 end

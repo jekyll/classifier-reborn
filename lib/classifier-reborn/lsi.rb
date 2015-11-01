@@ -3,7 +3,7 @@
 # License::   LGPL
 
 begin
-  raise LoadError if ENV['NATIVE_VECTOR'] == "true" # to test the native vector class, try `rake test NATIVE_VECTOR=true`
+  raise LoadError if ENV['NATIVE_VECTOR'] == 'true' # to test the native vector class, try `rake test NATIVE_VECTOR=true`
 
   require 'gsl' # requires http://rb-gsl.rubyforge.org/
   require_relative 'extensions/vector_serialize'
@@ -19,12 +19,10 @@ require_relative 'lsi/cached_content_node'
 require_relative 'lsi/summarizer'
 
 module ClassifierReborn
-
   # This class implements a Latent Semantic Indexer, which can search, classify and cluster
   # data based on underlying semantic relations. For more information on the algorithms used,
   # please consult Wikipedia[http://en.wikipedia.org/wiki/Latent_Semantic_Indexing].
   class LSI
-
     attr_reader :word_list, :cache_node_vectors
     attr_accessor :auto_rebuild
 
@@ -36,12 +34,12 @@ module ClassifierReborn
     #
     def initialize(options = {})
       @auto_rebuild = options[:auto_rebuild] != false
-      @word_list, @items = WordList.new, {}
-      @version, @built_at_version = 0, -1
+      @word_list = WordList.new
+      @items = {}
+      @version = 0
+      @built_at_version = -1
       @language = options[:language] || 'en'
-      if @cache_node_vectors = options[:cache_node_vectors]
-        extend CachedContentNode::InstanceMethods
-      end
+      extend CachedContentNode::InstanceMethods if @cache_node_vectors = options[:cache_node_vectors]
     end
 
     # Returns true if the index needs to be rebuilt.  The index needs
@@ -64,13 +62,13 @@ module ClassifierReborn
     #   ar = ActiveRecordObject.find( :all )
     #   lsi.add_item ar, *ar.categories { |x| ar.content }
     #
-    def add_item( item, *categories, &block )
+    def add_item(item, *categories, &block)
       clean_word_hash = Hasher.clean_word_hash((block ? block.call(item) : item.to_s), @language)
       @items[item] = if @cache_node_vectors
-        CachedContentNode.new(clean_word_hash, *categories)
-      else
-        ContentNode.new(clean_word_hash, *categories)
-      end
+                       CachedContentNode.new(clean_word_hash, *categories)
+                     else
+                       ContentNode.new(clean_word_hash, *categories)
+                     end
       @version += 1
       build_index if @auto_rebuild
     end
@@ -79,7 +77,7 @@ module ClassifierReborn
     # you are passing in a string with no categorries. item
     # will be duck typed via to_s .
     #
-    def <<( item )
+    def <<(item)
       add_item item
     end
 
@@ -87,16 +85,17 @@ module ClassifierReborn
     # items from this as you see fit. It does not invalide an index to change its categories.
     def categories_for(item)
       return [] unless @items[item]
-      return @items[item].categories
+
+      @items[item].categories
     end
 
     # Removes an item from the database, if it is indexed.
     #
-    def remove_item( item )
-      if @items.key? item
-        @items.delete item
-        @version += 1
-      end
+    def remove_item(item)
+      return unless @items.key? item
+
+      @items.delete item
+      @version += 1
     end
 
     # Returns an array of items that are indexed.
@@ -118,30 +117,30 @@ module ClassifierReborn
     # cutoff parameter tells the indexer how many of these values to keep.
     # A value of 1 for cutoff means that no semantic analysis will take place,
     # turning the LSI class into a simple vector search engine.
-    def build_index( cutoff=0.75 )
+    def build_index(cutoff = 0.75)
       return unless needs_rebuild?
       make_word_list
 
       doc_list = @items.values
-      tda = doc_list.collect { |node| node.raw_vector_with( @word_list ) }
+      tda = doc_list.collect { |node| node.raw_vector_with(@word_list) }
 
       if $GSL
-         tdm = GSL::Matrix.alloc(*tda).trans
-         ntdm = build_reduced_matrix(tdm, cutoff)
+        tdm = GSL::Matrix.alloc(*tda).trans
+        ntdm = build_reduced_matrix(tdm, cutoff)
 
-         ntdm.size[1].times do |col|
-           vec = GSL::Vector.alloc( ntdm.column(col) ).row
-           doc_list[col].lsi_vector = vec
-           doc_list[col].lsi_norm = vec.normalize
-         end
+        ntdm.size[1].times do |col|
+          vec = GSL::Vector.alloc(ntdm.column(col)).row
+          doc_list[col].lsi_vector = vec
+          doc_list[col].lsi_norm = vec.normalize
+        end
       else
-         tdm = Matrix.rows(tda).trans
-         ntdm = build_reduced_matrix(tdm, cutoff)
+        tdm = Matrix.rows(tda).trans
+        ntdm = build_reduced_matrix(tdm, cutoff)
 
-         ntdm.row_size.times do |col|
-           doc_list[col].lsi_vector = ntdm.column(col) if doc_list[col]
-           doc_list[col].lsi_norm = ntdm.column(col).normalize  if doc_list[col]
-         end
+        ntdm.row_size.times do |col|
+          doc_list[col].lsi_vector = ntdm.column(col) if doc_list[col]
+          doc_list[col].lsi_norm = ntdm.column(col).normalize if doc_list[col]
+        end
       end
 
       @built_at_version = @version
@@ -155,13 +154,13 @@ module ClassifierReborn
     # your dataset's general content. For example, if you were to use categorize on the
     # results of this data, you could gather information on what your dataset is generally
     # about.
-    def highest_relative_content( max_chunks=10 )
-       return [] if needs_rebuild?
+    def highest_relative_content(max_chunks = 10)
+      return [] if needs_rebuild?
 
-       avg_density = Hash.new
-       @items.each_key { |item| avg_density[item] = proximity_array_for_content(item).inject(0.0) { |x,y| x + y[1]} }
+      avg_density = {}
+      @items.each_key { |item| avg_density[item] = proximity_array_for_content(item).inject(0.0) { |x, y| x + y[1] } }
 
-       avg_density.keys.sort_by { |x| avg_density[x] }.reverse[0..max_chunks-1].map
+      avg_density.keys.sort_by { |x| avg_density[x] }.reverse[0..max_chunks - 1].map
     end
 
     # This function is the primitive that find_related and classify
@@ -176,10 +175,10 @@ module ClassifierReborn
     # The parameter doc is the content to compare. If that content is not
     # indexed, you can pass an optional block to define how to create the
     # text data. See add_item for examples of how this works.
-    def proximity_array_for_content( doc, &block )
+    def proximity_array_for_content(doc, &block)
       return [] if needs_rebuild?
 
-      content_node = node_for_content( doc, &block )
+      content_node = node_for_content(doc, &block)
       result =
         @items.keys.collect do |item|
           if $GSL
@@ -197,10 +196,10 @@ module ClassifierReborn
     # calculated vectors instead of their full versions. This is useful when
     # you're trying to perform operations on content that is much smaller than
     # the text you're working with. search uses this primitive.
-    def proximity_norms_for_content( doc, &block )
+    def proximity_norms_for_content(doc, &block)
       return [] if needs_rebuild?
 
-      content_node = node_for_content( doc, &block )
+      content_node = node_for_content(doc, &block)
       result =
         @items.keys.collect do |item|
           if $GSL
@@ -220,11 +219,11 @@ module ClassifierReborn
     #
     # While this may seem backwards compared to the other functions that LSI supports,
     # it is actually the same algorithm, just applied on a smaller document.
-    def search( string, max_nearest=3 )
+    def search(string, max_nearest = 3)
       return [] if needs_rebuild?
-      carry = proximity_norms_for_content( string )
+      carry = proximity_norms_for_content(string)
       result = carry.collect { |x| x[0] }
-      return result[0..max_nearest-1]
+      result[0..max_nearest - 1]
     end
 
     # This function takes content and finds other documents
@@ -236,21 +235,21 @@ module ClassifierReborn
     # This is particularly useful for identifing clusters in your document space.
     # For example you may want to identify several "What's Related" items for weblog
     # articles, or find paragraphs that relate to each other in an essay.
-    def find_related( doc, max_nearest=3, &block )
+    def find_related(doc, max_nearest = 3, &block)
       carry =
-        proximity_array_for_content( doc, &block ).reject { |pair| pair[0].eql? doc }
+        proximity_array_for_content(doc, &block).reject { |pair| pair[0].eql? doc }
       result = carry.collect { |x| x[0] }
-      return result[0..max_nearest-1]
+      result[0..max_nearest - 1]
     end
 
     # Return the most obvious category with the score
-    def classify_with_score( doc, cutoff=0.30, &block)
-      return scored_categories(doc, cutoff, &block).last
+    def classify_with_score(doc, cutoff = 0.30, &block)
+      scored_categories(doc, cutoff, &block).last
     end
 
     # Return the most obvious category without the score
-    def classify( doc, cutoff=0.30, &block )
-      return scored_categories(doc, cutoff, &block).last.first
+    def classify(doc, cutoff = 0.30, &block)
+      scored_categories(doc, cutoff, &block).last.first
     end
 
     # This function uses a voting system to categorize documents, based on
@@ -262,10 +261,10 @@ module ClassifierReborn
     # text. A cutoff of 1 means that every document in the index votes on
     # what category the document is in. This may not always make sense.
     #
-    def scored_categories( doc, cutoff=0.30, &block )
+    def scored_categories(doc, cutoff = 0.30, &block)
       icutoff = (@items.size * cutoff).round
-      carry = proximity_array_for_content( doc, &block )
-      carry = carry[0..icutoff-1]
+      carry = proximity_array_for_content(doc, &block)
+      carry = carry[0..icutoff - 1]
       votes = Hash.new(0.0)
       carry.each do |pair|
         @items[pair[0]].categories.each do |category|
@@ -273,21 +272,22 @@ module ClassifierReborn
         end
       end
 
-      return votes.sort_by { |_, score| score }
+      votes.sort_by { |_, score| score }
     end
 
     # Prototype, only works on indexed documents.
     # I have no clue if this is going to work, but in theory
     # it's supposed to.
-    def highest_ranked_stems( doc, count=3 )
-      raise "Requested stem ranking on non-indexed content!" unless @items[doc]
+    def highest_ranked_stems(doc, count = 3)
+      raise 'Requested stem ranking on non-indexed content!' unless @items[doc]
       arr = node_for_content(doc).lsi_vector.to_a
-      top_n = arr.sort.reverse[0..count-1]
-      return top_n.collect { |x| @word_list.word_for_index(arr.index(x))}
+      top_n = arr.sort.reverse[0..count - 1]
+      top_n.collect { |x| @word_list.word_for_index(arr.index(x)) }
     end
 
     private
-    def build_reduced_matrix( matrix, cutoff=0.75 )
+
+    def build_reduced_matrix(matrix, cutoff = 0.75)
       # TODO: Check that M>=N on these dimensions! Transpose helps assure this
       u, v, s = matrix.SV_decomp
 
@@ -297,7 +297,7 @@ module ClassifierReborn
         s[ord] = 0.0 if s[ord] < s_cutoff
       end
       # Reconstruct the term document matrix, only with reduced rank
-      u * ($GSL ? GSL::Matrix : ::Matrix).diag( s ) * v.trans
+      u * ($GSL ? GSL::Matrix : ::Matrix).diag(s) * v.trans
     end
 
     def node_for_content(item, &block)
@@ -309,11 +309,11 @@ module ClassifierReborn
         cn = ContentNode.new(clean_word_hash, &block) # make the node and extract the data
 
         unless needs_rebuild?
-          cn.raw_vector_with( @word_list ) # make the lsi raw and norm vectors
+          cn.raw_vector_with(@word_list) # make the lsi raw and norm vectors
         end
       end
 
-      return cn
+      cn
     end
 
     def make_word_list
@@ -322,7 +322,5 @@ module ClassifierReborn
         node.word_hash.each_key { |key| @word_list.add_word key }
       end
     end
-
   end
 end
-

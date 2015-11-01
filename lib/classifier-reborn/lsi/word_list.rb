@@ -8,7 +8,7 @@ module ClassifierReborn
 
   class WordList
     def initialize
-      @location_table = Hash.new
+      @location_table = {}
     end
 
     # Adds a word (if it is new) and assigns it a unique dimension.
@@ -31,6 +31,5 @@ module ClassifierReborn
     def size
       @location_table.size
     end
-
   end
 end
