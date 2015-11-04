@@ -280,9 +280,9 @@ module ClassifierReborn
     # it's supposed to.
     def highest_ranked_stems(doc, count = 3)
       raise 'Requested stem ranking on non-indexed content!' unless @items[doc]
-      content_vecotr_array = node_for_content(doc).lsi_vector.to_a
-      top_n = content_vecotr_array.sort.reverse[0..count - 1]
-      top_n.collect { |x| @word_list.word_for_index(content_vecotr_array.index(x)) }
+      content_vector_array = node_for_content(doc).lsi_vector.to_a
+      top_n = content_vector_array.sort.reverse[0..count - 1]
+      top_n.collect { |x| @word_list.word_for_index(content_vector_array.index(x)) }
     end
 
     private
