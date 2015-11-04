@@ -5,7 +5,7 @@
 begin
   raise LoadError if ENV['NATIVE_VECTOR'] == 'true' # to test the native vector class, try `rake test NATIVE_VECTOR=true`
 
-  require 'gsl' # requires http://rb-gsl.rubyforge.org/
+  require 'gsl' # requires https://github.com/blackwinter/rb-gsl
   require_relative 'extensions/vector_serialize'
   $GSL = true
 
@@ -78,7 +78,7 @@ module ClassifierReborn
     # will be duck typed via to_s .
     #
     def <<(item)
-      add_item item
+      add_item(item)
     end
 
     # Returns the categories for a given indexed items. You are free to add and remove
@@ -280,9 +280,9 @@ module ClassifierReborn
     # it's supposed to.
     def highest_ranked_stems(doc, count = 3)
       raise 'Requested stem ranking on non-indexed content!' unless @items[doc]
-      arr = node_for_content(doc).lsi_vector.to_a
-      top_n = arr.sort.reverse[0..count - 1]
-      top_n.collect { |x| @word_list.word_for_index(arr.index(x)) }
+      content_vecotr_array = node_for_content(doc).lsi_vector.to_a
+      top_n = content_vecotr_array.sort.reverse[0..count - 1]
+      top_n.collect { |x| @word_list.word_for_index(content_vecotr_array.index(x)) }
     end
 
     private
@@ -290,7 +290,6 @@ module ClassifierReborn
     def build_reduced_matrix(matrix, cutoff = 0.75)
       # TODO: Check that M>=N on these dimensions! Transpose helps assure this
       u, v, s = matrix.SV_decomp
-
       # TODO: Better than 75% term, please. :\
       s_cutoff = s.sort.reverse[(s.size * cutoff).round - 1]
       s.size.times do |ord|
@@ -306,20 +305,20 @@ module ClassifierReborn
       else
         clean_word_hash = Hasher.clean_word_hash((block ? block.call(item) : item.to_s), @language)
 
-        cn = ContentNode.new(clean_word_hash, &block) # make the node and extract the data
+        content_node = ContentNode.new(clean_word_hash, &block) # make the node and extract the data
 
         unless needs_rebuild?
-          cn.raw_vector_with(@word_list) # make the lsi raw and norm vectors
+          content_node.raw_vector_with(@word_list) # make the lsi raw and norm vectors
         end
       end
 
-      cn
+      content_node
     end
 
     def make_word_list
       @word_list = WordList.new
       @items.each_value do |node|
-        node.word_hash.each_key { |key| @word_list.add_word key }
+        node.word_hash.each_key { |key| @word_list.add_word(key) }
       end
     end
   end
