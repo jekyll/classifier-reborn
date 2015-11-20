@@ -158,6 +158,16 @@ module ClassifierReborn
       !@enable_threshold
     end
 
+    # Is word stemming enabled?
+    def stemmer_enabled?
+      @enable_stemmer
+    end
+
+    # Is word stemming disabled?
+    def stemmer_disabled?
+      !@enable_stemmer
+    end
+
     # Provides training and untraining methods for the categories specified in Bayes#new
     # For example:
     #     b = ClassifierReborn::Bayes.new 'This', 'That', 'the_other'
