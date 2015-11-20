@@ -13,21 +13,26 @@ module ClassifierReborn
 
     # Return a Hash of strings => ints. Each word in the string is stemmed,
     # interned, and indexes to its frequency in the document.
-    def word_hash(str, language = 'en')
-      cleaned_word_hash = clean_word_hash(str, language)
+    def word_hash(str, language = 'en', enable_stemmer = true)
+      cleaned_word_hash = clean_word_hash(str, language, enable_stemmer)
       symbol_hash = word_hash_for_symbols(str.scan(/[^\s\p{WORD}]/))
       cleaned_word_hash.merge(symbol_hash)
     end
 
     # Return a word hash without extra punctuation or short symbols, just stemmed words
-    def clean_word_hash(str, language = 'en')
-      word_hash_for_words str.gsub(/[^\p{WORD}\s]/, '').downcase.split, language
+    def clean_word_hash(str, language = 'en', enable_stemmer = true)
+      word_hash_for_words str.gsub(/[^\p{WORD}\s]/, '').downcase.split, language, enable_stemmer
     end
 
-    def word_hash_for_words(words, language = 'en')
+    def word_hash_for_words(words, language = 'en', enable_stemmer = true)
       d = Hash.new(0)
       words.each do |word|
-        d[word.stem.intern] += 1 if word.length > 2 && !STOPWORDS[language].include?(word)
+        next unless word.length > 2 && !STOPWORDS[language].include?(word)
+        if enable_stemmer
+          d[word.stem.intern] += 1
+        else
+          d[word.intern] += 1
+        end
       end
       d
     end
