@@ -14,6 +14,10 @@ class BayesianTest < Test::Unit::TestCase
     assert_nothing_raised { @classifier.train_interesting 'Água' }
   end
 
+  def test_stemming_enabled_by_default
+    assert @classifier.stemmer_enabled?
+  end
+
   def test_bad_training
     assert_raise(StandardError) { @classifier.train_no_category 'words' }
   end

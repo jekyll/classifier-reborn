@@ -15,6 +15,11 @@ class HasherTest < Test::Unit::TestCase
     assert_equal hash, Hasher.clean_word_hash("here are some good words of test's. I hope you love them!")
   end
 
+  def test_clean_word_hash_without_stemming
+    hash = { good: 1, words: 1, hope: 1, love: 1, them: 1, tests: 1 }
+    assert_equal hash, Hasher.clean_word_hash("here are some good words of test's. I hope you love them!", 'en', false)
+  end
+
   def test_default_stopwords
     assert_not_empty Hasher::STOPWORDS['en']
     assert_not_empty Hasher::STOPWORDS['fr']
