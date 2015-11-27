@@ -1,6 +1,7 @@
 ## HEAD
 
 ### Minor Enhancements
+ * Added an option to the bayesian classifier to disable word stemming (#61)
  * Added missing parens and renamed some variables (#59)
  
 ## 2.0.4 / 2015-10-31
