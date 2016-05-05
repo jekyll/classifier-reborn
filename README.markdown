@@ -141,7 +141,7 @@ Or suppose you just want the ability to have multiple categories and a 'None of 
 When you initialize the *ClassifierReborn::Bayes* classifier there are several options which can be set that control threshold processing.
 
 ```ruby
-b = ClassifierRebor::Bayes.new(
+b = ClassifierReborn::Bayes.new(
         'good',                 # one or more categories
         enable_threshold: true, # default: false
         threshold: -10.0        # default: 0.0
