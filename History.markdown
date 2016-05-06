@@ -1,6 +1,7 @@
 ## HEAD
 
 ### Minor Enhancements
+ * Fixed typo in README (#68)
  * Added an option to the bayesian classifier to disable word stemming (#61)
  * Added missing parens and renamed some variables (#59)
  
