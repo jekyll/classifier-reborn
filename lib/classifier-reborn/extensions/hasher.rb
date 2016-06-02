@@ -37,6 +37,11 @@ module ClassifierReborn
       d
     end
 
+    # Add custom path to a new stopword file created by user
+    def add_custom_stopword_path(path)
+      STOPWORDS_PATH.unshift(path)
+    end
+
     def word_hash_for_symbols(words)
       d = Hash.new(0)
       words.each do |word|
