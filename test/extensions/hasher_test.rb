@@ -1,4 +1,5 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require_relative '../test_helper'
+require 'tempfile'
 
 class HasherTest < Test::Unit::TestCase
   def setup
@@ -38,6 +39,25 @@ class HasherTest < Test::Unit::TestCase
     custom_english_stopwords = Hasher::STOPWORDS['en']
 
     assert_not_equal default_english_stopwords, custom_english_stopwords
+  end
+
+  def test_add_custom_stopword_path
+    # Create stopword tempfile in current directory
+    temp_stopwords = Tempfile.new('xy', "#{File.dirname(__FILE__) + "/"}")
+    
+    # Add some stopwords to tempfile
+    temp_stopwords << "this words fun"
+    temp_stopwords.close 
+    
+    # Get path of tempfile
+    temp_stopwords_path = File.dirname(temp_stopwords)
+
+    # Get tempfile name.
+    temp_stopwords_name = File.basename(temp_stopwords.path)
+
+    Hasher.add_custom_stopword_path(temp_stopwords_path)
+    hash = { list: 1, cool: 1 }
+    assert_equal hash, Hasher.clean_word_hash("this is a list of cool words!", temp_stopwords_name)
   end
 
   def teardown
