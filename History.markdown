@@ -1,5 +1,8 @@
 ## HEAD
 
+### Major Enhancements
+ * Added method to add custom path to user-created stopword directory (#73)
+
 ### Minor Enhancements
  * Fixed typo in README (#68)
  * Added an option to the bayesian classifier to disable word stemming (#61)
