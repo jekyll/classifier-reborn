@@ -200,6 +200,11 @@ module ClassifierReborn
       return [] if needs_rebuild?
 
       content_node = node_for_content(doc, &block)
+
+      if $GSL && content_node.raw_norm.isnan?.all?
+        raise "There are no documents that are similar to #{doc}"
+      end
+
       result =
         @items.keys.collect do |item|
           if $GSL

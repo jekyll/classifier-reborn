@@ -181,6 +181,19 @@ class LSITest < Test::Unit::TestCase
     assert_equal [:dog, :text, :deal], lsi.highest_ranked_stems(@str1)
   end
 
+  def test_invalid_searching_when_using_gsl
+    return unless $GSL
+    lsi = ClassifierReborn::LSI.new
+    lsi.add_item @str1, 'Dog'
+    lsi.add_item @str2, 'Dog'
+    lsi.add_item @str3, 'Cat'
+    lsi.add_item @str4, 'Cat'
+    lsi.add_item @str5, 'Bird'
+    assert_raises RuntimeError do
+      lsi.search('penguin')
+    end
+  end
+
   def test_summary
     assert_equal 'This text involves dogs too [...] This text also involves cats', Summarizer.summary([@str1, @str2, @str3, @str4, @str5].join, 2)
   end
