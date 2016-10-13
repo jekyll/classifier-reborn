@@ -17,6 +17,7 @@ require_relative 'lsi/word_list'
 require_relative 'lsi/content_node'
 require_relative 'lsi/cached_content_node'
 require_relative 'lsi/summarizer'
+require 'pry'
 
 module ClassifierReborn
   # This class implements a Latent Semantic Indexer, which can search, classify and cluster
@@ -64,6 +65,9 @@ module ClassifierReborn
     #
     def add_item(item, *categories, &block)
       clean_word_hash = Hasher.clean_word_hash((block ? block.call(item) : item.to_s), @language)
+      if clean_word_hash.empty?
+        raise "#{item} is composed entirely of stopwords and words that are 2 characters or less. Classifier-Reborn cannot handle this document properly, and thus summarily rejected it."
+      end
       @items[item] = if @cache_node_vectors
                        CachedContentNode.new(clean_word_hash, *categories)
                      else

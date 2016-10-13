@@ -194,6 +194,13 @@ class LSITest < Test::Unit::TestCase
     end
   end
 
+  def test_raise_error_when_adding_bad_document
+    lsi = ClassifierReborn::LSI.new
+    assert_raises RuntimeError do
+      lsi.add_item("i can")
+    end
+  end
+
   def test_summary
     assert_equal 'This text involves dogs too [...] This text also involves cats', Summarizer.summary([@str1, @str2, @str3, @str4, @str5].join, 2)
   end
