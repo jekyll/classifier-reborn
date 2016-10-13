@@ -17,7 +17,6 @@ require_relative 'lsi/word_list'
 require_relative 'lsi/content_node'
 require_relative 'lsi/cached_content_node'
 require_relative 'lsi/summarizer'
-require 'pry'
 
 module ClassifierReborn
   # This class implements a Latent Semantic Indexer, which can search, classify and cluster
