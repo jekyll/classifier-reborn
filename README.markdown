@@ -37,6 +37,8 @@ Notice that LSI will work without these libraries, but as soon as they are insta
 
 A Bayesian classifier by Lucas Carlson. Bayesian Classifiers are accurate, fast, and have modest memory requirements.
 
+*Note: Classifier only supports UTF-8 characters.*
+
 ### Usage
 
 ```ruby
