@@ -1,7 +1,7 @@
 ## HEAD
 
 ### Major Enhancements
- * Fix searching issues where no document =is added to lsi (#77)
+ * Fix searching issues where no document is added to lsi (#77)
  * Added method to add custom path to user-created stopword directory (#73)
 
 ### Minor Enhancements
