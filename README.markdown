@@ -62,7 +62,7 @@ trained_classifier.classify "I love" # returns 'Interesting'
 ```
 
 Beyond the basic example, the constructor and trainer can be used in a more
-flexible way to accomidate non-trival applications.  Consider the following
+flexible way to accommodate non-trival applications.  Consider the following
 program:
 
 ```ruby
