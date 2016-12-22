@@ -27,7 +27,7 @@ module ClassifierReborn
                   enable_threshold: false,
                   threshold:        0.0,
                   enable_stemmer:   true,
-                  redis_con_str:    ''
+                  backend:          BayesMemoryBackend.new
                 }
       args.flatten.each do |arg|
         if arg.is_a?(Hash)
@@ -37,17 +37,16 @@ module ClassifierReborn
         end
       end
 
-      @backend = options[:redis_con_str].empty? ? BayesMemoryBackend.new : BayesRedisBackend.new(options[:redis_con_str])
-
-      initial_categories.each do |c|
-        add_category(c)
-      end
-
       @language            = options[:language]
       @auto_categorize     = options[:auto_categorize]
       @enable_threshold    = options[:enable_threshold]
       @threshold           = options[:threshold]
       @enable_stemmer      = options[:enable_stemmer]
+      @backend             = options[:backend]
+
+      initial_categories.each do |c|
+        add_category(c)
+      end
     end
 
     # Provides a general training method for all categories specified in Bayes#new
