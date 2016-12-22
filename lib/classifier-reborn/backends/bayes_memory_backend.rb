@@ -1,7 +1,7 @@
-# Author: Sawood Alam <@ibnesayeed>
-
 module ClassifierReborn
   class BayesMemoryBackend
+    attr_reader :total_words, :total_trainings
+
     def initialize
       @total_words     = 0
       @total_trainings = 0
@@ -9,16 +9,8 @@ module ClassifierReborn
       @categories      = {}
     end
 
-    def total_words
-      @total_words
-    end
-
     def update_total_words(diff)
       @total_words += diff
-    end
-
-    def total_trainings
-      @total_trainings
     end
 
     def update_total_trainings(diff)

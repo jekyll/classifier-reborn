@@ -1,5 +1,3 @@
-# Author: Sawood Alam <@ibnesayeed>
-
 module ClassifierReborn
   class BayesRedisBackend
     def initialize(redis_con_str)
