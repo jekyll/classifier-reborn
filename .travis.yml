@@ -16,3 +16,5 @@ notifications:
     on_failure: change
 sudo: false
 cache: bundler
+services:
+  - redis-server
