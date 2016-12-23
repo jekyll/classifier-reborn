@@ -1,67 +1,71 @@
+require 'redis'
+
 module ClassifierReborn
   class BayesRedisBackend
-    def initialize(redis_con_str)
-      # TODO: Initialize Redis connection and necessary data structures
+    def initialize(options = {})
+      @redis = Redis.new(options)
+      @redis.set(:total_words, 0)
+      @redis.set(:total_trainings, 0)
     end
 
     def total_words
-      # TODO: Yet to implement
+      @redis.get(:total_words).to_i
     end
 
     def update_total_words(diff)
-      # TODO: Yet to implement
+      @redis.incrby(:total_words, diff)
     end
 
     def total_trainings
-      # TODO: Yet to implement
+      @redis.get(:total_trainings).to_i
     end
 
     def update_total_trainings(diff)
-      # TODO: Yet to implement
+      @redis.incrby(:total_trainings, diff)
     end
 
     def category_training_count(category)
-      # TODO: Yet to implement
+      @redis.hget(:category_training_count, category).to_i
     end
 
     def update_category_training_count(category, diff)
-      # TODO: Yet to implement
+      @redis.hincrby(:category_training_count, category, diff)
     end
 
     def category_has_trainings?(category)
-      # TODO: Yet to implement
+      category_training_count(category) > 0
     end
 
     def category_word_count(category)
-      # TODO: Yet to implement
+      @redis.hget(:category_word_count, category).to_i
     end
 
     def update_category_word_count(category, diff)
-      # TODO: Yet to implement
+      @redis.hincrby(:category_word_count, category, diff)
     end
 
     def add_category(category)
-      # TODO: Yet to implement
+      @redis.sadd(:category_keys, category)
     end
 
     def category_keys
-      # TODO: Yet to implement
+      @redis.smembers(:category_keys).map(&:intern)
     end
 
     def category_word_frequency(category, word)
-      # TODO: Yet to implement
+      @redis.hget(category, word).to_i
     end
 
     def update_category_word_frequency(category, word, diff)
-      # TODO: Yet to implement
+      @redis.hincrby(category, word, diff)
     end
 
     def delete_category_word(category, word)
-      # TODO: Yet to implement
+      @redis.hdel(category, word)
     end
 
     def word_in_category?(category, word)
-      # TODO: Yet to implement
+      @redis.hexists(category, word)
     end
   end
 end
