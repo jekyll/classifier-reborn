@@ -26,7 +26,7 @@ module ClassifierReborn
     end
 
     def category_has_trainings?(category)
-      @category_counts.key?(category) && @category_counts[category][:training] > 0
+      @category_counts.key?(category) && category_training_count(category) > 0
     end
 
     def category_word_count(category)
