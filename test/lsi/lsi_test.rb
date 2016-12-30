@@ -67,6 +67,19 @@ class LSITest < Test::Unit::TestCase
     assert_equal %w(Bird Dog), scored_categories.map(&:first)
   end
 
+  def test_very_similar_texts
+    bayes = File.open('test/fixtures/bayes.txt').read
+    cats = File.open('test/fixtures/cats.txt').read
+    dup = bayes
+    lsi = ClassifierReborn::LSI.new
+    lsi.add_item bayes, 'bayes'
+    lsi.add_item cats, 'cats'
+    lsi.add_item dup, 'bayes'
+
+    assert_equal 'bayes', lsi.classify(bayes)
+    assert_equal 'bayes', lsi.classify(dup)
+  end
+
   def test_external_classifying
     lsi = ClassifierReborn::LSI.new
     bayes = ClassifierReborn::Bayes.new 'Dog', 'Cat', 'Bird'

@@ -1,0 +1,223 @@
+In machine learning, naive Bayes classifiers are a family of simple probabilistic classifiers based on applying Bayes' theorem with strong (naive) independence assumptions between the features.
+
+Naive Bayes has been studied extensively since the 1950s. It was introduced under a different name into the text retrieval community in the early 1960s,[1]:488 and remains a popular (baseline) method for text categorization, the problem of judging documents as belonging to one category or the other (such as spam or legitimate, sports or politics, etc.) with word frequencies as the features. With appropriate pre-processing, it is competitive in this domain with more advanced methods including support vector machines.[2] It also finds application in automatic medical diagnosis.[3]
+
+Naive Bayes classifiers are highly scalable, requiring a number of parameters linear in the number of variables (features/predictors) in a learning problem. Maximum-likelihood training can be done by evaluating a closed-form expression,[1]:718 which takes linear time, rather than by expensive iterative approximation as used for many other types of classifiers.
+
+In the statistics and computer science literature, Naive Bayes models are known under a variety of names, including simple Bayes and independence Bayes.[4] All these names reference the use of Bayes' theorem in the classifier's decision rule, but naive Bayes is not (necessarily) a Bayesian method.[1][4]
+
+Contents  [hide]
+1	Introduction
+2	Probabilistic model
+2.1	Constructing a classifier from the probability model
+3	Parameter estimation and event models
+3.1	Gaussian naive Bayes
+3.2	Multinomial naive Bayes
+3.3	Bernoulli naive Bayes
+3.4	Semi-supervised parameter estimation
+4	Discussion
+4.1	Relation to logistic regression
+5	Examples
+5.1	Gender classification
+5.1.1	Training
+5.1.2	Testing
+5.2	Document classification
+6	See also
+7	References
+7.1	Further reading
+8	External links
+Introduction[edit]
+Naive Bayes is a simple technique for constructing classifiers: models that assign class labels to problem instances, represented as vectors of feature values, where the class labels are drawn from some finite set. It is not a single algorithm for training such classifiers, but a family of algorithms based on a common principle: all naive Bayes classifiers assume that the value of a particular feature is independent of the value of any other feature, given the class variable. For example, a fruit may be considered to be an apple if it is red, round, and about 10 cm in diameter. A naive Bayes classifier considers each of these features to contribute independently to the probability that this fruit is an apple, regardless of any possible correlations between the color, roundness, and diameter features.
+
+For some types of probability models, naive Bayes classifiers can be trained very efficiently in a supervised learning setting. In many practical applications, parameter estimation for naive Bayes models uses the method of maximum likelihood; in other words, one can work with the naive Bayes model without accepting Bayesian probability or using any Bayesian methods.
+
+Despite their naive design and apparently oversimplified assumptions, naive Bayes classifiers have worked quite well in many complex real-world situations. In 2004, an analysis of the Bayesian classification problem showed that there are sound theoretical reasons for the apparently implausible efficacy of naive Bayes classifiers.[5] Still, a comprehensive comparison with other classification algorithms in 2006 showed that Bayes classification is outperformed by other approaches, such as boosted trees or random forests.[6]
+
+An advantage of naive Bayes is that it only requires a small number of training data to estimate the parameters necessary for classification.[citation needed]
+
+Probabilistic model[edit]
+Abstractly, naive Bayes is a conditional probability model: given a problem instance to be classified, represented by a vector {\displaystyle \mathbf {x} =(x_{1},\dots ,x_{n})} {\mathbf  {x}}=(x_{1},\dots ,x_{n}) representing some n features (independent variables), it assigns to this instance probabilities
+
+{\displaystyle p(C_{k}\vert x_{1},\dots ,x_{n})\,} p(C_{k}\vert x_{1},\dots ,x_{n})\,
+for each of K possible outcomes or classes {\displaystyle C_{k}} C_{k}.[7]
+
+The problem with the above formulation is that if the number of features n is large or if a feature can take on a large number of values, then basing such a model on probability tables is infeasible. We therefore reformulate the model to make it more tractable. Using Bayes' theorem, the conditional probability can be decomposed as
+
+{\displaystyle p(C_{k}\vert \mathbf {x} )={\frac {p(C_{k})\ p(\mathbf {x} \vert C_{k})}{p(\mathbf {x} )}}\,} {\displaystyle p(C_{k}\vert \mathbf {x} )={\frac {p(C_{k})\ p(\mathbf {x} \vert C_{k})}{p(\mathbf {x} )}}\,}
+In plain English, using Bayesian probability terminology, the above equation can be written as
+
+{\displaystyle {\mbox{posterior}}={\frac {{\mbox{prior}}\times {\mbox{likelihood}}}{\mbox{evidence}}}\,} {\displaystyle {\mbox{posterior}}={\frac {{\mbox{prior}}\times {\mbox{likelihood}}}{\mbox{evidence}}}\,}
+In practice, there is interest only in the numerator of that fraction, because the denominator does not depend on {\displaystyle C} C and the values of the features {\displaystyle F_{i}} F_{i} are given, so that the denominator is effectively constant. The numerator is equivalent to the joint probability model
+
+{\displaystyle p(C_{k},x_{1},\dots ,x_{n})\,} p(C_{k},x_{1},\dots ,x_{n})\,
+which can be rewritten as follows, using the chain rule for repeated applications of the definition of conditional probability:
+
+{\displaystyle {\begin{aligned}p(C_{k},x_{1},\dots ,x_{n})&=p(x_{1},\dots ,x_{n},C_{k})\\&=p(x_{1}\vert x_{2},\dots ,x_{n},C_{k})p(x_{2},\dots ,x_{n},C_{k})\\&=p(x_{1}\vert x_{2},\dots ,x_{n},C_{k})p(x_{2}\vert x_{3},\dots ,x_{n},C_{k})p(x_{3},\dots ,x_{n},C_{k})\\&=\dots \\&=p(x_{1}\vert x_{2},\dots ,x_{n},C_{k})p(x_{2}\vert x_{3},\dots ,x_{n},C_{k})\dots p(x_{n-1}\vert x_{n},C_{k})p(x_{n}\vert C_{k})p(C_{k})\\\end{aligned}}} {\displaystyle {\begin{aligned}p(C_{k},x_{1},\dots ,x_{n})&=p(x_{1},\dots ,x_{n},C_{k})\\&=p(x_{1}\vert x_{2},\dots ,x_{n},C_{k})p(x_{2},\dots ,x_{n},C_{k})\\&=p(x_{1}\vert x_{2},\dots ,x_{n},C_{k})p(x_{2}\vert x_{3},\dots ,x_{n},C_{k})p(x_{3},\dots ,x_{n},C_{k})\\&=\dots \\&=p(x_{1}\vert x_{2},\dots ,x_{n},C_{k})p(x_{2}\vert x_{3},\dots ,x_{n},C_{k})\dots p(x_{n-1}\vert x_{n},C_{k})p(x_{n}\vert C_{k})p(C_{k})\\\end{aligned}}}
+Now the "naive" conditional independence assumptions come into play: assume that each feature {\displaystyle F_{i}} F_{i} is conditionally independent of every other feature {\displaystyle F_{j}} F_{j} for {\displaystyle j\neq i} j\neq i, given the category {\displaystyle C} C. This means that
+
+{\displaystyle p(x_{i}\vert x_{i+1},\dots ,x_{n},C_{k})=p(x_{i}\vert C_{k})\,} {\displaystyle p(x_{i}\vert x_{i+1},\dots ,x_{n},C_{k})=p(x_{i}\vert C_{k})\,}.
+Thus, the joint model can be expressed as
+
+{\displaystyle {\begin{aligned}p(C_{k}\vert x_{1},\dots ,x_{n})&\varpropto p(C_{k},x_{1},\dots ,x_{n})\\&\varpropto p(C_{k})\ p(x_{1}\vert C_{k})\ p(x_{2}\vert C_{k})\ p(x_{3}\vert C_{k})\ \cdots \\&\varpropto p(C_{k})\prod _{i=1}^{n}p(x_{i}\vert C_{k})\,.\end{aligned}}} {\begin{aligned}p(C_{k}\vert x_{1},\dots ,x_{n})&\varpropto p(C_{k},x_{1},\dots ,x_{n})\\&\varpropto p(C_{k})\ p(x_{1}\vert C_{k})\ p(x_{2}\vert C_{k})\ p(x_{3}\vert C_{k})\ \cdots \\&\varpropto p(C_{k})\prod _{{i=1}}^{n}p(x_{i}\vert C_{k})\,.\end{aligned}}
+This means that under the above independence assumptions, the conditional distribution over the class variable {\displaystyle C} C is:
+
+{\displaystyle p(C_{k}\vert x_{1},\dots ,x_{n})={\frac {1}{Z}}p(C_{k})\prod _{i=1}^{n}p(x_{i}\vert C_{k})} p(C_{k}\vert x_{1},\dots ,x_{n})={\frac  {1}{Z}}p(C_{k})\prod _{{i=1}}^{n}p(x_{i}\vert C_{k})
+where the evidence {\displaystyle Z=p(\mathbf {x} )} Z=p({\mathbf  {x}}) is a scaling factor dependent only on {\displaystyle x_{1},\dots ,x_{n}} x_{1},\dots ,x_{n}, that is, a constant if the values of the feature variables are known.
+
+Constructing a classifier from the probability model[edit]
+The discussion so far has derived the independent feature model, that is, the naive Bayes probability model. The naive Bayes classifier combines this model with a decision rule. One common rule is to pick the hypothesis that is most probable; this is known as the maximum a posteriori or MAP decision rule. The corresponding classifier, a Bayes classifier, is the function that assigns a class label {\displaystyle {\hat {y}}=C_{k}} {\hat  {y}}=C_{k} for some k as follows:
+
+{\displaystyle {\hat {y}}={\underset {k\in \{1,\dots ,K\}}{\operatorname {argmax} }}\ p(C_{k})\displaystyle \prod _{i=1}^{n}p(x_{i}\vert C_{k}).} {\hat  {y}}={\underset  {k\in \{1,\dots ,K\}}{\operatorname {argmax}}}\ p(C_{k})\displaystyle \prod _{{i=1}}^{n}p(x_{i}\vert C_{k}).
+Parameter estimation and event models[edit]
+A class's prior may be calculated by assuming equiprobable classes (i.e., priors = 1 / (number of classes)), or by calculating an estimate for the class probability from the training set (i.e., (prior for a given class) = (number of samples in the class) / (total number of samples)). To estimate the parameters for a feature's distribution, one must assume a distribution or generate nonparametric models for the features from the training set.[8]
+
+The assumptions on distributions of features are called the event model of the Naive Bayes classifier. For discrete features like the ones encountered in document classification (include spam filtering), multinomial and Bernoulli distributions are popular. These assumptions lead to two distinct models, which are often confused.[9][10]
+
+Gaussian naive Bayes[edit]
+When dealing with continuous data, a typical assumption is that the continuous values associated with each class are distributed according to a Gaussian distribution. For example, suppose the training data contains a continuous attribute, {\displaystyle x} x. We first segment the data by the class, and then compute the mean and variance of {\displaystyle x} x in each class. Let {\displaystyle \mu _{c}} \mu _{c} be the mean of the values in {\displaystyle x} x associated with class c, and let {\displaystyle \sigma _{c}^{2}} \sigma^2_c be the variance of the values in {\displaystyle x} x associated with class c. Suppose we have collected some observation value {\displaystyle v} v. Then, the probability distribution of {\displaystyle v} v given a class {\displaystyle c} c, {\displaystyle p(x=v|c)} p(x=v|c), can be computed by plugging {\displaystyle v} v into the equation for a Normal distribution parameterized by {\displaystyle \mu _{c}} \mu _{c} and {\displaystyle \sigma _{c}^{2}} \sigma^2_c. That is,
+
+{\displaystyle p(x=v|c)={\frac {1}{\sqrt {2\pi \sigma _{c}^{2}}}}\,e^{-{\frac {(v-\mu _{c})^{2}}{2\sigma _{c}^{2}}}}}
+p(x=v|c)=\frac{1}{\sqrt{2\pi\sigma^2_c}}\,e^{ -\frac{(v-\mu_c)^2}{2\sigma^2_c} }
+Another common technique for handling continuous values is to use binning to discretize the feature values, to obtain a new set of Bernoulli-distributed features; some literature in fact suggests that this is necessary to apply naive Bayes, but it is not, and the discretization may throw away discriminative information.[4]
+
+Multinomial naive Bayes[edit]
+With a multinomial event model, samples (feature vectors) represent the frequencies with which certain events have been generated by a multinomial {\displaystyle (p_{1},\dots ,p_{n})} (p_1, \dots, p_n) where {\displaystyle p_{i}} p_{i} is the probability that event i occurs (or K such multinomials in the multiclass case). A feature vector {\displaystyle \mathbf {x} =(x_{1},\dots ,x_{n})} {\mathbf  {x}}=(x_{1},\dots ,x_{n}) is then a histogram, with {\displaystyle x_{i}} x_{i} counting the number of times event i was observed in a particular instance. This is the event model typically used for document classification, with events representing the occurrence of a word in a single document (see bag of words assumption). The likelihood of observing a histogram x is given by
+
+{\displaystyle p(\mathbf {x} \vert C_{k})={\frac {(\sum _{i}x_{i})!}{\prod _{i}x_{i}!}}\prod _{i}{p_{ki}}^{x_{i}}} p({\mathbf  {x}}\vert C_{k})={\frac  {(\sum _{i}x_{i})!}{\prod _{i}x_{i}!}}\prod _{i}{p_{{ki}}}^{{x_{i}}}
+The multinomial naive Bayes classifier becomes a linear classifier when expressed in log-space:[2]
+
+{\displaystyle {\begin{aligned}\log p(C_{k}|\mathbf {x} )&\varpropto \log \left(p(C_{k})\prod _{i=1}^{n}{p_{ki}}^{x_{i}}\right)\\&=\log p(C_{k})+\sum _{i=1}^{n}x_{i}\cdot \log p_{ki}\\&=b+\mathbf {w} _{k}^{\top }\mathbf {x} \end{aligned}}} {\begin{aligned}\log p(C_{k}|{\mathbf  {x}})&\varpropto \log \left(p(C_{k})\prod _{{i=1}}^{n}{p_{{ki}}}^{{x_{i}}}\right)\\&=\log p(C_{k})+\sum _{{i=1}}^{n}x_{i}\cdot \log p_{{ki}}\\&=b+{\mathbf  {w}}_{k}^{\top }{\mathbf  {x}}\end{aligned}}
+where {\displaystyle b=\log p(C_{k})} b=\log p(C_{k}) and {\displaystyle w_{ki}=\log p_{ki}} w_{{ki}}=\log p_{{ki}}.
+
+If a given class and feature value never occur together in the training data, then the frequency-based probability estimate will be zero. This is problematic because it will wipe out all information in the other probabilities when they are multiplied. Therefore, it is often desirable to incorporate a small-sample correction, called pseudocount, in all probability estimates such that no probability is ever set to be exactly zero. This way of regularizing naive Bayes is called Laplace smoothing when the pseudocount is one, and Lidstone smoothing in the general case.
+
+Rennie et al. discuss problems with the multinomial assumption in the context of document classification and possible ways to alleviate those problems, including the use of tf–idf weights instead of raw term frequencies and document length normalization, to produce a naive Bayes classifier that is competitive with support vector machines.[2]
+
+Bernoulli naive Bayes[edit]
+In the multivariate Bernoulli event model, features are independent booleans (binary variables) describing inputs. Like the multinomial model, this model is popular for document classification tasks,[9] where binary term occurrence features are used rather than term frequencies. If {\displaystyle x_{i}} x_{i} is a boolean expressing the occurrence or absence of the i'th term from the vocabulary, then the likelihood of a document given a class {\displaystyle C_{k}} C_{k} is given by[9]
+
+{\displaystyle p(\mathbf {x} \vert C_{k})=\prod _{i=1}^{n}p_{ki}^{x_{i}}(1-p_{ki})^{(1-x_{i})}} p({\mathbf  {x}}\vert C_{k})=\prod _{{i=1}}^{n}p_{{ki}}^{{x_{i}}}(1-p_{{ki}})^{{(1-x_{i})}}
+where {\displaystyle p_{ki}} p_{{ki}} is the probability of class {\displaystyle C_{k}} C_{k} generating the term {\displaystyle w_{i}} w_{i}. This event model is especially popular for classifying short texts. It has the benefit of explicitly modelling the absence of terms. Note that a naive Bayes classifier with a Bernoulli event model is not the same as a multinomial NB classifier with frequency counts truncated to one.
+
+Semi-supervised parameter estimation[edit]
+Given a way to train a naive Bayes classifier from labeled data, it's possible to construct a semi-supervised training algorithm that can learn from a combination of labeled and unlabeled data by running the supervised learning algorithm in a loop:[11]
+
+Given a collection {\displaystyle D=L\uplus U} D = L \uplus U of labeled samples L and unlabeled samples U, start by training a naive Bayes classifier on L.
+Until convergence, do:
+Predict class probabilities {\displaystyle P(C|x)} P(C|x) for all examples x in {\displaystyle D} D.
+Re-train the model based on the probabilities (not the labels) predicted in the previous step.
+Convergence is determined based on improvement to the model likelihood {\displaystyle P(D|\theta )} P(D|\theta), where {\displaystyle \theta } \theta  denotes the parameters of the naive Bayes model.
+
+This training algorithm is an instance of the more general expectation–maximization algorithm (EM): the prediction step inside the loop is the E-step of EM, while the re-training of naive Bayes is the M-step. The algorithm is formally justified by the assumption that the data are generated by a mixture model, and the components of this mixture model are exactly the classes of the classification problem.[11]
+
+Discussion[edit]
+Despite the fact that the far-reaching independence assumptions are often inaccurate, the naive Bayes classifier has several properties that make it surprisingly useful in practice. In particular, the decoupling of the class conditional feature distributions means that each distribution can be independently estimated as a one-dimensional distribution. This helps alleviate problems stemming from the curse of dimensionality, such as the need for data sets that scale exponentially with the number of features. While naive Bayes often fails to produce a good estimate for the correct class probabilities,[12] this may not be a requirement for many applications. For example, the naive Bayes classifier will make the correct MAP decision rule classification so long as the correct class is more probable than any other class. This is true regardless of whether the probability estimate is slightly, or even grossly inaccurate. In this manner, the overall classifier can be robust enough to ignore serious deficiencies in its underlying naive probability model.[3] Other reasons for the observed success of the naive Bayes classifier are discussed in the literature cited below.
+
+Relation to logistic regression[edit]
+[icon]	This section needs expansion. You can help by adding to it. (August 2014)
+In the case of discrete inputs (indicator or frequency features for discrete events), naive Bayes classifiers form a generative-discriminative pair with (multinomial) logistic regression classifiers: each naive Bayes classifier can be considered a way of fitting a probability model that optimizes the joint likelihood {\displaystyle p(C,\mathbf {x} )} p(C,{\mathbf  {x}}), while logistic regression fits the same probability model to optimize the conditional {\displaystyle p(C\vert \mathbf {x} )} p(C\vert {\mathbf  {x}}).[13]
+
+The link between the two can be seen by observing that the decision function for naive Bayes (in the binary case) can be rewritten as "predict class {\displaystyle C_{1}} C_{1} if the odds of {\displaystyle p(C_{1}\vert \mathbf {x} )} p(C_{1}\vert {\mathbf  {x}}) exceed those of {\displaystyle p(C_{2}\vert \mathbf {x} )} p(C_{2}\vert {\mathbf  {x}})". Expressing this in log-space gives:
+
+{\displaystyle \log {\frac {p(C_{1}\vert \mathbf {x} )}{p(C_{2}\vert \mathbf {x} )}}=\log p(C_{1}\vert \mathbf {x} )-\log p(C_{2}\vert \mathbf {x} )>0} \log {\frac  {p(C_{1}\vert {\mathbf  {x}})}{p(C_{2}\vert {\mathbf  {x}})}}=\log p(C_{1}\vert {\mathbf  {x}})-\log p(C_{2}\vert {\mathbf  {x}})>0
+The left-hand side of this equation is the log-odds, or logit, the quantity predicted by the linear model that underlies logistic regression. Since naive Bayes is also a linear model for the two "discrete" event models, it can be reparametrised as a linear function {\displaystyle b+\mathbf {w} ^{\top }x>0} b+{\mathbf  {w}}^{\top }x>0. Obtaining the probabilities is then a matter of applying the logistic function to {\displaystyle b+\mathbf {w} ^{\top }x} b+{\mathbf  {w}}^{\top }x, or in the multiclass case, the softmax function.
+
+Discriminative classifiers have lower asymptotic error than generative ones; however, research by Ng and Jordan has shown that in some practical cases naive Bayes can outperform logistic regression because it reaches its asymptotic error faster.[13]
+
+Examples[edit]
+Gender classification[edit]
+Problem: classify whether a given person is a male or a female based on the measured features. The features include height, weight, and foot size.
+
+Training[edit]
+Example training set below.
+
+Gender	height (feet)	weight (lbs)	foot size(inches)
+male	6	180	12
+male	5.92 (5'11")	190	11
+male	5.58 (5'7")	170	12
+male	5.92 (5'11")	165	10
+female	5	100	6
+female	5.5 (5'6")	150	8
+female	5.42 (5'5")	130	7
+female	5.75 (5'9")	150	9
+The classifier created from the training set using a Gaussian distribution assumption would be (given variances are unbiased sample variances):
+
+Gender	mean (height)	variance (height)	mean (weight)	variance (weight)	mean (foot size)	variance (foot size)
+male	5.855	3.5033e-02	176.25	1.2292e+02	11.25	9.1667e-01
+female	5.4175	9.7225e-02	132.5	5.5833e+02	7.5	1.6667e+00
+Let's say we have equiprobable classes so P(male)= P(female) = 0.5. This prior probability distribution might be based on our knowledge of frequencies in the larger population, or on frequency in the training set.
+
+Testing[edit]
+Below is a sample to be classified as a male or female.
+
+Gender	height (feet)	weight (lbs)	foot size(inches)
+sample	6	130	8
+We wish to determine which posterior is greater, male or female. For the classification as male the posterior is given by
+
+{\displaystyle {\text{posterior (male)}}={\frac {P({\text{male}})\,p({\text{height}}|{\text{male}})\,p({\text{weight}}|{\text{male}})\,p({\text{foot size}}|{\text{male}})}{evidence}}} {\displaystyle {\text{posterior (male)}}={\frac {P({\text{male}})\,p({\text{height}}|{\text{male}})\,p({\text{weight}}|{\text{male}})\,p({\text{foot size}}|{\text{male}})}{evidence}}}
+For the classification as female the posterior is given by
+
+{\displaystyle {\text{posterior (female)}}={\frac {P({\text{female}})\,p({\text{height}}|{\text{female}})\,p({\text{weight}}|{\text{female}})\,p({\text{foot size}}|{\text{female}})}{evidence}}} {\displaystyle {\text{posterior (female)}}={\frac {P({\text{female}})\,p({\text{height}}|{\text{female}})\,p({\text{weight}}|{\text{female}})\,p({\text{foot size}}|{\text{female}})}{evidence}}}
+The evidence (also termed normalizing constant) may be calculated:
+
+{\displaystyle {\begin{aligned}{\text{evidence}}=P({\text{male}})\,p({\text{height}}|{\text{male}})\,p({\text{weight}}|{\text{male}})\,p({\text{foot size}}|{\text{male}})\\+P({\text{female}})\,p({\text{height}}|{\text{female}})\,p({\text{weight}}|{\text{female}})\,p({\text{foot size}}|{\text{female}})\end{aligned}}} {\displaystyle {\begin{aligned}{\text{evidence}}=P({\text{male}})\,p({\text{height}}|{\text{male}})\,p({\text{weight}}|{\text{male}})\,p({\text{foot size}}|{\text{male}})\\+P({\text{female}})\,p({\text{height}}|{\text{female}})\,p({\text{weight}}|{\text{female}})\,p({\text{foot size}}|{\text{female}})\end{aligned}}}
+However, given the sample, the evidence is a constant and thus scales both posteriors equally. It therefore does not affect classification and can be ignored. We now determine the probability distribution for the sex of the sample.
+
+{\displaystyle P({\text{male}})=0.5} {\displaystyle P({\text{male}})=0.5}
+{\displaystyle p({\text{height}}|{male})={\frac {1}{\sqrt {2\pi \sigma ^{2}}}}\exp \left({\frac {-(6-\mu )^{2}}{2\sigma ^{2}}}\right)\approx 1.5789} {\displaystyle p({\text{height}}|{male})={\frac {1}{\sqrt {2\pi \sigma ^{2}}}}\exp \left({\frac {-(6-\mu )^{2}}{2\sigma ^{2}}}\right)\approx 1.5789},
+where {\displaystyle \mu =5.855} \mu = 5.855 and {\displaystyle \sigma ^{2}=3.5033\cdot 10^{-2}} \sigma^2 = 3.5033 \cdot 10^{-2} are the parameters of normal distribution which have been previously determined from the training set. Note that a value greater than 1 is OK here – it is a probability density rather than a probability, because height is a continuous variable.
+
+{\displaystyle p({\text{weight}}|{male})=5.9881\cdot 10^{-6}} {\displaystyle p({\text{weight}}|{male})=5.9881\cdot 10^{-6}}
+{\displaystyle p({\text{foot size}}|{male})=1.3112\cdot 10^{-3}} {\displaystyle p({\text{foot size}}|{male})=1.3112\cdot 10^{-3}}
+{\displaystyle {\text{posterior numerator (male)}}={\text{their product}}=6.1984\cdot 10^{-9}} {\displaystyle {\text{posterior numerator (male)}}={\text{their product}}=6.1984\cdot 10^{-9}}
+{\displaystyle P({\text{female}})=0.5} {\displaystyle P({\text{female}})=0.5}
+{\displaystyle p({\text{height}}|{\text{female}})=2.2346\cdot 10^{-1}} {\displaystyle p({\text{height}}|{\text{female}})=2.2346\cdot 10^{-1}}
+{\displaystyle p({\text{weight}}|{\text{female}})=1.6789\cdot 10^{-2}} {\displaystyle p({\text{weight}}|{\text{female}})=1.6789\cdot 10^{-2}}
+{\displaystyle p({\text{foot size}}|{\text{female}})=2.8669\cdot 10^{-1}} {\displaystyle p({\text{foot size}}|{\text{female}})=2.8669\cdot 10^{-1}}
+{\displaystyle {\text{posterior numerator (female)}}={\text{their product}}=5.3778\cdot 10^{-4}} {\displaystyle {\text{posterior numerator (female)}}={\text{their product}}=5.3778\cdot 10^{-4}}
+Since posterior numerator is greater in the female case, we predict the sample is female.
+
+Document classification[edit]
+Here is a worked example of naive Bayesian classification to the document classification problem. Consider the problem of classifying documents by their content, for example into spam and non-spam e-mails. Imagine that documents are drawn from a number of classes of documents which can be modelled as sets of words where the (independent) probability that the i-th word of a given document occurs in a document from class C can be written as
+
+{\displaystyle p(w_{i}\vert C)\,} p(w_i \vert C)\,
+(For this treatment, we simplify things further by assuming that words are randomly distributed in the document - that is, words are not dependent on the length of the document, position within the document with relation to other words, or other document-context.)
+
+Then the probability that a given document D contains all of the words {\displaystyle w_{i}} w_{i}, given a class C, is
+
+{\displaystyle p(D\vert C)=\prod _{i}p(w_{i}\vert C)\,} p(D\vert C)=\prod_i p(w_i \vert C)\,
+The question that we desire to answer is: "what is the probability that a given document D belongs to a given class C?" In other words, what is {\displaystyle p(C\vert D)\,} p(C \vert D)\,?
+
+Now by definition
+
+{\displaystyle p(D\vert C)={p(D\cap C) \over p(C)}} p(D\vert C)={p(D\cap C)\over p(C)}
+and
+
+{\displaystyle p(C\vert D)={p(D\cap C) \over p(D)}} p(C\vert D)={p(D\cap C)\over p(D)}
+Bayes' theorem manipulates these into a statement of probability in terms of likelihood.
+
+{\displaystyle p(C\vert D)={p(C) \over p(D)}\,p(D\vert C)} p(C\vert D)={p(C)\over p(D)}\,p(D\vert C)
+Assume for the moment that there are only two mutually exclusive classes, S and ¬S (e.g. spam and not spam), such that every element (email) is in either one or the other;
+
+{\displaystyle p(D\vert S)=\prod _{i}p(w_{i}\vert S)\,} p(D\vert S)=\prod_i p(w_i \vert S)\,
+and
+
+{\displaystyle p(D\vert \neg S)=\prod _{i}p(w_{i}\vert \neg S)\,} p(D\vert\neg S)=\prod_i p(w_i\vert\neg S)\,
+Using the Bayesian result above, we can write:
+
+{\displaystyle p(S\vert D)={p(S) \over p(D)}\,\prod _{i}p(w_{i}\vert S)} p(S\vert D)={p(S)\over p(D)}\,\prod_i p(w_i \vert S)
+{\displaystyle p(\neg S\vert D)={p(\neg S) \over p(D)}\,\prod _{i}p(w_{i}\vert \neg S)} p(\neg S\vert D)={p(\neg S)\over p(D)}\,\prod_i p(w_i \vert\neg S)
+Dividing one by the other gives:
+
+{\displaystyle {p(S\vert D) \over p(\neg S\vert D)}={p(S)\,\prod _{i}p(w_{i}\vert S) \over p(\neg S)\,\prod _{i}p(w_{i}\vert \neg S)}} {p(S\vert D)\over p(\neg S\vert D)}={p(S)\,\prod_i p(w_i \vert S)\over p(\neg S)\,\prod_i p(w_i \vert\neg S)}
+Which can be re-factored as:
+
+{\displaystyle {p(S\vert D) \over p(\neg S\vert D)}={p(S) \over p(\neg S)}\,\prod _{i}{p(w_{i}\vert S) \over p(w_{i}\vert \neg S)}} {p(S\vert D)\over p(\neg S\vert D)}={p(S)\over p(\neg S)}\,\prod_i {p(w_i \vert S)\over p(w_i \vert\neg S)}
+Thus, the probability ratio p(S | D) / p(¬S | D) can be expressed in terms of a series of likelihood ratios. The actual probability p(S | D) can be easily computed from log (p(S | D) / p(¬S | D)) based on the observation that p(S | D) + p(¬S | D) = 1.
+
+Taking the logarithm of all these ratios, we have:
+
+{\displaystyle \ln {p(S\vert D) \over p(\neg S\vert D)}=\ln {p(S) \over p(\neg S)}+\sum _{i}\ln {p(w_{i}\vert S) \over p(w_{i}\vert \neg S)}} \ln{p(S\vert D)\over p(\neg S\vert D)}=\ln{p(S)\over p(\neg S)}+\sum_i \ln{p(w_i\vert S)\over p(w_i\vert\neg S)}
+(This technique of "log-likelihood ratios" is a common technique in statistics. In the case of two mutually exclusive alternatives (such as this example), the conversion of a log-likelihood ratio to a probability takes the form of a sigmoid curve: see logit for details.)
+
+Finally, the document can be classified as follows. It is spam if {\displaystyle p(S\vert D)>p(\neg S\vert D)} p(S\vert D) > p(\neg S\vert D) (i.e., {\displaystyle \ln {p(S\vert D) \over p(\neg S\vert D)}>0} \ln{p(S\vert D)\over p(\neg S\vert D)} > 0), otherwise it is not spam.

@@ -4,6 +4,7 @@
 # These are extensions to the std-lib 'matrix' to allow an all ruby SVD
 
 require 'matrix'
+require 'cmath'
 
 class Matrix
   def self.diag(s)
@@ -55,7 +56,7 @@ class Matrix
     end # of do while true
     s = []
     qrot.row_size.times do |r|
-      s << Math.sqrt(qrot[r, r])
+      s << ::Math.sqrt(qrot[r, r])
     end
     # puts "cnt = #{cnt}"
     if row_size >= column_size
