@@ -1,11 +1,12 @@
 ## HEAD
 
 ### Major Enhancements
+ * Stopwords get encoded to utf8 (#83)
  * Fix searching issues where no document is added to lsi (#77)
  * Added method to add custom path to user-created stopword directory (#73)
 
 ### Minor Enhancements
- * Fixed typo in README (#68)
+ * Fixed errors in README (#68, #79, #80)
  * Added an option to the bayesian classifier to disable word stemming (#61)
  * Added missing parens and renamed some variables (#59)
  
