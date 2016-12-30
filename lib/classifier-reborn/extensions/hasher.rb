@@ -56,7 +56,7 @@ module ClassifierReborn
 
       STOPWORDS_PATH.each do |path|
         if File.exist?(File.join(path, language))
-          hash[language] = Set.new File.read(File.join(path, language.to_s)).split
+          hash[language] = Set.new File.read(File.join(path, language.to_s)).force_encoding("utf-8").split
           break
         end
       end
