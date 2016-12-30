@@ -1,4 +1,5 @@
 ## Welcome to Classifier Reborn
+[![Build Status](https://travis-ci.org/jekyll/classifier-reborn.svg?branch=master)](https://travis-ci.org/jekyll/classifier-reborn)
 
 Classifier is a general module to allow Bayesian and other types of classifications.
 
