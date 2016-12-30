@@ -1,5 +1,6 @@
 ## HEAD
 
+## 2.0.5 / 2016-12-30
 ### Major Enhancements
  * Stopwords get encoded to utf8 (#83)
  * Fix searching issues where no document is added to lsi (#77)
@@ -10,7 +11,7 @@
  * Fixed errors in README (#68, #79, #80)
  * Added an option to the bayesian classifier to disable word stemming (#61)
  * Added missing parens and renamed some variables (#59)
- 
+
 ## 2.0.4 / 2015-10-31
 
 ### Major Enhancements
