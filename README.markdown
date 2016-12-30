@@ -222,6 +222,18 @@ with more than just simple strings.
 * http://www.chadfowler.com/index.cgi/Computing/LatentSemanticIndexing.rdoc
 * http://en.wikipedia.org/wiki/Latent_semantic_analysis
 
+
+## Code of Conduct
+
+In order to have a more open and welcoming community, Classifier-Reborn adheres to the Jekyll
+[code of conduct](https://github.com/jekyll/jekyll/blob/master/CONDUCT.markdown) adapted from the Ruby on Rails code of
+conduct.
+
+Please adhere to this code of conduct in any interactions you have in the
+Classifier community.  If you encounter someone violating
+these terms, please let [@chase](https://github.com/Ch4s3) know and we will address it as soon as possible.
+
+
 ## Authors
 
 * Lucas Carlson  (lucas@rufy.com)
