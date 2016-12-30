@@ -6,6 +6,7 @@
  * Added method to add custom path to user-created stopword directory (#73)
 
 ### Minor Enhancements
+ * Test newer rubies (#85)
  * Fixed errors in README (#68, #79, #80)
  * Added an option to the bayesian classifier to disable word stemming (#61)
  * Added missing parens and renamed some variables (#59)
