@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class LSITest < Test::Unit::TestCase
+class LSITest < Minitest::Test
   def setup
     # we repeat principle words to help weight them.
     # This test is rather delicate, since this system is mostly noise.
@@ -86,7 +86,7 @@ class LSITest < Test::Unit::TestCase
     # will fail here, but the LSI recognizes content.
     tricky_case = 'This text revolves around dogs.'
     assert_equal 'Dog', lsi.classify(tricky_case)
-    assert_not_equal 'Dog', bayes.classify(tricky_case)
+    refute_equal 'Dog', bayes.classify(tricky_case)
   end
 
   def test_recategorize_interface
@@ -194,11 +194,9 @@ class LSITest < Test::Unit::TestCase
     end
   end
 
-  def test_raise_error_when_adding_bad_document
+  def test_warn_when_adding_bad_document
     lsi = ClassifierReborn::LSI.new
-    assert_raises RuntimeError do
-      lsi.add_item("i can")
-    end
+    assert_output(/Input: 'i can' is entirely stopwords or words with 2 or fewer characters. Classifier-Reborn cannot handle this document properly./) { lsi.add_item("i can") }
   end
 
   def test_summary

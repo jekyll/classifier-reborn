@@ -66,15 +66,16 @@ module ClassifierReborn
     def add_item(item, *categories, &block)
       clean_word_hash = Hasher.clean_word_hash((block ? block.call(item) : item.to_s), @language)
       if clean_word_hash.empty?
-        raise "#{item} is composed entirely of stopwords and words that are 2 characters or less. Classifier-Reborn cannot handle this document properly, and thus summarily rejected it."
+        puts "Input: '#{item}' is entirely stopwords or words with 2 or fewer characters. Classifier-Reborn cannot handle this document properly."
+      else
+        @items[item] = if @cache_node_vectors
+                         CachedContentNode.new(clean_word_hash, *categories)
+                       else
+                         ContentNode.new(clean_word_hash, *categories)
+                       end
+        @version += 1
+        build_index if @auto_rebuild
       end
-      @items[item] = if @cache_node_vectors
-                       CachedContentNode.new(clean_word_hash, *categories)
-                     else
-                       ContentNode.new(clean_word_hash, *categories)
-                     end
-      @version += 1
-      build_index if @auto_rebuild
     end
 
     # A less flexible shorthand for add_item that assumes

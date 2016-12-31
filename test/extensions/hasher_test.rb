@@ -1,7 +1,7 @@
 require_relative '../test_helper'
 require 'tempfile'
 
-class HasherTest < Test::Unit::TestCase
+class HasherTest < Minitest::Test
   def setup
     @original_stopwords_path = Hasher::STOPWORDS_PATH.dup
   end
@@ -22,8 +22,8 @@ class HasherTest < Test::Unit::TestCase
   end
 
   def test_default_stopwords
-    assert_not_empty Hasher::STOPWORDS['en']
-    assert_not_empty Hasher::STOPWORDS['fr']
+    refute_empty Hasher::STOPWORDS['en']
+    refute_empty Hasher::STOPWORDS['fr']
     assert_empty Hasher::STOPWORDS['gibberish']
   end
 
@@ -38,17 +38,17 @@ class HasherTest < Test::Unit::TestCase
 
     custom_english_stopwords = Hasher::STOPWORDS['en']
 
-    assert_not_equal default_english_stopwords, custom_english_stopwords
+    refute_equal default_english_stopwords, custom_english_stopwords
   end
 
   def test_add_custom_stopword_path
     # Create stopword tempfile in current directory
     temp_stopwords = Tempfile.new('xy', "#{File.dirname(__FILE__) + "/"}")
-    
+
     # Add some stopwords to tempfile
     temp_stopwords << "this words fun"
-    temp_stopwords.close 
-    
+    temp_stopwords.close
+
     # Get path of tempfile
     temp_stopwords_path = File.dirname(temp_stopwords)
 
