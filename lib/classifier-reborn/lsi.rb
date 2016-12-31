@@ -10,6 +10,7 @@ begin
   $GSL = true
 
 rescue LoadError
+  $GSL = false
   require_relative 'extensions/vector'
 end
 
