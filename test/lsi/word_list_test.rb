@@ -1,6 +1,6 @@
 require_relative '../test_helper'
 
-class WordListTest < Test::Unit::TestCase
+class WordListTest < Minitest::Test
   def test_size_does_not_count_words_twice
     list = ClassifierReborn::WordList.new
     assert list.size == 0

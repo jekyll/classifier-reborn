@@ -5,11 +5,12 @@
 begin
   raise LoadError if ENV['NATIVE_VECTOR'] == 'true' # to test the native vector class, try `rake test NATIVE_VECTOR=true`
 
-  require 'gsl' # requires https://github.com/blackwinter/rb-gsl
+  require 'gsl' # requires https://github.com/SciRuby/rb-gsl
   require_relative 'extensions/vector_serialize'
   $GSL = true
 
 rescue LoadError
+  $GSL = false
   require_relative 'extensions/vector'
 end
 
@@ -65,15 +66,16 @@ module ClassifierReborn
     def add_item(item, *categories, &block)
       clean_word_hash = Hasher.clean_word_hash((block ? block.call(item) : item.to_s), @language)
       if clean_word_hash.empty?
-        raise "#{item} is composed entirely of stopwords and words that are 2 characters or less. Classifier-Reborn cannot handle this document properly, and thus summarily rejected it."
+        puts "Input: '#{item}' is entirely stopwords or words with 2 or fewer characters. Classifier-Reborn cannot handle this document properly."
+      else
+        @items[item] = if @cache_node_vectors
+                         CachedContentNode.new(clean_word_hash, *categories)
+                       else
+                         ContentNode.new(clean_word_hash, *categories)
+                       end
+        @version += 1
+        build_index if @auto_rebuild
       end
-      @items[item] = if @cache_node_vectors
-                       CachedContentNode.new(clean_word_hash, *categories)
-                     else
-                       ContentNode.new(clean_word_hash, *categories)
-                     end
-      @version += 1
-      build_index if @auto_rebuild
     end
 
     # A less flexible shorthand for add_item that assumes
@@ -203,11 +205,14 @@ module ClassifierReborn
       return [] if needs_rebuild?
 
       content_node = node_for_content(doc, &block)
-
       if $GSL && content_node.raw_norm.isnan?.all?
-        raise "There are no documents that are similar to #{doc}"
+        puts "There are no documents that are similar to #{doc}"
+      else
+        content_node_norms(content_node)
       end
+    end
 
+    def content_node_norms(content_node)
       result =
         @items.keys.collect do |item|
           if $GSL
@@ -230,8 +235,10 @@ module ClassifierReborn
     def search(string, max_nearest = 3)
       return [] if needs_rebuild?
       carry = proximity_norms_for_content(string)
-      result = carry.collect { |x| x[0] }
-      result[0..max_nearest - 1]
+      unless carry.nil?
+        result = carry.collect { |x| x[0] }
+        result[0..max_nearest - 1]
+      end
     end
 
     # This function takes content and finds other documents
