@@ -189,9 +189,7 @@ class LSITest < Minitest::Test
     lsi.add_item @str3, 'Cat'
     lsi.add_item @str4, 'Cat'
     lsi.add_item @str5, 'Bird'
-    assert_raises RuntimeError do
-      lsi.search('penguin')
-    end
+    assert_output(/There are no documents that are similar to penguin/) { lsi.search('penguin') }
   end
 
   def test_warn_when_adding_bad_document

@@ -5,7 +5,7 @@
 begin
   raise LoadError if ENV['NATIVE_VECTOR'] == 'true' # to test the native vector class, try `rake test NATIVE_VECTOR=true`
 
-  require 'gsl' # requires https://github.com/blackwinter/rb-gsl
+  require 'gsl' # requires https://github.com/SciRuby/rb-gsl
   require_relative 'extensions/vector_serialize'
   $GSL = true
 
@@ -205,11 +205,14 @@ module ClassifierReborn
       return [] if needs_rebuild?
 
       content_node = node_for_content(doc, &block)
-
       if $GSL && content_node.raw_norm.isnan?.all?
-        raise "There are no documents that are similar to #{doc}"
+        puts "There are no documents that are similar to #{doc}"
+      else
+        content_node_norms(content_node)
       end
+    end
 
+    def content_node_norms(content_node)
       result =
         @items.keys.collect do |item|
           if $GSL
@@ -232,8 +235,10 @@ module ClassifierReborn
     def search(string, max_nearest = 3)
       return [] if needs_rebuild?
       carry = proximity_norms_for_content(string)
-      result = carry.collect { |x| x[0] }
-      result[0..max_nearest - 1]
+      unless carry.nil?
+        result = carry.collect { |x| x[0] }
+        result[0..max_nearest - 1]
+      end
     end
 
     # This function takes content and finds other documents
