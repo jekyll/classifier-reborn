@@ -1,4 +1,6 @@
 ## HEAD
+### Major Enhancements
+ * Fix breaking changes in LSI api. Displays errors instead of raising where possible. #87
 
 ## 2.0.5 / 2016-12-30
 ### Major Enhancements
