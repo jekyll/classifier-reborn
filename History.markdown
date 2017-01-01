@@ -1,8 +1,10 @@
 ## HEAD
+
+## 2.1.0 / 2017-01-01
 ### Major Enhancements
  * Fix breaking changes in LSI api. Displays errors instead of raising where possible. #87
 
-## 2.0.5 / 2016-12-30
+## 2.0.5 / 2016-12-30 - yanled and no longer available
 ### Major Enhancements
  * Stopwords get encoded to utf8 (#83)
  * Fix searching issues where no document is added to lsi (#77)
