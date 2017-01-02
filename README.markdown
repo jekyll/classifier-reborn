@@ -1,5 +1,12 @@
 ## Welcome to Classifier Reborn
 
+[![Gem Version](https://img.shields.io/gem/v/classifier-reborn.svg)][ruby-gems]
+[![Build Status](https://img.shields.io/travis/jekyll/classifier-reborn/master.svg)][travis]
+[![Dependency Status](https://img.shields.io/gemnasium/jekyll/classifier-reborn.svg)][gemnasium]
+[ruby-gems]: https://rubygems.org/gems/jekyll/classifier-reborn
+[gemnasium]: https://gemnasium.com/jekyll/classifier-reborn
+[travis]: https://travis-ci.org/jekyll/classifier-reborn
+
 Classifier is a general module to allow Bayesian and other types of classifications.
 
 Classifier Reborn is a fork of cardmagic/classifier under more active development.
@@ -220,6 +227,18 @@ with more than just simple strings.
 * http://www.c2.com/cgi/wiki?LatentSemanticIndexing
 * http://www.chadfowler.com/index.cgi/Computing/LatentSemanticIndexing.rdoc
 * http://en.wikipedia.org/wiki/Latent_semantic_analysis
+
+
+## Code of Conduct
+
+In order to have a more open and welcoming community, Classifier-Reborn adheres to the Jekyll
+[code of conduct](https://github.com/jekyll/jekyll/blob/master/CONDUCT.markdown) adapted from the Ruby on Rails code of
+conduct.
+
+Please adhere to this code of conduct in any interactions you have in the
+Classifier community.  If you encounter someone violating
+these terms, please let [@chase](https://github.com/Ch4s3) know and we will address it as soon as possible.
+
 
 ## Authors
 

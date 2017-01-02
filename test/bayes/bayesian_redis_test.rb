@@ -3,7 +3,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 require_relative './bayesian_common_tests'
 
-class BayesianRedisTest < Test::Unit::TestCase
+class BayesianRedisTest < Minitest::Test
   include BayesianCommonTests
 
   def setup
@@ -14,7 +14,7 @@ class BayesianRedisTest < Test::Unit::TestCase
     end
   end
 
-  def cleanup
+  def teardown
     @classifier.instance_variable_get(:@backend).instance_variable_get(:@redis).flushdb
   end
 end

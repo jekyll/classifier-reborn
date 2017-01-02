@@ -2,11 +2,11 @@
 
 module BayesianCommonTests
   def test_good_training
-    assert_nothing_raised { @classifier.train_interesting 'love' }
+     assert_equal ['love'], @classifier.train_interesting('love')
   end
 
   def test_training_with_utf8
-    assert_nothing_raised { @classifier.train_interesting 'Água' }
+    assert_equal ['Água'], @classifier.train_interesting('Água')
   end
 
   def test_stemming_enabled_by_default
@@ -14,11 +14,11 @@ module BayesianCommonTests
   end
 
   def test_bad_training
-    assert_raise(StandardError) { @classifier.train_no_category 'words' }
+    assert_raises(StandardError) { @classifier.train_no_category 'words' }
   end
 
   def test_bad_method
-    assert_raise(NoMethodError) { @classifier.forget_everything_you_know '' }
+    assert_raises(NoMethodError) { @classifier.forget_everything_you_know '' }
   end
 
   def test_categories
@@ -115,6 +115,6 @@ module BayesianCommonTests
     classification_of_bad_data = @classifier.classify 'seven'
     @classifier.untrain_colors 'seven'
     classification_after_untrain = @classifier.classify 'seven'
-    assert_not_equal classification_of_bad_data, classification_after_untrain
+    refute_equal classification_of_bad_data, classification_after_untrain
   end
 end

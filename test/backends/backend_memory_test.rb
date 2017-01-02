@@ -3,7 +3,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 require_relative './backend_common_tests'
 
-class BackendMemoryTest < Test::Unit::TestCase
+class BackendMemoryTest < Minitest::Test
   include BackendCommonTests
 
   def setup

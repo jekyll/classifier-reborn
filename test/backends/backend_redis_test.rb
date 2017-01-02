@@ -3,7 +3,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 require_relative './backend_common_tests'
 
-class BackendRedisTest < Test::Unit::TestCase
+class BackendRedisTest < Minitest::Test
   include BackendCommonTests
 
   def setup
@@ -14,7 +14,7 @@ class BackendRedisTest < Test::Unit::TestCase
     end
   end
 
-  def cleanup
+  def teardown
     @backend.instance_variable_get(:@redis).flushdb
   end
 end
