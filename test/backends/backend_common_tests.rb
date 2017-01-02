@@ -22,7 +22,7 @@ module BackendCommonTests
   end
 
   def test_category_training
-    assert !@backend.category_has_trainings?(:Interesting)
+    refute @backend.category_has_trainings?(:Interesting)
     @backend.update_category_training_count(:Interesting, 10)
     assert @backend.category_has_trainings?(:Interesting)
     assert_equal 10, @backend.category_training_count(:Interesting)
@@ -45,7 +45,7 @@ module BackendCommonTests
 
   def test_category_word_frequency
     @backend.add_category(:Interesting)
-    assert !@backend.word_in_category?(:Interesting, "foo")
+    refute @backend.word_in_category?(:Interesting, "foo")
     assert_equal 0, @backend.category_word_frequency(:Interesting, "foo")
     @backend.update_category_word_frequency(:Interesting, "foo", 10)
     assert @backend.word_in_category?(:Interesting, "foo")
@@ -53,6 +53,6 @@ module BackendCommonTests
     @backend.update_category_word_frequency(:Interesting, "foo", -7)
     assert_equal 3, @backend.category_word_frequency(:Interesting, "foo")
     @backend.delete_category_word(:Interesting, "foo")
-    assert !@backend.word_in_category?(:Interesting, "foo")
+    refute @backend.word_in_category?(:Interesting, "foo")
   end
 end
