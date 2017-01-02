@@ -50,6 +50,7 @@ A Bayesian classifier by Lucas Carlson. Bayesian Classifiers are accurate, fast,
 
 ```ruby
 require 'classifier-reborn'
+
 classifier = ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting'
 classifier.train_interesting "here are some good words. I hope you love them"
 classifier.train_uninteresting "here are some bad words, I hate you"
@@ -59,13 +60,34 @@ classifier_snapshot = Marshal.dump classifier
 # This is a string of bytes, you can persist it anywhere you like
 
 File.open("classifier.dat", "w") {|f| f.write(classifier_snapshot) }
-# Or Redis.current.save "classifier", classifier_snapshot
 
 # This is now saved to a file, and you can safely restart the application
 data = File.read("classifier.dat")
-# Or data = Redis.current.get "classifier"
 trained_classifier = Marshal.load data
 trained_classifier.classify "I love" # returns 'Interesting'
+```
+
+Alternatively, a [Redis](https://redis.io/) backend can be used for persistence. The Redis backend has a couple of advantages over the default Memory backend; 1) the training data remains safe in case of application crash and 2) a shared model can be trained and used for classification from more than one applications (from one or more hosts). To enable Redis backend, use the dependency injection during the classifier initialization as illustrated below:
+
+```ruby
+require 'classifier-reborn'
+
+classifier = ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting', backend: ClassifierReborn::BayesRedisBackend.new
+
+# Perform training and classification using the classifier instance
+```
+
+The above code will connect to the local Redis instance with the default configurations. The Redis backend accepts the same arguments for initialization as the [redis-rb](https://github.com/redis/redis-rb) library. To connect to a Redis instance with custom configurations:
+
+```ruby
+require 'classifier-reborn'
+
+redis_backend = ClassifierReborn::BayesRedisBackend.new {host: "10.0.1.1", port: 6380, db: 15}
+# Or
+# redis_backend = ClassifierReborn::BayesRedisBackend.new url: "redis://:p4ssw0rd@10.0.1.1:6380/15"
+classifier = ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting', backend: redis_backend
+
+# Perform training and classification using the classifier instance
 ```
 
 Beyond the basic example, the constructor and trainer can be used in a more
