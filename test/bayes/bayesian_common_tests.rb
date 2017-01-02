@@ -26,7 +26,6 @@ module BayesianCommonTests
   end
 
   def test_categories_from_array
-    another_classifier = ClassifierReborn::Bayes.new %w(Interesting Uninteresting)
     assert_equal another_classifier.categories.sort, @classifier.categories.sort
   end
 
@@ -36,7 +35,7 @@ module BayesianCommonTests
   end
 
   def test_dynamic_category_succeeds_with_auto_categorize
-    classifier = ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting', auto_categorize: true
+    classifier = auto_categorize_classifier
     classifier.train('Ruby', 'I really sweet language')
     assert classifier.categories.include?('Ruby')
   end
@@ -55,7 +54,7 @@ module BayesianCommonTests
   end
 
   def test_classification_with_threshold
-    b = ClassifierReborn::Bayes.new 'Digit'
+    b = threshold_classifier('Digit')
     assert_equal 1, b.categories.size
 
     refute b.threshold_enabled?
@@ -78,7 +77,7 @@ module BayesianCommonTests
   end
 
   def test_classification_with_threshold_again
-    b = ClassifierReborn::Bayes.new 'Normal'
+    b = threshold_classifier('Normal')
     assert_equal 1, b.categories.size
 
     refute b.threshold_enabled?

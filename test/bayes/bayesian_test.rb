@@ -9,4 +9,16 @@ class BayesianTest < Minitest::Test
   def setup
     @classifier = ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting'
   end
+
+  def another_classifier
+    ClassifierReborn::Bayes.new %w(Interesting Uninteresting)
+  end
+
+  def auto_categorize_classifier
+    ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting', auto_categorize: true
+  end
+
+  def threshold_classifier(category)
+    ClassifierReborn::Bayes.new category
+  end
 end

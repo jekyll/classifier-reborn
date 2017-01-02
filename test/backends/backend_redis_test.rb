@@ -10,7 +10,7 @@ class BackendRedisTest < Minitest::Test
     begin
       @backend = ClassifierReborn::BayesRedisBackend.new
     rescue Redis::CannotConnectError => e
-      omit(e)
+      skip(e)
     end
   end
 
