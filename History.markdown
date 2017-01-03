@@ -1,4 +1,6 @@
 ## HEAD
+### Minor Enhancements
+ * Removed useless intermediate variables ([#90](https://github.com/jekyll/classifier-reborn/pull/90))
 
 ## 2.1.0 / 2017-01-01
 ### Major Enhancements
