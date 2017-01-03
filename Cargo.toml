@@ -1,0 +1,23 @@
+[package]
+
+name = "classifier-reborn"
+authors = ["Chase Gilliam"]
+repository = "https://github.com/jekyll/classifier-reborn"
+publish = false
+
+[package.metadata.thermite]
+
+github_releases = true
+github_release_type = "latest"
+# Only for github_release_type = "cargo"
+# git_tag_format = "v%s-rust"
+git_tag_regex = "^v(\\d+\\.\\d+\\.\\d+)-rust$"
+
+[lib]
+
+crate-type = ["dylib"]
+
+[dependencies]
+
+ruru = "0.9"
+la = "0.2.0"
