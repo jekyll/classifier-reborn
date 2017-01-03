@@ -13,14 +13,12 @@ module ClassifierReborn
 
     # Adds a word (if it is new) and assigns it a unique dimension.
     def add_word(word)
-      term = word
-      @location_table[term] = @location_table.size unless @location_table[term]
+      @location_table[word] = @location_table.size unless @location_table[word]
     end
 
     # Returns the dimension of the word or nil if the word is not in the space.
     def [](lookup)
-      term = lookup
-      @location_table[term]
+      @location_table[lookup]
     end
 
     def word_for_index(ind)
