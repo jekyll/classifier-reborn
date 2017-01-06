@@ -3,17 +3,28 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class BayesianIntegrationTest < Minitest::Test
+  TRAINING_SIZE = 4000
+  TESTING_SIZE = 1000
+
   def setup
     begin
       @memory_classifier = ClassifierReborn::Bayes.new 'Ham', 'Spam'
       @redis_backend = ClassifierReborn::BayesRedisBackend.new
+      @redis_backend.instance_variable_get(:@redis).config(:set, "save", "")
       @redis_classifier = ClassifierReborn::Bayes.new 'Ham', 'Spam', backend: @redis_backend
     rescue Redis::CannotConnectError => e
       skip(e)
     end
     sms_spam_collection = File.expand_path(File.dirname(__FILE__) + '/../data/corpus/SMSSpamCollection.tsv')
-    @training_set = File.read(sms_spam_collection).force_encoding("utf-8").split("\n")
-    @testing_set = @training_set.pop(1000)
+    File.open(sms_spam_collection) do |f|
+      begin
+        @training_set = TRAINING_SIZE.times.map { f.readline.force_encoding("utf-8") }
+        @testing_set = TESTING_SIZE.times.map { f.readline.force_encoding("utf-8") }
+      rescue EOFError => e
+        puts "Not enough records in the dataset"
+        skip(e)
+      end
+    end
   end
 
   def teardown
@@ -24,8 +35,8 @@ class BayesianIntegrationTest < Minitest::Test
     train_model @memory_classifier
     train_model @redis_classifier
     assert_equal classification_scores(@memory_classifier).hash, classification_scores(@redis_classifier).hash
-    untrain_model @memory_classifier, 2000
-    untrain_model @redis_classifier, 2000
+    untrain_model @memory_classifier, TRAINING_SIZE/2
+    untrain_model @redis_classifier, TRAINING_SIZE/2
     assert_equal classification_scores(@memory_classifier).hash, classification_scores(@redis_classifier).hash
   end
 
