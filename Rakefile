@@ -3,9 +3,13 @@ require 'rake'
 require 'rake/testtask'
 require 'rdoc/task'
 require 'bundler/gem_tasks'
+require 'thermite/tasks'
 
 desc 'Default Task'
 task default: [:test]
+
+# Run the Thermite Rust tasks
+Thermite::Tasks.new
 
 # Run the unit tests
 desc 'Run all unit tests'
