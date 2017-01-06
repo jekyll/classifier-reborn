@@ -2,7 +2,7 @@
 
 module BayesianCommonTests
   def test_good_training
-     assert_equal ['love'], @classifier.train_interesting('love')
+    assert_equal ['love'], @classifier.train_interesting('love')
   end
 
   def test_training_with_utf8

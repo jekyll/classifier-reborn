@@ -8,25 +8,28 @@ class BayesianRedisTest < Minitest::Test
 
   def setup
     begin
-      @classifier = ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting', backend: ClassifierReborn::BayesRedisBackend.new
+      @redis_backend = ClassifierReborn::BayesRedisBackend.new
+      @alternate_redis_backend = ClassifierReborn::BayesRedisBackend.new(db: 1)
+      @classifier = ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting', backend: @redis_backend
     rescue Redis::CannotConnectError => e
       skip(e)
     end
   end
 
   def teardown
-    @classifier.instance_variable_get(:@backend).instance_variable_get(:@redis).flushall
+    @redis_backend.instance_variable_get(:@redis).flushdb
+    @alternate_redis_backend.instance_variable_get(:@redis).flushdb
   end
 
   def another_classifier
-    ClassifierReborn::Bayes.new %w(Interesting Uninteresting), backend: ClassifierReborn::BayesRedisBackend.new(db: 1)
+    ClassifierReborn::Bayes.new %w(Interesting Uninteresting), backend: @alternate_redis_backend
   end
 
   def auto_categorize_classifier
-    ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting', auto_categorize: true, backend: ClassifierReborn::BayesRedisBackend.new(db: 1)
+    ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting', auto_categorize: true, backend: @alternate_redis_backend
   end
 
   def threshold_classifier(category)
-    ClassifierReborn::Bayes.new category, backend: ClassifierReborn::BayesRedisBackend.new(db: 1)
+    ClassifierReborn::Bayes.new category, backend: @alternate_redis_backend
   end
 end
