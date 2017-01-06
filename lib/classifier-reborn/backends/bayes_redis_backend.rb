@@ -1,4 +1,8 @@
-require 'redis'
+begin
+  require 'redis'
+rescue LoadError
+  puts 'The redis gem is required to use the redis backend.'
+end
 
 module ClassifierReborn
   class BayesRedisBackend
