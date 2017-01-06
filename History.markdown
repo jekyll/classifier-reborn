@@ -1,4 +1,7 @@
 ## HEAD
+## Major Enhancements
+ * Memory and Redis backend support ([#84](https://github.com/jekyll/classifier-reborn/pull/84))
+
 ### Minor Enhancements
  * Removed useless intermediate variables ([#90](https://github.com/jekyll/classifier-reborn/pull/90))
 
