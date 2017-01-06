@@ -4,6 +4,7 @@
  * Memory and Redis backend support ([#84](https://github.com/jekyll/classifier-reborn/pull/84))
 
 ### Minor Enhancements
+ * Disabled Redis disc persistence and refactored integration test ([#97](https://github.com/jekyll/classifier-reborn/pull/97))
  * Removed useless intermediate variables ([#90](https://github.com/jekyll/classifier-reborn/pull/90))
 
 ## 2.1.0 / 2017-01-01
