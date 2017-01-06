@@ -9,6 +9,7 @@ class BackendRedisTest < Minitest::Test
   def setup
     begin
       @backend = ClassifierReborn::BayesRedisBackend.new
+      @backend.instance_variable_get(:@redis).config(:set, "save", "")
     rescue Redis::CannotConnectError => e
       skip(e)
     end
