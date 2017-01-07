@@ -67,7 +67,9 @@ trained_classifier = Marshal.load data
 trained_classifier.classify "I love" # returns 'Interesting'
 ```
 
-Alternatively, a [Redis](https://redis.io/) backend can be used for persistence. The Redis backend has a couple of advantages over the default Memory backend; 1) the training data remains safe in case of application crash and 2) a shared model can be trained and used for classification from more than one applications (from one or more hosts). To enable Redis backend, use the dependency injection during the classifier initialization as illustrated below:
+Alternatively, a [Redis](https://redis.io/) backend can be used for persistence. The Redis backend has a couple of advantages over the default Memory backend; 1) the training data remains safe in case of application crash, 2) a shared model can be trained and used for classification from more than one applications (from one or more hosts), and 3) scales better than local Memory. These advantages come with an inherent performance cost though. In our benchmarks we found the Redis backend (running on the same machine) about 40 times slower for training and classification than the default Memory backend (see [the benchmarks](https://github.com/jekyll/classifier-reborn/pull/98) for more details).
+
+To enable Redis backend, use the dependency injection during the classifier initialization as illustrated below:
 
 ```ruby
 require 'classifier-reborn'
