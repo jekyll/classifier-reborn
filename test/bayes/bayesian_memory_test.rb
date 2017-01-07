@@ -3,7 +3,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 require_relative './bayesian_common_tests'
 
-class BayesianTest < Minitest::Test
+class BayesianMemoryTest < Minitest::Test
   include BayesianCommonTests
 
   def setup
