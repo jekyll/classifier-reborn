@@ -1,7 +1,7 @@
 begin
   require 'redis'
 rescue LoadError
-  puts 'The redis gem is required to use the redis backend.'
+  raise NoRedisError
 end
 
 module ClassifierReborn
