@@ -4,6 +4,7 @@
  * Memory and Redis backend support ([#84](https://github.com/jekyll/classifier-reborn/pull/84))
 
 ### Minor Enhancements
+ * Added Bayes backend benchmarks ([#98](https://github.com/jekyll/classifier-reborn/pull/98))
  * Disabled Redis disc persistence and refactored integration test ([#97](https://github.com/jekyll/classifier-reborn/pull/97))
  * Removed useless intermediate variables ([#90](https://github.com/jekyll/classifier-reborn/pull/90))
 

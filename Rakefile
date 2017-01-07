@@ -9,9 +9,17 @@ task default: [:test]
 
 # Run the unit tests
 desc 'Run all unit tests'
-Rake::TestTask.new('test') do |t|
+Rake::TestTask.new(:test) do |t|
   t.libs << 'lib'
   t.pattern = 'test/*/*_test.rb'
+  t.verbose = true
+end
+
+# Run benchmarks
+desc 'Run all benchmarks'
+Rake::TestTask.new(:bench) do |t|
+  t.libs << 'lib'
+  t.pattern = 'test/*/*_benchmark.rb'
   t.verbose = true
 end
 
@@ -23,7 +31,7 @@ end
 
 # Genereate the RDoc documentation
 desc 'Create documentation'
-Rake::RDocTask.new('doc') do |rdoc|
+Rake::RDocTask.new(:doc) do |rdoc|
   rdoc.title = 'Ruby Classifier - Bayesian and LSI classification library'
   rdoc.rdoc_dir = 'html'
   rdoc.rdoc_files.include('README.markdown')
