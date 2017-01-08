@@ -4,6 +4,7 @@
  * Memory and Redis backend support ([#84](https://github.com/jekyll/classifier-reborn/pull/84))
 
 ### Minor Enhancements
+ * Dockerfile and documentation ([#104](https://github.com/jekyll/classifier-reborn/pull/104))
  * Remove hard dep on Redis and update bin ([#96](https://github.com/jekyll/classifier-reborn/pull/96))
  * Documented Redis backend performance ([#103](https://github.com/jekyll/classifier-reborn/pull/103))
  * Rename Bayes memory test class ([#102](https://github.com/jekyll/classifier-reborn/pull/102))
