@@ -1,4 +1,8 @@
-require 'redis'
+begin
+  require 'redis'
+rescue LoadError
+  raise NoRedisError
+end
 
 module ClassifierReborn
   class BayesRedisBackend
