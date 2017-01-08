@@ -252,6 +252,56 @@ with more than just simple strings.
 * http://www.chadfowler.com/index.cgi/Computing/LatentSemanticIndexing.rdoc
 * http://en.wikipedia.org/wiki/Latent_semantic_analysis
 
+## Development
+
+To make changes in the gem locally:
+
+```bash
+$ git clone git@github.com:jekyll/classifier-reborn.git
+# Alternatively, fork the repo and clone your fork.
+$ cd classifier-reborn
+$ bundle install
+$ gem install redis
+$ rake              # To run tests.
+```
+
+Some tests should be skipped if the Redis server is not running on the development machine. To test all the test cases first [install Redis](https://redis.io/topics/quickstart) then:
+
+```bash
+$ redis-server --daemonize yes
+$ rake              # To run tests.
+$ rake bench        # To run benchmarks.
+# Kill the redis-server daemon when done
+```
+
+### Development using Docker
+
+If the [Docker](https://docs.docker.com/engine/installation/) is installed on the machine:
+
+```bash
+$ git clone git@github.com:jekyll/classifier-reborn.git
+# Alternatively, fork the repo and clone your fork.
+$ cd classifier-reborn
+
+$ docker run --rm -it -v "$PWD":/usr/src/app jekyll/classifier-reborn
+# This will run all tests.
+# This step should repeated each time a change in the code is made.
+```
+
+If the Gemfile or other dependencies change, a rebuild of the Docker image is needed:
+
+```bash
+$ docker build -t jekyll/classifier-reborn .
+```
+
+To run tasks other than test or other commands access Bash prompt of the container:
+
+```bash
+$ docker run --rm -it -v "$PWD":/usr/src/app classifier-reborn bash
+root@[container-id]:/usr/src/app# redis-server --daemonize yes
+root@[container-id]:/usr/src/app# rake              # To run tests.
+root@[container-id]:/usr/src/app# rake bench        # To run benchmarks.
+```
 
 ## Code of Conduct
 
