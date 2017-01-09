@@ -269,7 +269,7 @@ Some tests should be skipped if the Redis server is not running on the developme
 ```bash
 $ redis-server --daemonize yes
 $ rake                       # To run tests
-$ rake bench NOPROGRESS=T    # To run benchmarks
+$ rake bench                 # To run benchmarks
 ```
 
 Kill the redis-server daemon when done.
@@ -296,7 +296,7 @@ A rebuild of the image would be needed only if the `Gemfile` or other dependenci
 $ docker run --rm -it -v "$PWD":/usr/src/app classifier-reborn bash
 root@[container-id]:/usr/src/app# redis-server --daemonize yes
 root@[container-id]:/usr/src/app# rake                       # To run tests
-root@[container-id]:/usr/src/app# rake bench NOPROGRESS=T    # To run benchmarks
+root@[container-id]:/usr/src/app# rake bench                 # To run benchmarks
 root@[container-id]:/usr/src/app# pry
 [1] pry(main)> require 'classifier-reborn'
 => true
