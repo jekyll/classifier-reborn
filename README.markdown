@@ -261,15 +261,15 @@ $ git clone git@github.com:jekyll/classifier-reborn.git
 $ cd classifier-reborn
 $ bundle install
 $ gem install redis
-$ rake              # To run tests.
+$ rake                       # To run tests
 ```
 
 Some tests should be skipped if the Redis server is not running on the development machine. To test all the test cases first [install Redis](https://redis.io/topics/quickstart) then run the server and perform tests.
 
 ```bash
 $ redis-server --daemonize yes
-$ rake              # To run tests.
-$ rake bench        # To run benchmarks.
+$ rake                       # To run tests
+$ rake bench NOPROGRESS=T    # To run benchmarks
 ```
 
 Kill the redis-server daemon when done.
@@ -284,21 +284,23 @@ $ cd classifier-reborn
 $ docker build -t classifier-reborn .
 ```
 
-To run tests on the local code (before or after any changes) mount the current working directory inside the container at `/usr/src/app` and run the container without any arguments. This step should repeated each time a change in the code is made and a test is desired.
+To run tests on the local code (before or after any changes) mount the current working directory inside the container at `/usr/src/app` and run the container without any arguments. This step should be repeated each time a change in the code is made and a test is desired.
 
 ```bash
 $ docker run --rm -it -v "$PWD":/usr/src/app classifier-reborn
 ```
 
-A rebuild of the image would be needed only if the `Gemfile` or other dependencies change. To run tasks other than test or other commands access the Bash prompt of the container.
+A rebuild of the image would be needed only if the `Gemfile` or other dependencies change. To run tasks other than test or to run other commands access the Bash prompt of the container.
 
 ```bash
 $ docker run --rm -it -v "$PWD":/usr/src/app classifier-reborn bash
 root@[container-id]:/usr/src/app# redis-server --daemonize yes
-root@[container-id]:/usr/src/app# rake              # To run tests.
-root@[container-id]:/usr/src/app# rake bench        # To run benchmarks.
+root@[container-id]:/usr/src/app# rake                       # To run tests
+root@[container-id]:/usr/src/app# rake bench NOPROGRESS=T    # To run benchmarks
 root@[container-id]:/usr/src/app# pry
-[1] pry(main)>
+[1] pry(main)> require 'classifier-reborn'
+=> true
+[2] pry(main)> classifier = ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting'
 ```
 
 ## Code of Conduct
