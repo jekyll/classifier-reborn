@@ -2,6 +2,7 @@
 
 require File.dirname(__FILE__) + '/../test_helper'
 require_relative './bayesian_common_benchmarks'
+require_relative '../data/test_data_loader'
 
 class BayesianRedisBenchmark < Minitest::Benchmark
   include BayesianCommonBenchmarks
@@ -11,8 +12,11 @@ class BayesianRedisBenchmark < Minitest::Benchmark
   end
 
   def setup
-    skip if BayesianCommonBenchmarks.insufficient_data?
-    @data = BayesianCommonBenchmarks.data
+    @data = TestDataLoader.sms_data
+    if insufficient_data?
+      report_insufficient_data
+      skip
+    end
     @classifiers = {}
     self.class.bench_range.each_with_index do |n, i|
       begin
