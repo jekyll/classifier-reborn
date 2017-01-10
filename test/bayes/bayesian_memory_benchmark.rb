@@ -14,7 +14,7 @@ class BayesianMemoryBenchmark < Minitest::Benchmark
   def setup
     @data = TestDataLoader.sms_data
     if insufficient_data?
-      report_insufficient_data
+      TestDataLoader.report_insufficient_data(@data.length, MAX_RECORDS)
       skip
     end
     @classifiers = {}

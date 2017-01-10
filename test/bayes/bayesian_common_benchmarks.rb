@@ -25,10 +25,6 @@ module BayesianCommonBenchmarks
     @data.length < MAX_RECORDS
   end
 
-  def report_insufficient_data
-    puts "\e[31mInsufficient records in the dataset: available #{@data.length}, required #{MAX_RECORDS}\e[0m"
-  end
-
   def bench_train
     assert_performance_linear do |n|
       n.times do |i|

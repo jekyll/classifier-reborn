@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 require File.dirname(__FILE__) + '/../test_helper'
+require_relative '../data/test_data_loader'
 
 class BayesianIntegrationTest < Minitest::Test
   TRAINING_SIZE = 4000
@@ -15,16 +16,13 @@ class BayesianIntegrationTest < Minitest::Test
     rescue Redis::CannotConnectError => e
       skip(e)
     end
-    sms_spam_collection = File.expand_path(File.dirname(__FILE__) + '/../data/corpus/SMSSpamCollection.tsv')
-    File.open(sms_spam_collection) do |f|
-      begin
-        @training_set = TRAINING_SIZE.times.map { f.readline.force_encoding("utf-8") }
-        @testing_set = TESTING_SIZE.times.map { f.readline.force_encoding("utf-8") }
-      rescue EOFError => e
-        puts "Not enough records in the dataset"
-        skip(e)
-      end
+    data = TestDataLoader.sms_data
+    if data.length < TRAINING_SIZE + TESTING_SIZE
+      TestDataLoader.report_insufficient_data(data.length, TRAINING_SIZE + TESTING_SIZE)
+      skip(e)
     end
+    @training_set = data[0, TRAINING_SIZE]
+    @testing_set = data[TRAINING_SIZE, TESTING_SIZE]
   end
 
   def teardown
