@@ -4,6 +4,7 @@
  * Memory and Redis backend support ([#84](https://github.com/jekyll/classifier-reborn/pull/84))
 
 ### Minor Enhancements
+ * Speed up Docker image rebilding ([#112](https://github.com/jekyll/classifier-reborn/pull/112)) 
  * Improved Docker based development documentation ([#106](https://github.com/jekyll/classifier-reborn/pull/106))
  * Benchmark refactoring, improving efficiency, enhanced reporting ([#107](https://github.com/jekyll/classifier-reborn/pull/107))
  * Add Vietnamese stopwords ([#110](https://github.com/jekyll/classifier-reborn/pull/110))
