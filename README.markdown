@@ -254,53 +254,53 @@ with more than just simple strings.
 
 ## Development
 
-To make changes in the gem locally:
+To make changes in the gem locally clone the repository or your fork.
 
 ```bash
 $ git clone git@github.com:jekyll/classifier-reborn.git
-# Alternatively, fork the repo and clone your fork.
 $ cd classifier-reborn
 $ bundle install
 $ gem install redis
-$ rake              # To run tests.
+$ rake                       # To run tests
 ```
 
-Some tests should be skipped if the Redis server is not running on the development machine. To test all the test cases first [install Redis](https://redis.io/topics/quickstart) then:
+Some tests should be skipped if the Redis server is not running on the development machine. To test all the test cases first [install Redis](https://redis.io/topics/quickstart) then run the server and perform tests.
 
 ```bash
 $ redis-server --daemonize yes
-$ rake              # To run tests.
-$ rake bench        # To run benchmarks.
-# Kill the redis-server daemon when done
+$ rake                       # To run tests
+$ rake bench                 # To run benchmarks
 ```
+
+Kill the redis-server daemon when done.
 
 ### Development using Docker
 
-If the [Docker](https://docs.docker.com/engine/installation/) is installed on the machine:
+Provided that [Docker](https://docs.docker.com/engine/installation/) is installed on the development machine, clone the repository or your fork. From the directory of the local clone build a Docker image locally to setup the environment loaded with all the dependencies.
 
 ```bash
 $ git clone git@github.com:jekyll/classifier-reborn.git
-# Alternatively, fork the repo and clone your fork.
 $ cd classifier-reborn
-
-$ docker run --rm -it -v "$PWD":/usr/src/app jekyll/classifier-reborn
-# This will run all tests.
-# This step should repeated each time a change in the code is made.
+$ docker build -t classifier-reborn .
 ```
 
-If the Gemfile or other dependencies change, a rebuild of the Docker image is needed:
+To run tests on the local code (before or after any changes) mount the current working directory inside the container at `/usr/src/app` and run the container without any arguments. This step should be repeated each time a change in the code is made and a test is desired.
 
 ```bash
-$ docker build -t jekyll/classifier-reborn .
+$ docker run --rm -it -v "$PWD":/usr/src/app classifier-reborn
 ```
 
-To run tasks other than test or other commands access Bash prompt of the container:
+A rebuild of the image would be needed only if the `Gemfile` or other dependencies change. To run tasks other than test or to run other commands access the Bash prompt of the container.
 
 ```bash
 $ docker run --rm -it -v "$PWD":/usr/src/app classifier-reborn bash
 root@[container-id]:/usr/src/app# redis-server --daemonize yes
-root@[container-id]:/usr/src/app# rake              # To run tests.
-root@[container-id]:/usr/src/app# rake bench        # To run benchmarks.
+root@[container-id]:/usr/src/app# rake                       # To run tests
+root@[container-id]:/usr/src/app# rake bench                 # To run benchmarks
+root@[container-id]:/usr/src/app# pry
+[1] pry(main)> require 'classifier-reborn'
+=> true
+[2] pry(main)> classifier = ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting'
 ```
 
 ## Code of Conduct
