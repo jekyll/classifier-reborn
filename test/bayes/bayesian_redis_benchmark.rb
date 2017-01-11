@@ -2,20 +2,20 @@
 
 require File.dirname(__FILE__) + '/../test_helper'
 require_relative './bayesian_common_benchmarks'
+require_relative '../data/test_data_loader'
 
 class BayesianRedisBenchmark < Minitest::Benchmark
-  MAX_RECORDS = 5000
-
   include BayesianCommonBenchmarks
 
   def self.bench_range
-    (bench_exp(1, MAX_RECORDS) << MAX_RECORDS).uniq
+    BayesianCommonBenchmarks.bench_range
   end
 
   def setup
-    @data ||= load_data
-    if @data.length < MAX_RECORDS
-      skip("Not enough records in the dataset")
+    @data = TestDataLoader.sms_data
+    if insufficient_data?
+      TestDataLoader.report_insufficient_data(@data.length, MAX_RECORDS)
+      skip
     end
     @classifiers = {}
     self.class.bench_range.each_with_index do |n, i|
@@ -27,12 +27,13 @@ class BayesianRedisBenchmark < Minitest::Benchmark
         skip(e)
       end
     end
-    print "redis_"
   end
 
   def teardown
-    self.class.bench_range.each do |n|
-      @classifiers[n].instance_variable_get(:@backend).instance_variable_get(:@redis).flushdb
+    if defined? @classifiers
+      self.class.bench_range.each do |n|
+        @classifiers[n].instance_variable_get(:@backend).instance_variable_get(:@redis).flushdb
+      end
     end
   end
 end
