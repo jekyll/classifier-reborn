@@ -17,10 +17,6 @@ module BayesianCommonBenchmarks
     (Minitest::Benchmark.bench_exp(1, MAX_RECORDS) << MAX_RECORDS).uniq
   end
 
-  def self.data
-    @@data ||= self.load_data
-  end
-
   def insufficient_data?
     @data.length < MAX_RECORDS
   end
