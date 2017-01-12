@@ -38,7 +38,7 @@ Alternatively, a [Redis](https://redis.io/) backend can be used for persistence.
 * It scales better than local Memory.
 
 These advantages come with an inherent performance cost though.
-In our benchmarks we found the Redis backend (running on the same machine) about 40 times slower for training and classification than the default Memory backend (see [the benchmarks](https://github.com/jekyll/classifier-reborn/pull/98) for more details).
+In our benchmarks we found the Redis backend (running on the same machine) about 40 times slower for training and classification than the default Memory backend (see the `Backent Benchmarks` section below for more details).
 
 To enable Redis backend, use the dependency injection during the classifier initialization as illustrated below.
 
@@ -90,37 +90,37 @@ end
 
 puts classifier.classify "I hate bad words and you" #=> 'Uninteresting'
 puts classifier.classify "I hate javascript" #=> 'Uninteresting'
-puts classifier.classify "javascript is bad" #=> 'Uninteresting'
+puts classifier.classify "JavaScript is bad" #=> 'Uninteresting'
 
-puts classifier.classify "all you need is ruby" #=> 'Interesting'
-puts classifier.classify "i love ruby" #=> 'Interesting'
+puts classifier.classify "All you need is ruby" #=> 'Interesting'
+puts classifier.classify "I love ruby" #=> 'Interesting'
 
-puts classifier.classify "which is better dogs or cats" #=> 'dog'
-puts classifier.classify "what do I need to kill rats and mice" #=> 'cat'
+puts classifier.classify "Which is better dogs or cats" #=> 'dog'
+puts classifier.classify "What do I need to kill rats and mice" #=> 'cat'
 
 __END__
 Interesting, Uninteresting
-interesting: here are some good words. I hope you love them
-interesting: all you need is love
-interesting: the love boat, soon we will be taking another ride
-interesting: ruby don't take your love to town
+interesting: Here are some good words. I hope you love them
+interesting: All you need is love
+interesting: The love boat, soon we will be taking another ride
+interesting: Ruby don't take your love to town
 
-uninteresting: here are some bad words, I hate you
-uninteresting: bad bad leroy brown badest man in the darn town
-uninteresting: the good the bad and the ugly
-uninteresting: java, javascript, css front-end html
+uninteresting: Here are some bad words, I hate you
+uninteresting: Bad bad leroy brown badest man in the darn town
+uninteresting: The good the bad and the ugly
+uninteresting: Java, JavaScript, CSS front-end HTML
 #
-# train categories that were not pre-described
+# Train categories that were not pre-described
 #
-dog: dog days of summer
-dog: a man's best friend is his dog
-dog: a good hunting dog is a fine thing
-dog: man my dogs are tired
-dog: dogs are better than cats in soooo many ways
+dog: Dog days of summer
+dog: A man's best friend is his dog
+dog: A good hunting dog is a fine thing
+dog: Man my dogs are tired
+dog: Dogs are better than cats in soooo many ways
 
-cat: the fuzz ball spilt the milk
-cat: got rats or mice get a cat to kill them
-cat: cats never come when you call them
+cat: The fuzz ball spilt the milk
+cat: Got rats or mice get a cat to kill them
+cat: Cats never come when you call them
 cat: That dang cat keeps scratching the furniture
 ```
 
@@ -189,6 +189,40 @@ b.disable_threshold    # disables threshold processing
 ```
 
 Using these convenience methods your applications can dynamically adjust threshold processing as required.
+
+## Backend Benchmarks
+
+The following benchmarks were performed using the [SMS Spam Collection v.1](http://dcomp.sor.ufscar.br/talmeida/smsspamcollection/) dataset. `1`, `10`, `100`, `1,000`, and `5,000` records from the top of the dataset were used to `train`, `untrain`, and `classify` for both `Memory` and `Redis` backends (the `Redis` server was running locally). Tables represent values based on the observations of `5,000` records. The data used in these benchmarks can be found in [this spreadsheet](https://docs.google.com/spreadsheets/d/11pRZY1vbxWANcO6ABG-SuoUVqypjM45728Zk0uXog1s/edit?usp=sharing).
+
+### Memory Backend Performance
+
+| Operation | Ops/sec. |
+|:----------|---------:|
+| Train     |    27750 |
+| Untrain   |    23508 |
+| Classify  |    19487 |
+
+![Memory Backend Performance](assets/images/memory_backend_performance.png)
+
+### Redis Backend Performance
+
+| Operation | Ops/sec. |
+|:----------|---------:|
+| Train     |      721 |
+| Untrain   |      350 |
+| Classify  |      494 |
+
+![Redis Backend Performance](assets/images/redis_backend_performance.png)
+
+### Redis vs. Memory Proportional Backend Performance
+
+| Operation | Redis/Memory (Time) |
+|:----------|--------------------:|
+| Train     |                  39 |
+| Untrain   |                  67 |
+| Classify  |                  39 |
+
+![Redis vs. Memory Proportional Backend Performance](assets/images/redis_memory_proportional_backend_performance.png)
 
 ## References
 
