@@ -4,7 +4,7 @@ MAINTAINER Sawood Alam <https://github.com/ibnesayeed>
 ENV LANG C.UTF-8
 
 RUN apt update && apt install -y libgsl0-dev && rm -rf /var/lib/apt/lists/*
-RUN gem install narray nmatrix gsl redis
+RUN gem install narray nmatrix gsl
 
 RUN cd /tmp \
     && wget http://download.redis.io/redis-stable.tar.gz \
