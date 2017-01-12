@@ -4,6 +4,7 @@
  * Memory and Redis backend support ([#84](https://github.com/jekyll/classifier-reborn/pull/84))
 
 ### Minor Enhancements
+ * Added custom layout with navigation ([#117](https://github.com/jekyll/classifier-reborn/pull/117)) 
  * Created a static site for documentation ([#115](https://github.com/jekyll/classifier-reborn/pull/115)) 
  * Removed redis gem from Dockerfile as it is added in gemspec ([#113](https://github.com/jekyll/classifier-reborn/pull/113)) 
  * Speed up Docker image rebilding ([#112](https://github.com/jekyll/classifier-reborn/pull/112)) 
