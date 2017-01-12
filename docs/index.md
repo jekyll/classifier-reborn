@@ -1,4 +1,5 @@
 ---
+title: Getting Started | Classifier Reborn
 layout: default
 ---
 

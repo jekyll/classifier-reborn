@@ -1,4 +1,5 @@
 ---
+title: Development and Contributions | Classifier Reborn
 layout: default
 ---
 
@@ -39,7 +40,7 @@ $ rake bench                 # To run benchmarks
 
 Kill the `redis-server` daemon when done.
 
-## Development using Docker
+## Development Using Docker
 
 Provided that [Docker](https://docs.docker.com/engine/installation/) is installed on the development machine, clone the repository or your fork.
 From the directory of the local clone build a Docker image locally to setup the environment loaded with all the dependencies.

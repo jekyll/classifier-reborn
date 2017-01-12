@@ -10,16 +10,16 @@
   </head>
   <body>
     <section class="page-header">
-      <a href="{{ '/' | absolute_url }}" style="color: #ffffff; text-decoration: none;">
+      <a href="{{ '/' | relative_url }}" style="color: #ffffff; text-decoration: none;">
         <h1 class="project-name">{{ site.title | default: site.github.repository_name }}</h1>
       </a>
       <h2 class="project-tagline">{{ site.description | default: site.github.project_tagline }}</h2>
-      <a href="{{ '/' | absolute_url }}" class="btn">Home</a>
-      <a href="{{ '/bayes' }}" class="btn">Bayes</a>
-      <a href="{{ '/lsi' }}" class="btn">LSI</a>
-      <a href="{{ '/development' }}" class="btn">Development</a>
+      <a href="{{ '/' | relative_url }}" class="btn">Home</a>
+      <a href="{{ '/bayes' | relative_url }}" class="btn">Bayes</a>
+      <a href="{{ '/lsi' | relative_url }}" class="btn">LSI</a>
+      <a href="{{ '/development' | relative_url }}" class="btn">Development</a>
       {% if site.github.is_project_page %}
-        <a href="{{ site.github.repository_url }}" class="btn">View on GitHub</a>
+        <a href="{{ site.github.repository_url }}" class="btn">GitHub</a>
       {% endif %}
       {% if site.show_downloads %}
         <a href="{{ site.github.zip_url }}" class="btn">Download .zip</a>
