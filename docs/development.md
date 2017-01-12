@@ -78,6 +78,8 @@ To make changes to this documentation and to run it locally, run a Docker contai
 $ docker run --rm -it -v "$PWD":/usr/src/app -w /usr/src/app/docs -p 4000:4000 classifier-reborn jekyll s -H 0.0.0.0
 ```
 
+If the server runs as expected then the documentation should be available at [http://localhost:4000/](http://localhost:4000/).
+
 ## Authors and Contributors
 
 * [Lucas Carlson](mailto:lucas@rufy.com)
