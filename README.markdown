@@ -11,7 +11,7 @@ Classifier is a general module to allow Bayesian and other types of classificati
 
 Classifier Reborn is a fork of cardmagic/classifier under more active development.
 
-## Download
+## Install
 
 Add this line to your application's Gemfile:
 
