@@ -1,4 +1,5 @@
 ---
+title: Bayesian Classifier | Classifier Reborn
 layout: default
 ---
 

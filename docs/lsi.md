@@ -1,4 +1,5 @@
 ---
+title: Latent Semantic Indexer (LSI) | Classifier Reborn
 layout: default
 ---
 
