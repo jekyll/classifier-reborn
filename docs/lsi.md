@@ -1,9 +1,9 @@
 ---
-title: Latent Semantic Indexer (LSI) | Classifier Reborn
+title: Latent Semantic Indexer (LSI)
 layout: default
 ---
 
-# Latent Semantic Indexer (LSI)
+# {{ page.title }}
 
 Latent Semantic Indexing engines are not as fast or as small as Bayesian classifiers, but are more flexible, providing fast search, and clustering detection as well as semantic analysis of the text that
 theoretically simulates human learning.
