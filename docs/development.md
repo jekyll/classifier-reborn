@@ -1,9 +1,9 @@
 ---
-title: Development and Contributions | Classifier Reborn
+title: Development and Contributions
 layout: default
 ---
 
-# Development and Contributions
+# {{ page.title }}
 
 This library is released under the terms of the [LGPL-2.1](https://github.com/jekyll/classifier-reborn/blob/master/LICENSE).
 Any derivative work or usage of the library needs to be compatible with LGPL-2.1 or write to the author to ask for permission.

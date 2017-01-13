@@ -1,9 +1,9 @@
 ---
-title: Bayesian Classifier | Classifier Reborn
+title: Bayesian Classifier
 layout: default
 ---
 
-# Bayesian Classifier
+# {{ page.title }}
 
 Bayesian Classifiers are accurate, fast, and have modest memory requirements.
 

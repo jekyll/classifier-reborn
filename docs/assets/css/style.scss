@@ -1,0 +1,18 @@
+---
+---
+
+@import "{{ site.theme }}";
+
+.page-header {
+  .btn {
+    min-width: 140px;
+  }
+  .btn.active {
+    color: $section-headings-color;
+    background-color: rgba(255, 255, 255, 0.7);
+  }
+  .project-name a {
+    color: $header-heading-color;
+    text-decoration: none;
+  }
+}

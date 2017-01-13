@@ -1,9 +1,9 @@
 ---
-title: Getting Started | Classifier Reborn
+title: Getting Started
 layout: default
 ---
 
-# Getting Started
+# {{ page.title }}
 
 Classifier Reborn is a fork of [cardmagic/classifier](https://github.com/cardmagic/classifier) under more active development.
 The library is released under the [LGPL-2.1](https://github.com/jekyll/classifier-reborn/blob/master/LICENSE).

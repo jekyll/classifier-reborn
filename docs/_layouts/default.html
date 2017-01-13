@@ -2,7 +2,7 @@
 <html lang="en-us">
   <head>
     <meta charset="UTF-8">
-    <title>{{ page.title | default: site.title }}</title>
+    <title>{{ page.title | default: 'Home' }} | {{ site.title }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#157878">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
@@ -10,14 +10,12 @@
   </head>
   <body>
     <section class="page-header">
-      <a href="{{ '/' | relative_url }}" style="color: #ffffff; text-decoration: none;">
-        <h1 class="project-name">{{ site.title | default: site.github.repository_name }}</h1>
-      </a>
+      <h1 class="project-name"><a href="{{ '/' | relative_url }}">{{ site.title | default: site.github.repository_name }}</a></h1>
       <h2 class="project-tagline">{{ site.description | default: site.github.project_tagline }}</h2>
-      <a href="{{ '/' | relative_url }}" class="btn">Home</a>
-      <a href="{{ '/bayes' | relative_url }}" class="btn">Bayes</a>
-      <a href="{{ '/lsi' | relative_url }}" class="btn">LSI</a>
-      <a href="{{ '/development' | relative_url }}" class="btn">Development</a>
+      <a href="{{ '/' | relative_url }}" class="btn{% if page.name == 'index.md' %} active{% endif %}">Home</a>
+      <a href="{{ '/bayes' | relative_url }}" class="btn{% if page.name == 'bayes.md' %} active{% endif %}">Bayes</a>
+      <a href="{{ '/lsi' | relative_url }}" class="btn{% if page.name == 'lsi.md' %} active{% endif %}">LSI</a>
+      <a href="{{ '/development' | relative_url }}" class="btn{% if page.name == 'development.md' %} active{% endif %}">Development</a>
       {% if site.github.is_project_page %}
         <a href="{{ site.github.repository_url }}" class="btn">GitHub</a>
       {% endif %}
