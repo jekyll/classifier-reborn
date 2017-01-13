@@ -4,6 +4,7 @@
  * Memory and Redis backend support ([#84](https://github.com/jekyll/classifier-reborn/pull/84))
 
 ### Minor Enhancements
+ * Updated the truncated LICENSE file ([#116](https://github.com/jekyll/classifier-reborn/pull/116)) 
  * Docs visual improvement and refactoring ([#119](https://github.com/jekyll/classifier-reborn/pull/119)) 
  * Fixed relative URL issue on nav links and added benchmark data ([#118](https://github.com/jekyll/classifier-reborn/pull/118)) 
  * Added custom layout with navigation ([#117](https://github.com/jekyll/classifier-reborn/pull/117)) 
