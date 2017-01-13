@@ -37,4 +37,4 @@ For more information read the following documentation topics.
 
 ---
 
-*The library is released under the [LGPL-2.1](https://github.com/jekyll/classifier-reborn/blob/master/LICENSE).*
+*The Classifier Reborn library is released under the [LGPL-2.1](https://github.com/jekyll/classifier-reborn/blob/master/LICENSE).*
