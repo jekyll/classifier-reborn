@@ -4,6 +4,7 @@
  * Memory and Redis backend support ([#84](https://github.com/jekyll/classifier-reborn/pull/84))
 
 ### Minor Enhancements
+ * Added and corrected RDoc for ceratin classes and methods ([#122](https://github.com/jekyll/classifier-reborn/pull/122))
  * Added favicon link and forced display ([#120](https://github.com/jekyll/classifier-reborn/pull/120))
  * Updated the truncated LICENSE file ([#116](https://github.com/jekyll/classifier-reborn/pull/116)) 
  * Docs visual improvement and refactoring ([#119](https://github.com/jekyll/classifier-reborn/pull/119)) 
