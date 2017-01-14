@@ -2,6 +2,7 @@ module ClassifierReborn
   class BayesMemoryBackend
     attr_reader :total_words, :total_trainings
 
+    # This class provides Memory as the storage backend for the classifier data structures
     def initialize
       @total_words     = 0
       @total_trainings = 0
