@@ -15,11 +15,12 @@ module ClassifierReborn
     #      b = ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting', 'Spam'
     #
     # Options available are:
-    #   language:         'en'   Used to select language specific stop words
-    #   auto_categorize:  false  When true, enables ability to dynamically declare a category
-    #   enable_threshold: false  When true, enables a threshold requirement for classifition
-    #   threshold:        0.0    Default threshold, only used when enabled
-    #   enable_stemmer:   true   When false, disables word stemming
+    #   language:         'en'                    Used to select language specific stop words
+    #   auto_categorize:  false                   When true, enables ability to dynamically declare a category
+    #   enable_threshold: false                   When true, enables a threshold requirement for classifition
+    #   threshold:        0.0                     Default threshold, only used when enabled
+    #   enable_stemmer:   true                    When false, disables word stemming
+    #   backend:          BayesMemoryBackend.new  Alternatively, BayesRedisBackend.new for persistent storage
     def initialize(*args)
       initial_categories = []
       options = { language:         'en',
@@ -195,11 +196,15 @@ module ClassifierReborn
     # Provides a list of category names
     # For example:
     #     b.categories
-    #     =>   ['This', 'That', 'the_other']
-    def categories # :nodoc:
+    #     =>   ["This", "That", "The other"]
+    def categories
       category_keys.collect(&:to_s)
     end
 
+    # Provides a list of category keys as symbols
+    # For example:
+    #     b.categories
+    #     =>   [:This, :That, :"The other"]
     def category_keys
       @backend.category_keys
     end
