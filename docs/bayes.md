@@ -61,7 +61,7 @@ require 'classifier-reborn'
 
 redis_backend = ClassifierReborn::BayesRedisBackend.new {host: "10.0.1.1", port: 6380, db: 2}
 # Or
-# redis_backend = ClassifierReborn::BayesRedisBackend.new url: "redis://user:secret@10.0.1.1:6380/2"
+# redis_backend = ClassifierReborn::BayesRedisBackend.new url: "redis://:secret@10.0.1.1:6380/2"
 classifier = ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting', backend: redis_backend
 
 # Perform training and classification using the classifier instance
