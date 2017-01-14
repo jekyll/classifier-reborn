@@ -14,11 +14,11 @@ theoretically simulates human learning.
 require 'classifier-reborn'
 lsi = ClassifierReborn::LSI.new
 strings = [["This text deals with dogs. Dogs.", :dog],
-           ["This text involves dogs too. Dogs! ", :dog],
+           ["This text involves dogs too. Dogs!", :dog],
            ["This text revolves around cats. Cats.", :cat],
            ["This text also involves cats. Cats!", :cat],
-           ["This text involves birds. Birds.",:bird ]]
-strings.each {|x| lsi.add_item x.first, x.last}
+           ["This text involves birds. Birds.", :bird]]
+strings.each { |x| lsi.add_item x.first, x.last }
 
 lsi.search("dog", 3)
 #=> ["This text deals with dogs. Dogs.",
