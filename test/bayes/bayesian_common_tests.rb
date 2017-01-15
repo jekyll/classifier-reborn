@@ -40,11 +40,28 @@ module BayesianCommonTests
     assert classifier.categories.include?('Ruby')
   end
 
+  def test_dynamic_category_succeeds_with_empty_categories
+    classifier = empty_classifier
+    assert classifier.categories.empty?
+    classifier.train('Ruby', 'I really sweet language')
+    assert classifier.categories.include?('Ruby')
+    assert_equal 1, classifier.categories.size
+  end
+
   def test_dynamic_category_fails_without_auto_categorize
     assert_raises(ClassifierReborn::Bayes::CategoryNotFoundError) do
       @classifier.train('Ruby', 'A really sweet language')
     end
     refute @classifier.categories.include?('Ruby')
+  end
+
+  def test_dynamic_category_fails_with_useless_classifier
+    classifier = useless_classifier
+    assert classifier.categories.empty?
+    assert_raises(ClassifierReborn::Bayes::CategoryNotFoundError) do
+      classifier.train('Ruby', 'A really sweet language')
+    end
+    refute classifier.categories.include?('Ruby')
   end
 
   def test_classification
