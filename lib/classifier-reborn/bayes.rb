@@ -2,6 +2,8 @@
 # Copyright:: Copyright (c) 2005 Lucas Carlson
 # License::   LGPL
 
+require 'set'
+
 require_relative 'category_namer'
 require_relative 'backends/bayes_memory_backend'
 require_relative 'backends/bayes_redis_backend'
@@ -47,6 +49,10 @@ module ClassifierReborn
 
       initial_categories.each do |c|
         add_category(c)
+      end
+
+      if options.key?(:stopwords)
+        custom_stopwords options[:stopwords]
       end
     end
 
@@ -223,5 +229,16 @@ module ClassifierReborn
     end
 
     alias_method :append_category, :add_category
+
+    def custom_stopwords(stopwords)
+      unless stopwords.is_a?(Enumerable)
+        if File.exist?(stopwords)
+          stopwords = File.read(stopwords).force_encoding("utf-8").split
+        else
+          return
+        end
+      end
+      Hasher::STOPWORDS[@language] = Set.new stopwords
+    end
   end
 end
