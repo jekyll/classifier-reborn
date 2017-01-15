@@ -24,7 +24,6 @@ module ClassifierReborn
     def initialize(*args)
       initial_categories = []
       options = { language:         'en',
-                  auto_categorize:  false,
                   enable_threshold: false,
                   threshold:        0.0,
                   enable_stemmer:   true,
@@ -36,6 +35,10 @@ module ClassifierReborn
         else
           initial_categories.push(arg)
         end
+      end
+
+      unless options.key?(:auto_categorize)
+        options[:auto_categorize] = initial_categories.empty? ? true : false
       end
 
       @language            = options[:language]
