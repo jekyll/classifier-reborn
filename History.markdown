@@ -1,5 +1,6 @@
 ## HEAD
 ## Major Enhancements
+ * Don't train/untrain the Bayesian classifier with empty word hashes ([#132](https://github.com/jekyll/classifier-reborn/pull/132))
  * Enable auto categorization if no initial categories ([#128](https://github.com/jekyll/classifier-reborn/pull/128))
  * Bayes integration test of Memory and Redis backends with real data ([#92](https://github.com/jekyll/classifier-reborn/pull/92))
  * Memory and Redis backend support ([#84](https://github.com/jekyll/classifier-reborn/pull/84))
