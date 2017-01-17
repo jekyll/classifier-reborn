@@ -9,6 +9,8 @@
 
 ---
 
+##[Read the Docs](http://jekyll.github.io/classifier-reborn/)
+
 ## Getting Started
 
 Classifier Reborn is a general classifier module to allow Bayesian and other types of classifications.
