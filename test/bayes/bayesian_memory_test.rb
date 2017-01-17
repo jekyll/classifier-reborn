@@ -21,4 +21,12 @@ class BayesianMemoryTest < Minitest::Test
   def threshold_classifier(category)
     ClassifierReborn::Bayes.new category
   end
+
+  def empty_classifier
+    ClassifierReborn::Bayes.new
+  end
+
+  def useless_classifier
+    ClassifierReborn::Bayes.new auto_categorize: false
+  end
 end

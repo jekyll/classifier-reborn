@@ -33,4 +33,12 @@ class BayesianRedisTest < Minitest::Test
   def threshold_classifier(category)
     ClassifierReborn::Bayes.new category, backend: @alternate_redis_backend
   end
+
+    def empty_classifier
+      ClassifierReborn::Bayes.new backend: @alternate_redis_backend
+    end
+
+    def useless_classifier
+      ClassifierReborn::Bayes.new auto_categorize: false, backend: @alternate_redis_backend
+    end
 end
