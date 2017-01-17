@@ -73,7 +73,9 @@ module ClassifierReborn
 
       @backend.update_category_training_count(category, 1)
       @backend.update_total_trainings(1)
-      Hasher.word_hash(text, @language, @enable_stemmer).each do |word, count|
+      word_hash = Hasher.word_hash(text, @language, @enable_stemmer)
+      return if word_hash.length == 0
+      word_hash.each do |word, count|
         @backend.update_category_word_frequency(category, word, count)
         @backend.update_category_word_count(category, count)
         @backend.update_total_words(count)
@@ -91,7 +93,9 @@ module ClassifierReborn
       category = CategoryNamer.prepare_name(category)
       @backend.update_category_training_count(category, -1)
       @backend.update_total_trainings(-1)
-      Hasher.word_hash(text, @language, @enable_stemmer).each do |word, count|
+      word_hash = Hasher.word_hash(text, @language, @enable_stemmer)
+      return if word_hash.length == 0
+      word_hash.each do |word, count|
         next if @backend.total_words < 0
         orig = @backend.category_word_frequency(category, word) || 0
         @backend.update_category_word_frequency(category, word, -count)
