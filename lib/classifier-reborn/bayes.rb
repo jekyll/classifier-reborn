@@ -60,6 +60,8 @@ module ClassifierReborn
     #     b.train "that", "That text"
     #     b.train "The other", "The other text"
     def train(category, text)
+      word_hash = Hasher.word_hash(text, @language, @enable_stemmer)
+      return if word_hash.empty?
       category = CategoryNamer.prepare_name(category)
 
       # Add the category dynamically or raise an error
@@ -73,7 +75,7 @@ module ClassifierReborn
 
       @backend.update_category_training_count(category, 1)
       @backend.update_total_trainings(1)
-      Hasher.word_hash(text, @language, @enable_stemmer).each do |word, count|
+      word_hash.each do |word, count|
         @backend.update_category_word_frequency(category, word, count)
         @backend.update_category_word_count(category, count)
         @backend.update_total_words(count)
@@ -88,10 +90,12 @@ module ClassifierReborn
     #     b.train :this, "This text"
     #     b.untrain :this, "This text"
     def untrain(category, text)
+      word_hash = Hasher.word_hash(text, @language, @enable_stemmer)
+      return if word_hash.empty?
       category = CategoryNamer.prepare_name(category)
       @backend.update_category_training_count(category, -1)
       @backend.update_total_trainings(-1)
-      Hasher.word_hash(text, @language, @enable_stemmer).each do |word, count|
+      word_hash.each do |word, count|
         next if @backend.total_words < 0
         orig = @backend.category_word_frequency(category, word) || 0
         @backend.update_category_word_frequency(category, word, -count)
@@ -112,6 +116,12 @@ module ClassifierReborn
     def classifications(text)
       score = {}
       word_hash = Hasher.word_hash(text, @language, @enable_stemmer)
+      if word_hash.empty?
+        category_keys.each do |category|
+          score[category.to_s] = Float::INFINITY
+        end
+        return score
+      end
       category_keys.each do |category|
         score[category.to_s] = 0
         total = (@backend.category_word_count(category) || 1).to_f

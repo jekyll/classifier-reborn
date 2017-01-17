@@ -71,7 +71,7 @@ module BayesianCommonTests
   end
 
   def test_classification_with_threshold
-    b = threshold_classifier('Digit')
+    b = threshold_classifier('Number')
     assert_equal 1, b.categories.size
 
     refute b.threshold_enabled?
@@ -79,15 +79,15 @@ module BayesianCommonTests
     assert b.threshold_enabled?
     assert_equal 0.0, b.threshold # default
 
-    b.threshold = -7.0
+    b.threshold = -4.0
 
-    10.times do |a_number|
-      b.train_digit(a_number.to_s)
-      b.train_digit(a_number.to_s)
+    ['one', 'two', 'three', 'four', 'five'].each do |a_number|
+      b.train_number(a_number)
+      b.train_number(a_number)
     end
 
-    10.times do |a_number|
-      assert_equal 'Digit', b.classify(a_number.to_s)
+    ['one', 'two', 'three', 'four', 'five'].each do |a_number|
+      assert_equal 'Number', b.classify(a_number)
     end
 
     refute b.classify('xyzzy')
