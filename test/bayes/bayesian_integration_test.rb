@@ -57,7 +57,7 @@ class BayesianIntegrationTest < Minitest::Test
     @testing_set.collect do |line|
       parts = line.strip.split("\t")
       result, score = classifier.classify_with_score(parts.last)
-      "#{result}:#{score}"
+      score.infinite? ? "irrelevant" : "#{result}:#{score}"
     end
   end
 end
