@@ -1,5 +1,6 @@
 ## HEAD
 ## Major Enhancements
+ * Enable auto categorization if no initial categories ([#128](https://github.com/jekyll/classifier-reborn/pull/128))
  * Bayes integration test of Memory and Redis backends with real data ([#92](https://github.com/jekyll/classifier-reborn/pull/92))
  * Memory and Redis backend support ([#84](https://github.com/jekyll/classifier-reborn/pull/84))
 
