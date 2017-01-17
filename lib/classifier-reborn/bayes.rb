@@ -120,21 +120,20 @@ module ClassifierReborn
         category_keys.each do |category|
           score[category.to_s] = Float::INFINITY
         end
-        score
-      else
-        category_keys.each do |category|
-          score[category.to_s] = 0
-          total = (@backend.category_word_count(category) || 1).to_f
-          word_hash.each do |word, _count|
-            s = @backend.word_in_category?(category, word) ? @backend.category_word_frequency(category, word) : 0.1
-            score[category.to_s] += Math.log(s / total)
-          end
-          # now add prior probability for the category
-          s = @backend.category_has_trainings?(category) ? @backend.category_training_count(category) : 0.1
-          score[category.to_s] += Math.log(s / @backend.total_trainings.to_f)
-        end
-        score
+        return score
       end
+      category_keys.each do |category|
+        score[category.to_s] = 0
+        total = (@backend.category_word_count(category) || 1).to_f
+        word_hash.each do |word, _count|
+          s = @backend.word_in_category?(category, word) ? @backend.category_word_frequency(category, word) : 0.1
+          score[category.to_s] += Math.log(s / total)
+        end
+        # now add prior probability for the category
+        s = @backend.category_has_trainings?(category) ? @backend.category_training_count(category) : 0.1
+        score[category.to_s] += Math.log(s / @backend.total_trainings.to_f)
+      end
+      score
     end
 
     # Returns the classification of the provided +text+, which is one of the
