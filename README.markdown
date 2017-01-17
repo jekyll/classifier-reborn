@@ -3,7 +3,7 @@
 [![Gem Version](https://img.shields.io/gem/v/classifier-reborn.svg)][ruby-gems]
 [![Build Status](https://img.shields.io/travis/jekyll/classifier-reborn/master.svg)][travis]
 [![Dependency Status](https://img.shields.io/gemnasium/jekyll/classifier-reborn.svg)][gemnasium]
-[ruby-gems]: https://rubygems.org/gems/jekyll/classifier-reborn
+[ruby-gems]: https://rubygems.org/gems/classifier-reborn
 [gemnasium]: https://gemnasium.com/jekyll/classifier-reborn
 [travis]: https://travis-ci.org/jekyll/classifier-reborn
 
