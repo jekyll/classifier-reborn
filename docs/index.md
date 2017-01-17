@@ -6,8 +6,8 @@ layout: default
 # {{ page.title }}
 
 Classifier Reborn is a fork of [cardmagic/classifier](https://github.com/cardmagic/classifier) under more active development.
-The library is released under the [LGPL-2.1](https://github.com/jekyll/classifier-reborn/blob/master/LICENSE).
-Currently, it has [Bayesian](https://en.wikipedia.org/wiki/Naive_Bayes_classifier) and [Latent Semantic Indexer (LSI)](https://en.wikipedia.org/wiki/Latent_semantic_analysis) classifiers implemented.
+The Classifier Reborn library is released under the terms of the [GNU LGPL-2.1](https://github.com/jekyll/classifier-reborn/blob/master/LICENSE).
+Currently, it has [Bayesian Classifier](https://en.wikipedia.org/wiki/Naive_Bayes_classifier) and [Latent Semantic Indexer (LSI)](https://en.wikipedia.org/wiki/Latent_semantic_analysis) implemented.
 
 Here is a quick example to illustrate the usage.
 
@@ -22,7 +22,7 @@ irb(main):005:0> classifier.classify "What's the plan for Sunday?"
 #=> "Ham"
 ```
 
-Here is a line-by-line explaination of what we just did:
+Here is a line-by-line explanation of what we just did.
 
 * Installed the `classifier-reborn` gem (assuming that [Ruby](https://www.ruby-lang.org/en/) is installed already).
 * Started the Interactive Ruby Shell (IRB).
