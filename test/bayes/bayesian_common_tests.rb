@@ -178,4 +178,42 @@ module BayesianCommonTests
     assert_equal Float::INFINITY, classifier.classify_with_score('These stopwords')[1]
     refute_equal Float::INFINITY, classifier.classify_with_score('To be or not to be')[1]
   end
+
+  private
+
+  def another_classifier
+    ClassifierReborn::Bayes.new %w(Interesting Uninteresting), backend: @alternate_backend
+  end
+
+  def auto_categorize_classifier
+    ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting', auto_categorize: true, backend: @alternate_backend
+  end
+
+  def threshold_classifier(category)
+    ClassifierReborn::Bayes.new category, backend: @alternate_backend
+  end
+
+  def empty_classifier
+    ClassifierReborn::Bayes.new backend: @alternate_backend
+  end
+
+  def useless_classifier
+    ClassifierReborn::Bayes.new auto_categorize: false, backend: @alternate_backend
+  end
+
+  def empty_string_stopwords_classifier
+    ClassifierReborn::Bayes.new stopwords: "", backend: @alternate_backend
+  end
+
+  def empty_array_stopwords_classifier
+    ClassifierReborn::Bayes.new stopwords: [], backend: @alternate_backend
+  end
+
+  def array_stopwords_classifier
+    ClassifierReborn::Bayes.new stopwords: ["these", "are", "custom", "stopwords"], backend: @alternate_backend
+  end
+
+  def file_stopwords_classifier
+    ClassifierReborn::Bayes.new stopwords: File.dirname(__FILE__) + '/../data/stopwords/en', backend: @alternate_backend
+  end
 end
