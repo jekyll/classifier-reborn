@@ -1,5 +1,6 @@
 ## HEAD
 ## Major Enhancements
+ * Abbility to add custom stopwords at classifier initialization ([#129](https://github.com/jekyll/classifier-reborn/pull/129))
  * Don't train/untrain the Bayesian classifier with empty word hashes ([#132](https://github.com/jekyll/classifier-reborn/pull/132))
  * Enable auto categorization if no initial categories ([#128](https://github.com/jekyll/classifier-reborn/pull/128))
  * Bayes integration test of Memory and Redis backends with real data ([#92](https://github.com/jekyll/classifier-reborn/pull/92))
