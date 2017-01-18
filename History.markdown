@@ -7,6 +7,7 @@
  * Memory and Redis backend support ([#84](https://github.com/jekyll/classifier-reborn/pull/84))
 
 ### Minor Enhancements
+ * Minor docs improvements ([#138](https://github.com/jekyll/classifier-reborn/pull/138))
  * Return the status of the training/untraining when run ([#137](https://github.com/jekyll/classifier-reborn/pull/137))
  * Refactoring of backend tests to move duplicate login in the common file ([#134](https://github.com/jekyll/classifier-reborn/pull/134))
  * Deal with Infinity score in test ([#133](https://github.com/jekyll/classifier-reborn/pull/133))
