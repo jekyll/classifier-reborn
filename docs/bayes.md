@@ -69,7 +69,7 @@ classifier = ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting', backend
 
 ## Beyond the Basics
 
-Beyond the basic example, the constructor and trainer can be used in a more flexible way to accommodate non-trival applications.
+Beyond the basic example, the constructor and trainer can be used in a more flexible way to accommodate non-trivial applications.
 Consider the following program.
 
 ```ruby
@@ -80,7 +80,7 @@ require 'classifier-reborn'
 training_set = DATA.read.split("\n")
 categories   = training_set.shift.split(',').map{|c| c.strip}
 
-# pass :auto_categorize option to allow feeding previously unknown categories
+# Pass :auto_categorize option to allow feeding previously unknown categories
 classifier = ClassifierReborn::Bayes.new categories, auto_categorize: true
 
 training_set.each do |a_line|
@@ -90,7 +90,7 @@ training_set.each do |a_line|
 end
 
 puts classifier.classify "I hate bad words and you" #=> 'Uninteresting'
-puts classifier.classify "I hate javascript" #=> 'Uninteresting'
+puts classifier.classify "I hate JavaScript" #=> 'Uninteresting'
 puts classifier.classify "JavaScript is bad" #=> 'Uninteresting'
 
 puts classifier.classify "All you need is ruby" #=> 'Interesting'
@@ -107,7 +107,7 @@ interesting: The love boat, soon we will be taking another ride
 interesting: Ruby don't take your love to town
 
 uninteresting: Here are some bad words, I hate you
-uninteresting: Bad bad leroy brown badest man in the darn town
+uninteresting: Bad bad Leroy Brown badest man in the darn town
 uninteresting: The good the bad and the ugly
 uninteresting: Java, JavaScript, CSS front-end HTML
 #
@@ -119,10 +119,55 @@ dog: A good hunting dog is a fine thing
 dog: Man my dogs are tired
 dog: Dogs are better than cats in soooo many ways
 
-cat: The fuzz ball spilt the milk
+cat: The fuzz ball spilled the milk
 cat: Got rats or mice get a cat to kill them
 cat: Cats never come when you call them
 cat: That dang cat keeps scratching the furniture
+```
+
+If no categories are specified at initialization then `:auto_categorize` is set to `true` by default.
+However, dynamic methods like `train_some_category` or `untrain_some_category` will not work unless corresponding categories exist.
+
+```ruby
+require 'classifier-reborn'
+
+classifier = ClassifierReborn::Bayes.new
+classifier.train("cat", "I can has cat")
+# The above method will work, but the following will throw an error
+# classifier.train_cat "I can has cat"
+```
+
+## Custom Stopwords
+
+The library ships with stopword files in various languages.
+However, in certain situations a custom stopwords list is desired for the domain specific classifiers.
+Custom stopwords can be specified at the classifier initialization by supplying an array of stopwords or path to load a stopwords file.
+These stopwords will only be applied for the language of the classifier instance.
+To disable stopwords completely, pass an empty string (`""`) or empty array (`[]`) as the value of the `:stopwords` parameter.
+
+```ruby
+require 'classifier-reborn'
+
+custom_stopwords = ["custom", "stop", "words"]
+classifier = ClassifierReborn::Bayes.new stopwords: custom_stopwords
+# Or from a file
+classifier = ClassifierReborn::Bayes.new stopwords: "/path/to/custom/stopwords/file"
+# Or to disable stopwords
+classifier = ClassifierReborn::Bayes.new stopwords: ""
+# Alternatively, to disable stopwords
+classifier = ClassifierReborn::Bayes.new stopwords: []
+```
+
+Training and untraing with empty strings or strings that consist of only stopwords will be skipped.
+While an attempt to classify such strings will return `nil` or a category with score `Infinity` (based on whether threshold is enabled).
+
+The above method of custom stopwords will overwrite the existing stopwords for the language of the classifier instance.
+However, to supplement the existing set of stopwords, more directory paths containing stopwordsword files can be added.
+In this case, each stopwords file name needs to be the same as the corresponding language code, such as `en` for English or `ar` for Arabic.
+
+
+```ruby
+ClassifierReborn::Hasher.add_custom_stopword_path(/path/to/additional/stopwords/directory)
 ```
 
 ## Knowing the Score
