@@ -80,13 +80,13 @@ module ClassifierReborn
         end
       end
 
-      @backend.update_category_training_count(category, 1)
-      @backend.update_total_trainings(1)
       word_hash.each do |word, count|
         @backend.update_category_word_frequency(category, word, count)
         @backend.update_category_word_count(category, count)
         @backend.update_total_words(count)
       end
+      @backend.update_total_trainings(1)
+      @backend.update_category_training_count(category, 1)
     end
 
     # Provides a untraining method for all categories specified in Bayes#new
@@ -100,8 +100,6 @@ module ClassifierReborn
       word_hash = Hasher.word_hash(text, @language, @enable_stemmer)
       return if word_hash.empty?
       category = CategoryNamer.prepare_name(category)
-      @backend.update_category_training_count(category, -1)
-      @backend.update_total_trainings(-1)
       word_hash.each do |word, count|
         next if @backend.total_words < 0
         orig = @backend.category_word_frequency(category, word) || 0
@@ -114,6 +112,8 @@ module ClassifierReborn
         @backend.update_category_word_count(category, -count) if @backend.category_word_count(category) >= count
         @backend.update_total_words(-count)
       end
+      @backend.update_total_trainings(-1)
+      @backend.update_category_training_count(category, -1)
     end
 
     # Returns the scores in each category the provided +text+. E.g.,
