@@ -9,7 +9,7 @@
 
 ---
 
-##[Read the Docs](http://www.classifier-reborn.com)
+## [Read the Docs](http://www.classifier-reborn.com/)
 
 ## Getting Started
 
@@ -48,10 +48,10 @@ irb(main):013:0> lsi.find_related("This text is around cats!", 2)
 There is much more that can be done using Bayes and LSI beyond these quick examples.
 For more information read the following documentation topics.
 
-* [Installation and Dependencies](http://jekyll.github.io/classifier-reborn/)
-* [Bayesian Classifier](http://jekyll.github.io/classifier-reborn/bayes)
-* [Latent Semantic Indexer (LSI)](http://jekyll.github.io/classifier-reborn/lsi)
-* [Development and Contributions](http://jekyll.github.io/classifier-reborn/development) (*Optional Docker instructions included*)
+* [Installation and Dependencies](http://www.classifier-reborn.com/)
+* [Bayesian Classifier](http://www.classifier-reborn.com/bayes)
+* [Latent Semantic Indexer (LSI)](http://www.classifier-reborn.com/lsi)
+* [Development and Contributions](http://www.classifier-reborn.com/development) (*Optional Docker instructions included*)
 
 ## Code of Conduct
 
