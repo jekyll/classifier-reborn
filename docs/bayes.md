@@ -148,8 +148,8 @@ To disable stopwords completely, pass an empty string (`""`) or empty array (`[]
 ```ruby
 require 'classifier-reborn'
 
-custom_stopwords = ["custom", "stop", "words"]
-classifier = ClassifierReborn::Bayes.new stopwords: custom_stopwords
+# Supply a custom stopwords array
+classifier = ClassifierReborn::Bayes.new stopwords: ["custom", "stop", "words"]
 # Or from a file
 classifier = ClassifierReborn::Bayes.new stopwords: "/path/to/custom/stopwords/file"
 # Or to disable stopwords
@@ -167,7 +167,7 @@ In this case, each stopwords file name needs to be the same as the corresponding
 
 
 ```ruby
-ClassifierReborn::Hasher.add_custom_stopword_path(/path/to/additional/stopwords/directory)
+ClassifierReborn::Hasher.add_custom_stopword_path("/path/to/additional/stopwords/directory")
 ```
 
 ## Knowing the Score
