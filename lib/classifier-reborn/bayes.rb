@@ -18,10 +18,11 @@ module ClassifierReborn
     #
     # Options available are:
     #   language:         'en'                    Used to select language specific stop words
-    #   auto_categorize:  false                   When true, enables ability to dynamically declare a category
+    #   auto_categorize:  false                   When true, enables ability to dynamically declare a category; the default is true if no initial categories are provided
     #   enable_threshold: false                   When true, enables a threshold requirement for classifition
     #   threshold:        0.0                     Default threshold, only used when enabled
     #   enable_stemmer:   true                    When false, disables word stemming
+    #   stopwords:        nil                     Accepts path to a text file or an array of words, when supplied, overwrites the default stopwords; assign empty string or array to disable stopwords
     #   backend:          BayesMemoryBackend.new  Alternatively, BayesRedisBackend.new for persistent storage
     def initialize(*args)
       initial_categories = []
@@ -243,12 +244,17 @@ module ClassifierReborn
 
     alias_method :append_category, :add_category
 
+    private
+
+    # Overwrites the default stopwords for current language with supplied list of stopwords or file
     def custom_stopwords(stopwords)
       unless stopwords.is_a?(Enumerable)
-        if File.exist?(stopwords)
+        if stopwords.strip.empty?
+          stopwords = []
+        elsif File.exist?(stopwords)
           stopwords = File.read(stopwords).force_encoding("utf-8").split
         else
-          return
+          return # Do not overwrite the default
         end
       end
       Hasher::STOPWORDS[@language] = Set.new stopwords
