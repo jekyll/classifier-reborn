@@ -7,6 +7,7 @@
  * Memory and Redis backend support ([#84](https://github.com/jekyll/classifier-reborn/pull/84))
 
 ### Minor Enhancements
+ * Refactoring of backend tests to move duplicate login in the common file ([#134](https://github.com/jekyll/classifier-reborn/pull/134))
  * Deal with Infinity score in test ([#133](https://github.com/jekyll/classifier-reborn/pull/133))
  * README file cleaned up to point to the documentation site ([#121](https://github.com/jekyll/classifier-reborn/pull/121))
  * Added and corrected RDoc for ceratin classes and methods ([#122](https://github.com/jekyll/classifier-reborn/pull/122))
