@@ -36,14 +36,14 @@ module BayesianCommonTests
 
   def test_dynamic_category_succeeds_with_auto_categorize
     classifier = auto_categorize_classifier
-    classifier.train('Ruby', 'I really sweet language')
+    classifier.train('Ruby', 'A really sweet language')
     assert classifier.categories.include?('Ruby')
   end
 
   def test_dynamic_category_succeeds_with_empty_categories
     classifier = empty_classifier
     assert classifier.categories.empty?
-    classifier.train('Ruby', 'I really sweet language')
+    classifier.train('Ruby', 'A really sweet language')
     assert classifier.categories.include?('Ruby')
     assert_equal 1, classifier.categories.size
   end
@@ -132,5 +132,50 @@ module BayesianCommonTests
     @classifier.untrain_colors 'seven'
     classification_after_untrain = @classifier.classify 'seven'
     refute_equal classification_of_bad_data, classification_after_untrain
+  end
+
+  def test_skip_empty_training_and_classification
+    classifier = empty_classifier
+    classifier.train('Ruby', '')
+    assert classifier.categories.empty?
+    classifier.train('Ruby', 'To be or not to be')
+    assert classifier.categories.empty?
+    classifier.train('Ruby', 'A really sweet language')
+    refute classifier.categories.empty?
+    assert_equal Float::INFINITY, classifier.classify_with_score('To be or not to be')[1]
+  end
+
+  def test_empty_string_stopwords
+    classifier = empty_string_stopwords_classifier
+    classifier.train('Stopwords', 'To be or not to be')
+    refute classifier.categories.empty?
+    refute_equal Float::INFINITY, classifier.classify_with_score('To be or not to be')[1]
+  end
+
+  def test_empty_array_stopwords
+    classifier = empty_array_stopwords_classifier
+    classifier.train('Stopwords', 'To be or not to be')
+    refute classifier.categories.empty?
+    refute_equal Float::INFINITY, classifier.classify_with_score('To be or not to be')[1]
+  end
+
+  def test_custom_array_stopwords
+    classifier = array_stopwords_classifier
+    classifier.train('Stopwords', 'Custom stopwords')
+    assert classifier.categories.empty?
+    classifier.train('Stopwords', 'To be or not to be')
+    refute classifier.categories.empty?
+    assert_equal Float::INFINITY, classifier.classify_with_score('These stopwords')[1]
+    refute_equal Float::INFINITY, classifier.classify_with_score('To be or not to be')[1]
+  end
+
+  def test_custom_file_stopwords
+    classifier = file_stopwords_classifier
+    classifier.train('Stopwords', 'Custom stopwords')
+    assert classifier.categories.empty?
+    classifier.train('Stopwords', 'To be or not to be')
+    refute classifier.categories.empty?
+    assert_equal Float::INFINITY, classifier.classify_with_score('These stopwords')[1]
+    refute_equal Float::INFINITY, classifier.classify_with_score('To be or not to be')[1]
   end
 end
