@@ -9,7 +9,7 @@
 
 ---
 
-##[Read the Docs](http://jekyll.github.io/classifier-reborn/)
+##[Read the Docs](http://www.classifier-reborn.com)
 
 ## Getting Started
 
