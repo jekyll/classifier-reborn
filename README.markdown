@@ -24,8 +24,8 @@ $ gem install classifier-reborn
 $ irb
 irb(main):001:0> require 'classifier-reborn'
 irb(main):002:0> classifier = ClassifierReborn::Bayes.new 'Ham', 'Spam'
-irb(main):003:0> classifier.train_ham "Sunday is a holiday. Say no to work on Sunday!"
-irb(main):004:0> classifier.train_spam "You are the lucky winner! Claim your holiday prize."
+irb(main):003:0> classifier.train "Ham", "Sunday is a holiday. Say no to work on Sunday!"
+irb(main):004:0> classifier.train "Spam", "You are the lucky winner! Claim your holiday prize."
 irb(main):005:0> classifier.classify "What's the plan for Sunday?"
 #=> "Ham"
 ```
