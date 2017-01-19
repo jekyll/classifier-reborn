@@ -15,8 +15,8 @@ Bayesian Classifiers are accurate, fast, and have modest memory requirements.
 require 'classifier-reborn'
 
 classifier = ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting'
-classifier.train_interesting "Here are some good words. I hope you love them."
-classifier.train_uninteresting "Here are some bad words, I hate you."
+classifier.train "Interesting", "Here are some good words. I hope you love them."
+classifier.train "Uninteresting", "Here are some bad words, I hate you."
 classifier.classify "I hate bad words and you." #=> 'Uninteresting'
 
 classifier_snapshot = Marshal.dump classifier
@@ -126,15 +126,13 @@ cat: That dang cat keeps scratching the furniture
 ```
 
 If no categories are specified at initialization then `:auto_categorize` is set to `true` by default.
-However, dynamic methods like `train_some_category` or `untrain_some_category` will not work unless corresponding categories exist.
 
 ```ruby
 require 'classifier-reborn'
 
 classifier = ClassifierReborn::Bayes.new
-classifier.train("cat", "I can has cat")
-# The above method will work, but the following will throw an error
-# classifier.train_cat "I can has cat"
+classifier.train("Cat", "I can has cat")
+classifier.train("Dog", "I don't always bark at night")
 ```
 
 ## Custom Stopwords
@@ -205,15 +203,15 @@ Or suppose you just want the ability to have multiple categories and a `None of 
 When you initialize the `ClassifierReborn::Bayes` classifier there are several options which can be set that control threshold processing.
 
 ```ruby
-b = ClassifierReborn::Bayes.new(
-        'good',                 # one or more categories
-        enable_threshold: true, # default: false
-        threshold: -10.0        # default: 0.0
-      )
-b.train_good 'Good stuff from Dobie Gillis'
+classifier = ClassifierReborn::Bayes.new(
+                "Good",                 # one or more categories
+                enable_threshold: true, # default: false
+                threshold: -10.0        # default: 0.0
+              )
+classifier.train "Good", "Good stuff from Dobie Gillis"
 # ...
-text = 'Bad junk from Maynard G. Krebs'
-result = b.classify text
+text = "Bad junk from Maynard G. Krebs"
+result = classifier.classify text
 if result.nil?
   STDERR.puts "ALERT: This is not good: #{text}"
   let_loose_the_dogs_of_war!  # method definition left to the reader
@@ -226,12 +224,12 @@ When you see a nil value returned from the `classify` method it means that none 
 ### Threshold-related Convenience Methods
 
 ```ruby
-b.threshold            # get the current threshold
-b.threshold = -10.0    # set the threshold
-b.threshold_enabled?   # Boolean: is the threshold enabled?
-b.threshold_disabled?  # Boolean: is the threshold disabled?
-b.enable_threshold     # enables threshold processing
-b.disable_threshold    # disables threshold processing
+classifier.threshold            # get the current threshold
+classifier.threshold = -10.0    # set the threshold
+classifier.threshold_enabled?   # Boolean: is the threshold enabled?
+classifier.threshold_disabled?  # Boolean: is the threshold disabled?
+classifier.enable_threshold     # enables threshold processing
+classifier.disable_threshold    # disables threshold processing
 ```
 
 Using these convenience methods your applications can dynamically adjust threshold processing as required.

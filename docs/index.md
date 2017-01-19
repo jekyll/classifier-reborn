@@ -16,8 +16,8 @@ $ gem install classifier-reborn
 $ irb
 irb(main):001:0> require 'classifier-reborn'
 irb(main):002:0> classifier = ClassifierReborn::Bayes.new 'Ham', 'Spam'
-irb(main):003:0> classifier.train_ham "Sunday is a holiday. Say no to work on Sunday!"
-irb(main):004:0> classifier.train_spam "You are the lucky winner! Claim your holiday prize."
+irb(main):003:0> classifier.train "Ham", "Sunday is a holiday. Say no to work on Sunday!"
+irb(main):004:0> classifier.train "Spam", "You are the lucky winner! Claim your holiday prize."
 irb(main):005:0> classifier.classify "What's the plan for Sunday?"
 #=> "Ham"
 ```
@@ -26,7 +26,7 @@ Here is a line-by-line explanation of what we just did.
 
 * Installed the `classifier-reborn` gem (assuming that [Ruby](https://www.ruby-lang.org/en/) is installed already).
 * Started the Interactive Ruby Shell (IRB).
-* Loaded the `classifier-reborn` gem in the interactive Ruby session. 
+* Loaded the `classifier-reborn` gem in the interactive Ruby session.
 * Created an instance of `Bayesian` classifier with two classes `Ham` and `Spam`.
 * Trained the classifier with an example of `Ham`.
 * Trained the classifier with an example of `Spam`.
