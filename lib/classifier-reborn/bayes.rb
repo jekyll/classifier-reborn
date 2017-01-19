@@ -244,6 +244,10 @@ module ClassifierReborn
 
     alias_method :append_category, :add_category
 
+    def reset
+      puts "TODO: Implement it"
+    end
+
     private
 
     # Overwrites the default stopwords for current language with supplied list of stopwords or file
