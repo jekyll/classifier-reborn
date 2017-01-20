@@ -41,7 +41,7 @@ module ClassifierReborn
       accumulated_conf_mat = conf_mats.length == 1 ? conf_mats.first : empty_conf_mat(conf_mats.first.keys.sort)
       header = "Run     Total   Correct Incorrect  Accuracy"
       puts
-      puts " Stats ".center(43, "-")
+      puts " Stats ".center(header.length, "-")
       puts header
       puts "-" * header.length
 
