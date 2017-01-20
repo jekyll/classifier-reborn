@@ -47,11 +47,11 @@ class ClassifierValidation < Minitest::Test
       skip(e)
     end
     @sample_data = data.take(SAMPLE_SIZE).collect { |line| line.strip.split("\t") }
-    @classifier = ClassifierReborn::Bayes.new("Ham", "Spam")
+    @classifier = ClassifierReborn::Bayes.new
   end
 
   def test_bayes_classifier_validate
-    ClassifierReborn::ClassifierValidator.cross_validate(@classifier, @sample_data)
+    ClassifierValidator.cross_validate(@classifier, @sample_data)
   end
 
   def test_lsi_classifier_validate
