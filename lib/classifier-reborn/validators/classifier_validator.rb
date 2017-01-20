@@ -37,14 +37,14 @@ module ClassifierReborn
     end
 
     def generate_stats(*conf_mats)
-      pp conf_mats.flatten!
+      conf_mats.flatten!
       accumulated_conf_mat = conf_mats.length == 1 ? conf_mats.first : empty_conf_mat(conf_mats.first.keys.sort)
+
       header = "Run     Total   Correct Incorrect  Accuracy"
       puts
       puts " Stats ".center(header.length, "-")
       puts header
       puts "-" * header.length
-
       if conf_mats.length > 1
         conf_mats.each_with_index do |conf_mat, i|
           stats = calculate_stats(conf_mat)
@@ -60,6 +60,8 @@ module ClassifierReborn
       end
       stats = calculate_stats(accumulated_conf_mat)
       print_stats(stats, "All")
+      puts
+      print_conf_mat(accumulated_conf_mat)
       puts
     end
 
@@ -81,6 +83,24 @@ module ClassifierReborn
 
     def print_stats(stats, prefix="")
       puts "#{prefix.to_s.rjust(3)} #{stats[:total].to_s.rjust(9)} #{stats[:correct].to_s.rjust(9)} #{stats[:incorrect].to_s.rjust(9)} #{stats[:accuracy].round(5).to_s.ljust(7, '0').rjust(9)}"
+    end
+
+    def print_conf_mat(conf_mat)
+      header = ["Predicted ->"] + conf_mat.keys + ["Total"]
+      cell_size = header.map(&:length).max
+      header = header.map{|h| h.rjust(cell_size)}.join(" ")
+      puts " Confusion Matrix ".center(header.length, "-")
+      puts header
+      puts "-" * header.length
+      predicted_totals = conf_mat.keys.map{|predicted| [predicted, 0]}.to_h
+      conf_mat.each do |k, rec|
+        puts ([k.ljust(cell_size)] + rec.values.map{|v| v.to_s.rjust(cell_size)} + [rec.values.reduce(:+).to_s.rjust(cell_size)]).join(" ")
+        rec.each do |cat, val|
+          predicted_totals[cat] += val
+        end
+      end
+      puts "-" * header.length
+      puts (["Total".ljust(cell_size)] + predicted_totals.values.map{|v| v.to_s.rjust(cell_size)} + [predicted_totals.values.reduce(:+).to_s.rjust(cell_size)]).join(" ")
     end
 
     def empty_conf_mat(categories)
