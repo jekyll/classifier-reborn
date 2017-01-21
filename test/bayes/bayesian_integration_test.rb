@@ -26,7 +26,7 @@ class BayesianIntegrationTest < Minitest::Test
   end
 
   def teardown
-    @redis_backend.instance_variable_get(:@redis).flushdb
+    @redis_backend.instance_variable_get(:@redis).flushdb if defined? @redis_backend
   end
 
   def test_equality_of_backends
