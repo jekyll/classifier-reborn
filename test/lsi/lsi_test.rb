@@ -200,4 +200,15 @@ class LSITest < Minitest::Test
   def test_summary
     assert_equal 'This text involves dogs too [...] This text also involves cats', Summarizer.summary([@str1, @str2, @str3, @str4, @str5].join, 2)
   end
+
+  def test_reset
+    lsi = ClassifierReborn::LSI.new
+    assert lsi.items.empty?
+    lsi.add_item @str1, 'Dog'
+    refute lsi.items.empty?
+    lsi.reset
+    assert lsi.items.empty?
+    lsi.add_item @str3, 'Cat'
+    refute lsi.items.empty?
+  end
 end

@@ -86,7 +86,7 @@ module ClassifierReborn
       add_item(item)
     end
 
-    # Returns the categories for a given indexed items. You are free to add and remove
+    # Returns categories for a given indexed item. You are free to add and remove
     # items from this as you see fit. It does not invalide an index to change its categories.
     def categories_for(item)
       return [] unless @items[item]
@@ -298,6 +298,10 @@ module ClassifierReborn
       content_vector_array = node_for_content(doc).lsi_vector.to_a
       top_n = content_vector_array.sort.reverse[0..count - 1]
       top_n.collect { |x| @word_list.word_for_index(content_vector_array.index(x)) }
+    end
+
+    def reset
+      initialize(auto_rebuild: @auto_rebuild, cache_node_vectors: @cache_node_vectors)
     end
 
     private

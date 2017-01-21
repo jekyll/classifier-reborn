@@ -8,11 +8,11 @@ class BayesianRedisTest < Minitest::Test
 
   def setup
     begin
+      @old_stopwords = Hasher::STOPWORDS['en']
       @backend = ClassifierReborn::BayesRedisBackend.new
       @backend.instance_variable_get(:@redis).config(:set, "save", "")
       @alternate_backend = ClassifierReborn::BayesRedisBackend.new(db: 1)
       @classifier = ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting', backend: @backend
-      @old_stopwords = Hasher::STOPWORDS['en']
     rescue Redis::CannotConnectError => e
       skip(e)
     end
@@ -20,7 +20,9 @@ class BayesianRedisTest < Minitest::Test
 
   def teardown
     Hasher::STOPWORDS['en'] = @old_stopwords
-    @backend.instance_variable_get(:@redis).flushdb
-    @alternate_backend.instance_variable_get(:@redis).flushdb
+    if defined? @backend
+      @backend.instance_variable_get(:@redis).flushdb
+      @alternate_backend.instance_variable_get(:@redis).flushdb
+    end
   end
 end

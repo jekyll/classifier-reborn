@@ -25,7 +25,7 @@ module ClassifierReborn
     #   stopwords:        nil                     Accepts path to a text file or an array of words, when supplied, overwrites the default stopwords; assign empty string or array to disable stopwords
     #   backend:          BayesMemoryBackend.new  Alternatively, BayesRedisBackend.new for persistent storage
     def initialize(*args)
-      initial_categories = []
+      @initial_categories = []
       options = { language:         'en',
                   enable_threshold: false,
                   threshold:        0.0,
@@ -36,12 +36,12 @@ module ClassifierReborn
         if arg.is_a?(Hash)
           options.merge!(arg)
         else
-          initial_categories.push(arg)
+          @initial_categories.push(arg)
         end
       end
 
       unless options.key?(:auto_categorize)
-        options[:auto_categorize] = initial_categories.empty? ? true : false
+        options[:auto_categorize] = @initial_categories.empty? ? true : false
       end
 
       @language            = options[:language]
@@ -51,9 +51,7 @@ module ClassifierReborn
       @enable_stemmer      = options[:enable_stemmer]
       @backend             = options[:backend]
 
-      initial_categories.each do |c|
-        add_category(c)
-      end
+      populate_initial_categories
 
       if options.key?(:stopwords)
         custom_stopwords options[:stopwords]
@@ -245,10 +243,17 @@ module ClassifierReborn
     alias_method :append_category, :add_category
 
     def reset
-      puts "TODO: Implement it"
+      @backend.reset
+      populate_initial_categories
     end
 
     private
+
+    def populate_initial_categories
+      @initial_categories.each do |c|
+        add_category(c)
+      end
+    end
 
     # Overwrites the default stopwords for current language with supplied list of stopwords or file
     def custom_stopwords(stopwords)

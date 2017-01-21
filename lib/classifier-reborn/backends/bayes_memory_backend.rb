@@ -61,5 +61,9 @@ module ClassifierReborn
     def word_in_category?(category, word)
       @categories[category].key?(word)
     end
+
+    def reset
+      initialize
+    end
   end
 end
