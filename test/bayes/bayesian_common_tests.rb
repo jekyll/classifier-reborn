@@ -179,6 +179,18 @@ module BayesianCommonTests
     refute_equal Float::INFINITY, classifier.classify_with_score('To be or not to be')[1]
   end
 
+  def test_reset
+    @classifier.add_category 'Test'
+    assert_equal %w(Test Interesting Uninteresting).sort, @classifier.categories.sort
+    @classifier.reset
+    assert_equal %w(Interesting Uninteresting).sort, @classifier.categories.sort
+    classifier = empty_classifier
+    classifier.train('Ruby', 'A really sweet language')
+    assert classifier.categories.include?('Ruby')
+    classifier.reset
+    assert classifier.categories.empty?
+  end
+
   private
 
   def another_classifier
