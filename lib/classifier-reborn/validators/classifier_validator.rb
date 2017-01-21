@@ -99,7 +99,7 @@ module ClassifierReborn
     end
 
     def print_conf_mat(conf_mat)
-      header = ["Predicted ->"] + conf_mat.keys + ["Total"]
+      header = ["Predicted ->"] + conf_mat.keys + ["Total", "Recall"]
       cell_size = header.map(&:length).max
       header = header.map{|h| h.rjust(cell_size)}.join(" ")
       puts " Confusion Matrix ".center(header.length, "-")
@@ -107,13 +107,15 @@ module ClassifierReborn
       puts "-" * header.length
       predicted_totals = conf_mat.keys.map{|predicted| [predicted, 0]}.to_h
       conf_mat.each do |k, rec|
-        puts ([k.ljust(cell_size)] + rec.values.map{|v| v.to_s.rjust(cell_size)} + [rec.values.reduce(:+).to_s.rjust(cell_size)]).join(" ")
+        actual_total = rec.values.reduce(:+)
+        puts ([k.ljust(cell_size)] + rec.values.map{|v| v.to_s.rjust(cell_size)} + [actual_total.to_s.rjust(cell_size), divide(rec[k], actual_total).round(5).to_s.rjust(cell_size)]).join(" ")
         rec.each do |cat, val|
           predicted_totals[cat] += val
         end
       end
       puts "-" * header.length
       puts (["Total".ljust(cell_size)] + predicted_totals.values.map{|v| v.to_s.rjust(cell_size)} + [predicted_totals.values.reduce(:+).to_s.rjust(cell_size)]).join(" ")
+      puts (["Precision".ljust(cell_size)] + predicted_totals.keys.map{|k| divide(conf_mat[k][k], predicted_totals[k]).round(5).to_s.rjust(cell_size)}).join(" ")
     end
 
     def print_conf_tab(conf_tab)
