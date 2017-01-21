@@ -86,7 +86,7 @@ module ClassifierReborn
       add_item(item)
     end
 
-    # Returns the categories for a given indexed items. You are free to add and remove
+    # Returns categories for a given indexed item. You are free to add and remove
     # items from this as you see fit. It does not invalide an index to change its categories.
     def categories_for(item)
       return [] unless @items[item]
