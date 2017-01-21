@@ -300,6 +300,10 @@ module ClassifierReborn
       top_n.collect { |x| @word_list.word_for_index(content_vector_array.index(x)) }
     end
 
+    def reset
+      initialize(auto_rebuild: @auto_rebuild, cache_node_vectors: @cache_node_vectors)
+    end
+
     private
 
     def build_reduced_matrix(matrix, cutoff = 0.75)
