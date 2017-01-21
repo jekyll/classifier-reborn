@@ -16,6 +16,6 @@ class BackendRedisTest < Minitest::Test
   end
 
   def teardown
-    @backend.instance_variable_get(:@redis).flushdb unless @backend.nil?
+    @backend.instance_variable_get(:@redis).flushdb if defined? @backend
   end
 end
