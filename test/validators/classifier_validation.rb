@@ -61,6 +61,7 @@ class ClassifierValidation < Minitest::Test
       classifier = ClassifierReborn::Bayes.new backend: backend
       ClassifierValidator.cross_validate(classifier, @sample_data, 3)
     rescue Redis::CannotConnectError => e
+      puts "Unable to connect to Redis server"
       skip(e)
     end
   end
