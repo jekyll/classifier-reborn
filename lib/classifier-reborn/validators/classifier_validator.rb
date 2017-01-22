@@ -42,7 +42,7 @@ module ClassifierReborn
 
       header = "Run     Total   Correct Incorrect  Accuracy"
       puts
-      puts " Stats ".center(header.length, "-")
+      puts " Run Results ".center(header.length, "-")
       puts header
       puts "-" * header.length
       if conf_mats.length > 1
