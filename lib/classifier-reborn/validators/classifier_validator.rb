@@ -3,24 +3,6 @@ module ClassifierReborn
 
     module_function
 
-    def evaluate(classifier, test_data)
-      conf_mat = empty_conf_mat(classifier.categories.sort)
-      test_data.each do |rec|
-        actual = rec.first.tr('_', ' ').capitalize
-        predicted = classifier.classify(rec.last)
-        conf_mat[actual][predicted] += 1 unless predicted.nil?
-      end
-      conf_mat
-    end
-
-    def validate(classifier, training_data, test_data)
-      classifier.reset()
-      training_data.each do |rec|
-        classifier.train(rec.first, rec.last)
-      end
-      evaluate(classifier, test_data)
-    end
-
     def cross_validate(classifier, sample_data, fold=10, *options)
       classifier = ClassifierReborn::const_get(classifier).new(options) if classifier.is_a?(String)
       sample_data.shuffle!
@@ -36,10 +18,28 @@ module ClassifierReborn
       generate_report(conf_mats)
     end
 
+    def validate(classifier, training_data, test_data)
+      classifier = ClassifierReborn::const_get(classifier).new(options) if classifier.is_a?(String)
+      classifier.reset()
+      training_data.each do |rec|
+        classifier.train(rec.first, rec.last)
+      end
+      evaluate(classifier, test_data)
+    end
+
+    def evaluate(classifier, test_data)
+      conf_mat = empty_conf_mat(classifier.categories.sort)
+      test_data.each do |rec|
+        actual = rec.first.tr('_', ' ').capitalize
+        predicted = classifier.classify(rec.last)
+        conf_mat[actual][predicted] += 1 unless predicted.nil?
+      end
+      conf_mat
+    end
+
     def generate_report(*conf_mats)
       conf_mats.flatten!
       accumulated_conf_mat = conf_mats.length == 1 ? conf_mats.first : empty_conf_mat(conf_mats.first.keys.sort)
-
       header = "Run     Total   Correct Incorrect  Accuracy"
       puts
       puts " Run Report ".center(header.length, "-")
@@ -49,7 +49,6 @@ module ClassifierReborn
         conf_mats.each_with_index do |conf_mat, i|
           stats = calculate_stats(conf_mat)
           print_stats(stats, i+1)
-
           conf_mat.each do |actual, cols|
             cols.each do |predicted, v|
               accumulated_conf_mat[actual][predicted] += v
