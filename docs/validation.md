@@ -117,3 +117,10 @@ Precision          : 0.8641810918774967
 Accuracy           : 0.9748
 F1 score           : 0.9115168539325843
 ```
+
+The first table in the above report is a summary of each individual runs (of k-folds) followed by the overall accumulated summary line at the end.
+
+The second table is a standard multi-class [Confusion Matrix](https://en.wikipedia.org/wiki/Confusion_matrix).
+Along with the cross-matching counts of actual and predicted classes it also shows per class recall column and per class precision row at the ends.
+
+At the end there are various derived statistical measures listed for each class taken as the positive class one at a time (in [one-vs.-rest](https://en.wikipedia.org/wiki/Multiclass_classification#One-vs.-rest) manner).
