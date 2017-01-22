@@ -2,9 +2,9 @@
 
 module BackendCommonTests
   def test_initial_values
-    assert_equal 0, @backend.total_words
-    assert_equal 0, @backend.total_trainings
-    assert_equal [], @backend.category_keys
+    assert @backend.total_words.zero?
+    assert @backend.total_trainings.zero?
+    assert @backend.category_keys.empty?
   end
 
   def test_total_words
@@ -54,5 +54,17 @@ module BackendCommonTests
     assert_equal 3, @backend.category_word_frequency(:Interesting, "foo")
     @backend.delete_category_word(:Interesting, "foo")
     refute @backend.word_in_category?(:Interesting, "foo")
+  end
+
+  def test_reset
+    @backend.update_total_words(10)
+    @backend.update_total_trainings(10)
+    @backend.add_category(:Interesting)
+    @backend.update_category_training_count(:Interesting, 10)
+    @backend.update_category_word_count(:Interesting, 10)
+    @backend.reset
+    assert @backend.total_words.zero?
+    assert @backend.total_trainings.zero?
+    assert @backend.category_keys.empty?
   end
 end
