@@ -47,14 +47,31 @@ class ClassifierValidation < Minitest::Test
       skip(e)
     end
     @sample_data = data.take(SAMPLE_SIZE).collect { |line| line.strip.split("\t") }
-    @classifier = ClassifierReborn::Bayes.new
   end
 
-  def test_bayes_classifier_validate
-    ClassifierValidator.cross_validate(@classifier, @sample_data)
+  def test_bayes_classifier_10_fold_cross_validate_memory
+    classifier = ClassifierReborn::Bayes.new
+    ClassifierValidator.cross_validate(classifier, @sample_data)
   end
 
-  def test_lsi_classifier_validate
-    puts "TODO: Implement it"
+  def test_bayes_classifier_3_fold_cross_validate_redis
+    begin
+      backend = ClassifierReborn::BayesRedisBackend.new
+      backend.instance_variable_get(:@redis).config(:set, "save", "")
+      classifier = ClassifierReborn::Bayes.new backend: backend
+      ClassifierValidator.cross_validate(classifier, @sample_data, 3)
+    rescue Redis::CannotConnectError => e
+      skip(e)
+    end
+  end
+
+  def test_lsi_classifier_5_fold_cross_validate
+    lsi = ClassifierReborn::LSI.new
+    required_methods = [:train, :classify, :categories]
+    unless required_methods.reduce(true){|m, o| m && lsi.respond_to?(o)}
+      puts "TODO: LSI is not validatable until all of the #{required_methods} methods are implemented!"
+      skip
+    end
+    ClassifierValidator.cross_validate(lsi, @sample_data, 5)
   end
 end
