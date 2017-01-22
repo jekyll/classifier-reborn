@@ -33,16 +33,16 @@ module ClassifierReborn
         conf_mats << validate(classifier, training_data.flatten!(1), test_data)
       end
       classifier.reset()
-      generate_stats(conf_mats)
+      generate_report(conf_mats)
     end
 
-    def generate_stats(*conf_mats)
+    def generate_report(*conf_mats)
       conf_mats.flatten!
       accumulated_conf_mat = conf_mats.length == 1 ? conf_mats.first : empty_conf_mat(conf_mats.first.keys.sort)
 
       header = "Run     Total   Correct Incorrect  Accuracy"
       puts
-      puts " Run Results ".center(header.length, "-")
+      puts " Run Report ".center(header.length, "-")
       puts header
       puts "-" * header.length
       if conf_mats.length > 1
