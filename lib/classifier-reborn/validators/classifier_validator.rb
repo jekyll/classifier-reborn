@@ -18,7 +18,7 @@ module ClassifierReborn
       generate_report(conf_mats)
     end
 
-    def validate(classifier, training_data, test_data)
+    def validate(classifier, training_data, test_data, *options)
       classifier = ClassifierReborn::const_get(classifier).new(options) if classifier.is_a?(String)
       classifier.reset()
       training_data.each do |rec|
