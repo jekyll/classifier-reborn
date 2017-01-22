@@ -51,6 +51,7 @@ For more information read the following documentation topics.
 * [Installation and Dependencies](http://www.classifier-reborn.com/)
 * [Bayesian Classifier](http://www.classifier-reborn.com/bayes)
 * [Latent Semantic Indexer (LSI)](http://www.classifier-reborn.com/lsi)
+* [Classifier Validation](http://www.classifier-reborn.com/validation)
 * [Development and Contributions](http://www.classifier-reborn.com/development) (*Optional Docker instructions included*)
 
 ## Code of Conduct
