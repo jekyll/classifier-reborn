@@ -6,8 +6,14 @@ layout: default
 # {{ page.title }}
 
 Classifier Reborn provides with various methods to evaluate, validate, and generate statistics for classifiers.
-To illustrate the usage let's walk through some examples.
 
+In this document we will talk about the following.
+
+* Running k-fold cross-validation
+* Writing a custom validation with reporting
+* Evaluating a well-populated existing classifier model
+
+To illustrate the usage let's walk through with some examples.
 For this walk through we will use the [SMSSpamCollection.tsv](https://github.com/jekyll/classifier-reborn/blob/master/test/data/corpus/SMSSpamCollection.tsv) data file that is included in the project repository.
 It is a TSV file in which the first column is the class (`ham` or `spam`) and the second column is the corresponding SMS text.
 Entries of this file look like below.
@@ -313,4 +319,76 @@ Recall             : 0.968421052631579
 Precision          : 0.9916167664670659
 Accuracy           : 0.966
 F1 score           : 0.9798816568047337
+```
+
+**Note:** When dealing with real data, there might be cases when derived values (such as precision or recall) return zero which could be a side effect of the denominator being zero in the division.
+
+## Evaluation
+
+So far we have seen how can we validate a classifier implementation against a sample dataset.
+This might help selecting the most suitable classifier for a specific application based on data.
+However, there are times when we want to evaluate how a well trained, running classifier is performing as the new data is coming for classification.
+Having such an evaluation would help deciding whether more training is needed to maintain the desired accuracy (or other factors such as precision or recall).
+
+In such cases we cannot use validation methods as they will destroy the existing trained model and populate the classifier with new data.
+Classifier Reborn provides with an `evaluate` method for such cases.
+It accepts an instance of a classifier which is already trained, then evaluates it against a supplied test data.
+
+Let's build a classifier, train it, and persist the trained model in a file.
+
+```ruby
+classifier = ClassifierReborn::Bayes.new
+training_data.each do |rec|
+  classifier.train(rec.first, rec.last)
+end
+model = Marshal.dump(classifier)
+File.open("classifier-model.dat", "wb") {|f| f.write(model) }
+```
+
+Now, let's load that saved classifier and evaluate it.
+
+```ruby
+trained_classifier = Marshal.load(File.binread("classifier-model.dat"))
+conf_mat = evaluate(trained_classifier, test_data)
+```
+
+With this `conf_mat` in hand, we can generate all those reports that were explained in the Custom Validation section above.
+
+Saving the model to a file is not the only way to persist a classifier.
+Classifier Reborn supports [Redis](https://redis.io/) backend that can make a better practical use case of incremental training and evaluation.
+However, the process would not be much different, except there could be multiple classifier instances connected to a single shared storage backend and the evaluation instance can be one of them.
+
+```ruby
+redis_backend = ClassifierReborn::BayesRedisBackend.new
+classifier = ClassifierReborn::Bayes.new backend: redis_backend
+training_data.each do |rec|
+  classifier.train(rec.first, rec.last)
+end
+```
+
+Then we can create an evaluation instance as a separate process (even from a separate host).
+
+```ruby
+evaluation_classifier = classifier = ClassifierReborn::Bayes.new backend: redis_backend
+conf_mat = evaluate(evaluation_classifier, test_data)
+```
+
+Again, various reports can be generated the same way as explained in the previous section.
+Here is one such example.
+
+```ruby
+print_conf_mat(conf_mat)
+```
+
+This will print the corresponding confusion matrix.
+
+```
+----------------------- Confusion Matrix -----------------------
+Predicted ->          Ham         Spam        Total       Recall
+----------------------------------------------------------------
+Ham                   828           27          855      0.96842
+Spam                    7          138          145      0.95172
+----------------------------------------------------------------
+Total                 835          165         1000
+Precision         0.99162      0.83636
 ```
