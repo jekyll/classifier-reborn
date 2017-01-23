@@ -93,7 +93,8 @@ module ClassifierReborn
       conf_tab
     end
 
-    def print_run_report(stats, prefix="")
+    def print_run_report(stats, prefix="", print_header=false)
+      puts "#{"Run".rjust([3, prefix.length].max)}     Total   Correct Incorrect  Accuracy" if print_header
       puts "#{prefix.to_s.rjust(3)} #{stats[:total].to_s.rjust(9)} #{stats[:correct].to_s.rjust(9)} #{stats[:incorrect].to_s.rjust(9)} #{stats[:accuracy].round(5).to_s.ljust(7, '0').rjust(9)}"
     end
 
