@@ -106,16 +106,19 @@ module ClassifierReborn
       puts header
       puts "-" * header.length
       predicted_totals = conf_mat.keys.map{|predicted| [predicted, 0]}.to_h
+      correct = 0
       conf_mat.each do |k, rec|
         actual_total = rec.values.reduce(:+)
         puts ([k.ljust(cell_size)] + rec.values.map{|v| v.to_s.rjust(cell_size)} + [actual_total.to_s.rjust(cell_size), divide(rec[k], actual_total).round(5).to_s.rjust(cell_size)]).join(" ")
         rec.each do |cat, val|
           predicted_totals[cat] += val
+          correct += val if cat == k
         end
       end
+      total = predicted_totals.values.reduce(:+)
       puts "-" * header.length
-      puts (["Total".ljust(cell_size)] + predicted_totals.values.map{|v| v.to_s.rjust(cell_size)} + [predicted_totals.values.reduce(:+).to_s.rjust(cell_size)]).join(" ")
-      puts (["Precision".ljust(cell_size)] + predicted_totals.keys.map{|k| divide(conf_mat[k][k], predicted_totals[k]).round(5).to_s.rjust(cell_size)}).join(" ")
+      puts (["Total".ljust(cell_size)] + predicted_totals.values.map{|v| v.to_s.rjust(cell_size)} + [total.to_s.rjust(cell_size), "".rjust(cell_size)]).join(" ")
+      puts (["Precision".ljust(cell_size)] + predicted_totals.keys.map{|k| divide(conf_mat[k][k], predicted_totals[k]).round(5).to_s.rjust(cell_size)} + ["Accuracy ->".rjust(cell_size), divide(correct, total).round(5).to_s.rjust(cell_size)]).join(" ")
     end
 
     def print_conf_tab(conf_tab)
