@@ -47,8 +47,8 @@ module ClassifierReborn
       puts "-" * header.length
       if conf_mats.length > 1
         conf_mats.each_with_index do |conf_mat, i|
-          stats = calculate_stats(conf_mat)
-          print_stats(stats, i+1)
+          run_report = build_run_report(conf_mat)
+          print_run_report(run_report, i+1)
           conf_mat.each do |actual, cols|
             cols.each do |predicted, v|
               accumulated_conf_mat[actual][predicted] += v
@@ -57,8 +57,8 @@ module ClassifierReborn
         end
         puts "-" * header.length
       end
-      stats = calculate_stats(accumulated_conf_mat)
-      print_stats(stats, "All")
+      run_report = build_run_report(accumulated_conf_mat)
+      print_run_report(run_report, "All")
       puts
       print_conf_mat(accumulated_conf_mat)
       puts
@@ -66,7 +66,7 @@ module ClassifierReborn
       print_conf_tab(conf_tab)
     end
 
-    def calculate_stats(conf_mat)
+    def build_run_report(conf_mat)
       correct = incorrect = 0
       conf_mat.each do |actual, cols|
         cols.each do |predicted, v|
@@ -93,7 +93,7 @@ module ClassifierReborn
       conf_tab
     end
 
-    def print_stats(stats, prefix="")
+    def print_run_report(stats, prefix="")
       puts "#{prefix.to_s.rjust(3)} #{stats[:total].to_s.rjust(9)} #{stats[:correct].to_s.rjust(9)} #{stats[:incorrect].to_s.rjust(9)} #{stats[:accuracy].round(5).to_s.ljust(7, '0').rjust(9)}"
     end
 
