@@ -90,8 +90,8 @@ Predicted ->          Ham         Spam        Total       Recall
 Ham                  4225          102         4327      0.97643
 Spam                   24          649          673      0.96434
 ----------------------------------------------------------------
-Total                4249          751         5000
-Precision         0.99435      0.86418
+Total                4249          751         5000             
+Precision         0.99435      0.86418  Accuracy ->      0.97480
 
 # Positive class: Ham
 Total population   : 5000
@@ -182,8 +182,8 @@ Predicted ->          Ham         Spam        Total       Recall
 Ham                   828           27          855      0.96842
 Spam                    7          138          145      0.95172
 ----------------------------------------------------------------
-Total                 835          165         1000
-Precision         0.99162      0.83636
+Total                 835          165         1000             
+Precision         0.99162      0.83636  Accuracy ->      0.96600
 
 # Positive class: Ham
 Total population   : 1000
@@ -256,8 +256,8 @@ Predicted ->          Ham         Spam        Total       Recall
 Ham                   828           27          855      0.96842
 Spam                    7          138          145      0.95172
 ----------------------------------------------------------------
-Total                 835          165         1000
-Precision         0.99162      0.83636
+Total                 835          165         1000             
+Precision         0.99162      0.83636  Accuracy ->      0.96600
 ```
 
 We can convert this multi-class confusion matrix data `conf_mat` to corresponding confusion table.
@@ -389,6 +389,6 @@ Predicted ->          Ham         Spam        Total       Recall
 Ham                   828           27          855      0.96842
 Spam                    7          138          145      0.95172
 ----------------------------------------------------------------
-Total                 835          165         1000
-Precision         0.99162      0.83636
+Total                 835          165         1000             
+Precision         0.99162      0.83636  Accuracy ->      0.96600
 ```
