@@ -369,7 +369,7 @@ end
 Then we can create an evaluation instance as a separate process (even from a separate host).
 
 ```ruby
-evaluation_classifier = classifier = ClassifierReborn::Bayes.new backend: redis_backend
+evaluation_classifier = ClassifierReborn::Bayes.new backend: redis_backend
 conf_mat = evaluate(evaluation_classifier, test_data)
 ```
 
