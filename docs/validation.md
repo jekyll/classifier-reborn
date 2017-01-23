@@ -214,6 +214,27 @@ This report is similar to the `k-fold` cross-validation method, except, it does 
 However, `generate_report` method is capable of taking more than one `conf_mat` hashes in an array or separate arguments.
 In that case, each `conf_mat` hash will be treated as individual run result and corresponding individual and accumulated reports will be generated.
 
+Suppose we only want to generate the run reports, but no multi-class confusion matrix or other derived statics.
+
+```ruby
+run_report = build_run_report(conf_mat)
+pp run_report
+#=> {:total=>1000, :correct=>966, :incorrect=>34, :accuracy=>0.966}
+```
+
+This data can be used to print the report in a custom manner or utilize corresponding provided print method.
+
+```ruby
+print_run_report(run_report, "Custom", true)
+```
+
+This will print the following report where the last argument is set to `true` to print the header.
+
+```
+Run        Total   Correct Incorrect  Accuracy
+Custom      1000       966        34   0.96600
+```
+
 Now, suppose we only want to generate the multi-class confusion matrix report, but no run reports or other derived statics.
 
 ```ruby
