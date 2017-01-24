@@ -3,11 +3,25 @@
 module BayesianCommonBenchmarks
   MAX_RECORDS = 5000
 
-  class BenchmarkReporter < Minitest::Reporters::RubyMateReporter
+  class BenchmarkReporter < Minitest::Reporters::BaseReporter
+    include ANSI::Code
+
     def before_suite(suite)
+      puts
       puts ([suite] + BayesianCommonBenchmarks.bench_range).join("\t")
     end
+
     def after_suite(suite)
+    end
+
+    def report
+      super
+      puts
+      puts('Finished in %.5fs' % total_time)
+      print('%d tests, %d assertions, ' % [count, assertions])
+      color = failures.zero? && errors.zero? ? :green : :red
+      print(send(color) { '%d failures, %d errors, ' } % [failures, errors])
+      print(yellow { '%d skips' } % skips)
       puts
     end
   end
