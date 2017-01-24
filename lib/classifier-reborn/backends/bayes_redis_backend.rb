@@ -92,5 +92,11 @@ module ClassifierReborn
     def word_in_category?(category, word)
       @redis.hexists(category, word)
     end
+
+    def reset
+      @redis.flushdb
+      @redis.set(:total_words, 0)
+      @redis.set(:total_trainings, 0)
+    end
   end
 end

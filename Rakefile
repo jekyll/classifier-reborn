@@ -23,6 +23,14 @@ Rake::TestTask.new(:bench) do |t|
   t.verbose = true
 end
 
+# Run validations
+desc 'Run all validations'
+Rake::TestTask.new(:validate) do |t|
+  t.libs << 'lib'
+  t.pattern = 'test/*/*_validation.rb'
+  t.verbose = true
+end
+
 # Make a console, useful when working on tests
 desc 'Generate a test console'
 task :console do
