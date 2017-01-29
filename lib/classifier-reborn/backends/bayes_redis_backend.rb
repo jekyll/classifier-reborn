@@ -1,3 +1,5 @@
+require_relative 'no_redis_error'
+
 begin
   require 'redis'
 rescue LoadError
