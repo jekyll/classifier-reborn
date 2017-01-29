@@ -6,7 +6,7 @@ module ClassifierReborn
     def initialize
       @total_words     = 0
       @total_trainings = 0
-      @category_counts = Hash.new { |h, k| h[k] = {training: 0, word: 0} }
+      @category_counts = {}
       @categories      = {}
     end
 
@@ -19,11 +19,11 @@ module ClassifierReborn
     end
 
     def category_training_count(category)
-      @category_counts[category][:training]
+      category_counts(category)[:training]
     end
 
     def update_category_training_count(category, diff)
-      @category_counts[category][:training] += diff
+      category_counts(category)[:training] += diff
     end
 
     def category_has_trainings?(category)
@@ -31,11 +31,11 @@ module ClassifierReborn
     end
 
     def category_word_count(category)
-      @category_counts[category][:word]
+      category_counts(category)[:word]
     end
 
     def update_category_word_count(category, diff)
-      @category_counts[category][:word] += diff
+      category_counts(category)[:word] += diff
     end
 
     def add_category(category)
@@ -64,6 +64,12 @@ module ClassifierReborn
 
     def reset
       initialize
+    end
+
+    private
+
+    def category_counts(category)
+      @category_counts[category] ||= {training: 0, word: 0}
     end
   end
 end
