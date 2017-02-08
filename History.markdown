@@ -8,6 +8,7 @@
  * Memory and Redis backend support ([#84](https://github.com/jekyll/classifier-reborn/pull/84))
 
 ### Minor Enhancements
+ * Fixed persistance for BayesMemoryBackend ([#147](https://github.com/jekyll/classifier-reborn/pull/147))
  * Removed magic train untrain methods from docs, ([#141](https://github.com/jekyll/classifier-reborn/pull/141))
  * Links corrected to point to the new domain ([#139](https://github.com/jekyll/classifier-reborn/pull/139))
  * Minor docs improvements ([#138](https://github.com/jekyll/classifier-reborn/pull/138))
