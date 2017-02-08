@@ -1,5 +1,6 @@
 ## HEAD
 ## Major Enhancements
+ * Add support to reset trained classifiers to their initial state ([#143](https://github.com/jekyll/classifier-reborn/pull/143))
  * Classifier evaluation and validation ([#142](https://github.com/jekyll/classifier-reborn/pull/142))
  * Abbility to add custom stopwords at classifier initialization ([#129](https://github.com/jekyll/classifier-reborn/pull/129))
  * Don't train/untrain the Bayesian classifier with empty word hashes ([#132](https://github.com/jekyll/classifier-reborn/pull/132))
