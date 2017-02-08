@@ -32,7 +32,7 @@ class BayesianRedisBenchmark < Minitest::Benchmark
   def teardown
     if defined? @classifiers
       self.class.bench_range.each do |n|
-        @classifiers[n].instance_variable_get(:@backend).instance_variable_get(:@redis).flushdb
+        @classifiers[n].reset
       end
     end
   end

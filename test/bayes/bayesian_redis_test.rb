@@ -21,8 +21,8 @@ class BayesianRedisTest < Minitest::Test
   def teardown
     Hasher::STOPWORDS['en'] = @old_stopwords
     if defined? @backend
-      @backend.instance_variable_get(:@redis).flushdb
-      @alternate_backend.instance_variable_get(:@redis).flushdb
+      @backend.reset
+      @alternate_backend.reset
     end
   end
 end
