@@ -6,4 +6,5 @@ require 'minitest/reporters'
 Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 require 'pry'
 require 'classifier-reborn'
+require 'classifier-reborn/backends/bayes_redis_backend'
 include ClassifierReborn
