@@ -73,4 +73,5 @@ For more information read the following documentation topics.
 
 * [Bayesian Classifier](bayes)
 * [Latent Semantic Indexer (LSI)](lsi)
+* [Classifier Validation](validation)
 * [Development and Contributions](development)

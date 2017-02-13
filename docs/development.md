@@ -70,7 +70,7 @@ root@[container-id]:/usr/src/app# rake bench                 # To run benchmarks
 root@[container-id]:/usr/src/app# rake validate              # To run validations
 root@[container-id]:/usr/src/app# pry
 [1] pry(main)> require 'classifier-reborn'
-[2] pry(main)> classifier = ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting'
+[2] pry(main)> classifier = ClassifierReborn::Bayes.new 'Ham', 'Spam'
 ```
 
 ## Documentation
