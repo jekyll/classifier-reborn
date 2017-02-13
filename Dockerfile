@@ -1,4 +1,4 @@
-FROM ruby:2.3
+FROM ruby:2.4
 MAINTAINER Sawood Alam <https://github.com/ibnesayeed>
 
 ENV LANG C.UTF-8
