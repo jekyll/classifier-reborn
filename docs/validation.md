@@ -5,7 +5,8 @@ layout: default
 
 # {{ page.title }}
 
-Classifier Reborn provides with various methods to evaluate, validate, and generate statistics for classifiers. The repository contains some sample validation Rake tasks that can be run in the [development environment](development) using the following command.
+Classifier Reborn provides with various methods to evaluate, validate, and generate statistics for classifiers.
+The repository contains some sample validation Rake tasks that can be run in the [development environment](development) using the following command.
 
 ```bash
 $ redis-server --daemonize yes
