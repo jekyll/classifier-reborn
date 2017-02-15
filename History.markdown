@@ -9,6 +9,7 @@
  * Memory and Redis backend support ([#84](https://github.com/jekyll/classifier-reborn/pull/84))
 
 ### Minor Enhancements
+ * Updated Dokcer image to Ruby 2.4 ([#149](https://github.com/jekyll/classifier-reborn/pull/149))
  * Classifier validation user documenation ([#145](https://github.com/jekyll/classifier-reborn/pull/145))
  * Fixed persistance for BayesMemoryBackend ([#147](https://github.com/jekyll/classifier-reborn/pull/147))
  * Fixed error on requiring 'classifier-reborn' without using Redis ([#146](https://github.com/jekyll/classifier-reborn/pull/146))
