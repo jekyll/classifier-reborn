@@ -6,6 +6,12 @@ layout: default
 # {{ page.title }}
 
 Classifier Reborn provides with various methods to evaluate, validate, and generate statistics for classifiers.
+The repository contains some sample validation Rake tasks that can be run in the [development environment](development) using the following command.
+
+```bash
+$ redis-server --daemonize yes
+$ rake validate
+```
 
 In this document we will talk about the following.
 
@@ -50,7 +56,7 @@ pp sample_data.sample(4)
 #    ["ham", "I was slept that time.you there?"],
 #    ["spam", "Win a £1000 cash prize or a prize worth £5000"],
 #    ["ham", "Hope you are not scared!"]]
- ```
+```
 
 ## K-fold Cross-validation
 

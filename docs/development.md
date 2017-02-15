@@ -36,6 +36,7 @@ To test all the test cases first [install Redis](https://redis.io/topics/quickst
 $ redis-server --daemonize yes
 $ rake                       # To run tests
 $ rake bench                 # To run benchmarks
+$ rake validate              # To run validations
 ```
 
 Kill the `redis-server` daemon when done.
@@ -66,9 +67,10 @@ $ docker run --rm -it -v "$PWD":/usr/src/app classifier-reborn bash
 root@[container-id]:/usr/src/app# redis-server --daemonize yes
 root@[container-id]:/usr/src/app# rake                       # To run tests
 root@[container-id]:/usr/src/app# rake bench                 # To run benchmarks
+root@[container-id]:/usr/src/app# rake validate              # To run validations
 root@[container-id]:/usr/src/app# pry
 [1] pry(main)> require 'classifier-reborn'
-[2] pry(main)> classifier = ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting'
+[2] pry(main)> classifier = ClassifierReborn::Bayes.new 'Ham', 'Spam'
 ```
 
 ## Documentation
