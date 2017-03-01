@@ -31,8 +31,8 @@ module ClassifierReborn
     #   inherit_socket:     false
     def initialize(options = {})
       @redis = Redis.new(options)
-      @redis.set(:total_words, 0)
-      @redis.set(:total_trainings, 0)
+      @redis.setnx(:total_words, 0)
+      @redis.setnx(:total_trainings, 0)
     end
 
     def total_words
