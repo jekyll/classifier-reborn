@@ -1,10 +1,7 @@
 require_relative 'no_redis_error'
-
-begin
-  require 'redis'
-rescue LoadError
-  raise NoRedisError
-end
+# require redis when we run #intialize. This way only people using this backend
+# will need to install and load the backend without having to
+# require 'classifier-reborn/backends/bayes_redis_backend'
 
 module ClassifierReborn
   # This class provides Redis as the storage backend for the classifier data structures
@@ -30,6 +27,12 @@ module ClassifierReborn
     #   reconnect_attempts: 1
     #   inherit_socket:     false
     def initialize(options = {})
+      begin # because some people don't have redis installed
+        require 'redis'
+      rescue LoadError
+        raise NoRedisError
+      end
+
       @redis = Redis.new(options)
       @redis.set(:total_words, 0)
       @redis.set(:total_trainings, 0)

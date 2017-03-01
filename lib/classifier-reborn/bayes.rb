@@ -6,6 +6,7 @@ require 'set'
 
 require_relative 'category_namer'
 require_relative 'backends/bayes_memory_backend'
+require_relative 'backends/bayes_redis_backend'
 
 module ClassifierReborn
   class Bayes
