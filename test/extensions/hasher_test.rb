@@ -56,7 +56,7 @@ class HasherTest < Minitest::Test
     temp_stopwords_name = File.basename(temp_stopwords.path)
 
     Hasher.add_custom_stopword_path(temp_stopwords_path)
-    hash = { list: 1, cool: 1 }
+    hash = {:is=>1, :a=>1, :list=>1, :of=>1, :cool=>1}
     assert_equal hash, Hasher.clean_word_hash("this is a list of cool words!", temp_stopwords_name)
   end
 
