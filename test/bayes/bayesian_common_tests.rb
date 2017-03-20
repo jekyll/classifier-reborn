@@ -139,10 +139,10 @@ module BayesianCommonTests
     classifier.train('Ruby', '')
     assert classifier.categories.empty?
     classifier.train('Ruby', 'To be or not to be')
-    assert classifier.categories.empty?
+    refute classifier.categories.empty?
     classifier.train('Ruby', 'A really sweet language')
     refute classifier.categories.empty?
-    assert_equal Float::INFINITY, classifier.classify_with_score('To be or not to be')[1]
+    assert_equal Float::INFINITY, classifier.classify_with_score('')[1]
   end
 
   def test_empty_string_stopwords
