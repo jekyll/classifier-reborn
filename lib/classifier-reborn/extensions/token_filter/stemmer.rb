@@ -8,7 +8,7 @@ module ClassifierReborn
     module Stemmer
       module_function
 
-      def filter(tokens, language = 'en')
+      def filter(tokens, language: 'en')
         tokens.collect do |token|
           if token.stemmable?
             token.stem
