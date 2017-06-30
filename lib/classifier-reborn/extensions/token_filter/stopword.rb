@@ -10,9 +10,10 @@ module ClassifierReborn
 
       module_function
 
-      def filter(words, language = 'en')
-        words.reject do |word|
-          word.length <= 2 || STOPWORDS[language].include?(word)
+      def filter(tokens, language = 'en')
+        tokens.reject do |token|
+          token.maybe_stopword? &&
+            (token.length <= 2 || STOPWORDS[language].include?(token))
         end
       end
 
