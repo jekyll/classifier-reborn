@@ -5,6 +5,8 @@
 
 require 'set'
 
+require_relative 'tokenizer/whitespace'
+
 module ClassifierReborn
   module Hasher
     STOPWORDS_PATH = [File.expand_path(File.dirname(__FILE__) + '/../../../data/stopwords')]
@@ -21,7 +23,8 @@ module ClassifierReborn
 
     # Return a word hash without extra punctuation or short symbols, just stemmed words
     def clean_word_hash(str, language = 'en', enable_stemmer = true)
-      word_hash_for_words(str.gsub(/[^\p{WORD}\s]/, '').downcase.split, language, enable_stemmer)
+      words = Tokenizer::Whitespace.tokenize(str)
+      word_hash_for_words(words, language, enable_stemmer)
     end
 
     def word_hash_for_words(words, language = 'en', enable_stemmer = true)
