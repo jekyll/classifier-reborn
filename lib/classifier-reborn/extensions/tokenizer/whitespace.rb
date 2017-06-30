@@ -15,10 +15,10 @@ module ClassifierReborn
           Token.new(word, stemmable: true, maybe_stopword: true)
         end
         unless clean
-          symbol_tokens = str.scan(/[^\s\p{WORD}]/).collect do |word|
-            Token.new(word, stemmable: false, maybe_stopword: false)
-          end
-          tokens += symbol_tokens
+        symbol_tokens = str.scan(/[^\s\p{WORD}]/).collect do |word|
+          Token.new(word, stemmable: false, maybe_stopword: false)
+        end
+        tokens += symbol_tokens
         end
         tokens = TokenFilter::Stopword.filter(tokens, language: language)
         if enable_stemmer
