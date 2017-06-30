@@ -24,7 +24,7 @@ module ClassifierReborn
 
       d = Hash.new(0)
       words.each do |word|
-        d[word.to_s.intern] += 1
+        d[word.intern] += 1
       end
       d
     end
