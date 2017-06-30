@@ -3,7 +3,7 @@ require 'tempfile'
 
 class HasherTest < Minitest::Test
   def setup
-    @original_stopwords_path = Hasher::STOPWORDS_PATH.dup
+    @original_stopwords_path = TokenFilter::Stopword::STOPWORDS_PATH.dup
   end
 
   def test_word_hash
@@ -22,21 +22,21 @@ class HasherTest < Minitest::Test
   end
 
   def test_default_stopwords
-    refute_empty Hasher::STOPWORDS['en']
-    refute_empty Hasher::STOPWORDS['fr']
-    assert_empty Hasher::STOPWORDS['gibberish']
+    refute_empty TokenFilter::Stopword::STOPWORDS['en']
+    refute_empty TokenFilter::Stopword::STOPWORDS['fr']
+    assert_empty TokenFilter::Stopword::STOPWORDS['gibberish']
   end
 
   def test_loads_custom_stopwords
-    default_english_stopwords = Hasher::STOPWORDS['en']
+    default_english_stopwords = TokenFilter::Stopword::STOPWORDS['en']
 
     # Remove the english stopwords
-    Hasher::STOPWORDS.delete('en')
+    TokenFilter::Stopword::STOPWORDS.delete('en')
 
     # Add a custom stopwords path
-    Hasher::STOPWORDS_PATH.unshift File.expand_path(File.dirname(__FILE__) + '/../data/stopwords')
+    TokenFilter::Stopword::STOPWORDS_PATH.unshift File.expand_path(File.dirname(__FILE__) + '/../data/stopwords')
 
-    custom_english_stopwords = Hasher::STOPWORDS['en']
+    custom_english_stopwords = TokenFilter::Stopword::STOPWORDS['en']
 
     refute_equal default_english_stopwords, custom_english_stopwords
   end
@@ -55,13 +55,13 @@ class HasherTest < Minitest::Test
     # Get tempfile name.
     temp_stopwords_name = File.basename(temp_stopwords.path)
 
-    Hasher.add_custom_stopword_path(temp_stopwords_path)
+    TokenFilter::Stopword.add_custom_stopword_path(temp_stopwords_path)
     hash = { list: 1, cool: 1 }
     assert_equal hash, Hasher.clean_word_hash("this is a list of cool words!", temp_stopwords_name)
   end
 
   def teardown
-    Hasher::STOPWORDS.clear
-    Hasher::STOPWORDS_PATH.clear.concat @original_stopwords_path
+    TokenFilter::Stopword::STOPWORDS.clear
+    TokenFilter::Stopword::STOPWORDS_PATH.clear.concat @original_stopwords_path
   end
 end

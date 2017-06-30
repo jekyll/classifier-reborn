@@ -266,7 +266,7 @@ module ClassifierReborn
           return # Do not overwrite the default
         end
       end
-      Hasher::STOPWORDS[@language] = Set.new stopwords
+      TokenFilter::Stopword::STOPWORDS[@language] = Set.new stopwords
     end
   end
 end

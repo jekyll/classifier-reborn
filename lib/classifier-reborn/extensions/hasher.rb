@@ -6,11 +6,10 @@
 require 'set'
 
 require_relative 'tokenizer/whitespace'
+require_relative 'token_filter/stopword'
 
 module ClassifierReborn
   module Hasher
-    STOPWORDS_PATH = [File.expand_path(File.dirname(__FILE__) + '/../../../data/stopwords')]
-
     module_function
 
     # Return a Hash of strings => ints. Each word in the string is stemmed,
@@ -24,13 +23,13 @@ module ClassifierReborn
     # Return a word hash without extra punctuation or short symbols, just stemmed words
     def clean_word_hash(str, language = 'en', enable_stemmer = true)
       words = Tokenizer::Whitespace.tokenize(str)
+      words = TokenFilter::Stopword.filter(words, language)
       word_hash_for_words(words, language, enable_stemmer)
     end
 
     def word_hash_for_words(words, language = 'en', enable_stemmer = true)
       d = Hash.new(0)
       words.each do |word|
-        next unless word.length > 2 && !STOPWORDS[language].include?(word)
         if enable_stemmer
           d[word.stem.intern] += 1
         else
@@ -40,31 +39,12 @@ module ClassifierReborn
       d
     end
 
-    # Add custom path to a new stopword file created by user
-    def add_custom_stopword_path(path)
-      STOPWORDS_PATH.unshift(path)
-    end
-
     def word_hash_for_symbols(words)
       d = Hash.new(0)
       words.each do |word|
         d[word.intern] += 1
       end
       d
-    end
-
-    # Create a lazily-loaded hash of stopword data
-    STOPWORDS = Hash.new do |hash, language|
-      hash[language] = []
-
-      STOPWORDS_PATH.each do |path|
-        if File.exist?(File.join(path, language))
-          hash[language] = Set.new File.read(File.join(path, language.to_s)).force_encoding("utf-8").split
-          break
-        end
-      end
-
-      hash[language]
     end
   end
 end

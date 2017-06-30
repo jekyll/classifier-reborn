@@ -8,7 +8,7 @@ class BayesianRedisTest < Minitest::Test
 
   def setup
     begin
-      @old_stopwords = Hasher::STOPWORDS['en']
+      @old_stopwords = TokenFilter::Stopword::STOPWORDS['en']
       @backend = ClassifierReborn::BayesRedisBackend.new
       @backend.instance_variable_get(:@redis).config(:set, "save", "")
       @alternate_backend = ClassifierReborn::BayesRedisBackend.new(db: 1)
@@ -19,7 +19,7 @@ class BayesianRedisTest < Minitest::Test
   end
 
   def teardown
-    Hasher::STOPWORDS['en'] = @old_stopwords
+    TokenFilter::Stopword::STOPWORDS['en'] = @old_stopwords
     if defined? @backend
       @backend.reset
       @alternate_backend.reset

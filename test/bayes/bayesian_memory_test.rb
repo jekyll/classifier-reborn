@@ -9,10 +9,10 @@ class BayesianMemoryTest < Minitest::Test
   def setup
     @alternate_backend = ClassifierReborn::BayesMemoryBackend.new
     @classifier = ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting'
-    @old_stopwords = Hasher::STOPWORDS['en']
+    @old_stopwords = TokenFilter::Stopword::STOPWORDS['en']
   end
 
   def teardown
-    Hasher::STOPWORDS['en'] = @old_stopwords
+    TokenFilter::Stopword::STOPWORDS['en'] = @old_stopwords
   end
 end
