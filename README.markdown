@@ -54,7 +54,7 @@ For more information read the following documentation topics.
 ## Code of Conduct
 
 In order to have a more open and welcoming community, `Classifier Reborn` adheres to the `Jekyll`
-[code of conduct](https://github.com/jekyll/jekyll/blob/master/CONDUCT.markdown) adapted from the `Ruby on Rails` code of conduct.
+[code of conduct](https://github.com/jekyll/jekyll/blob/master/CODE_OF_CONDUCT.markdown) adapted from the `Ruby on Rails` code of conduct.
 
 Please adhere to this code of conduct in any interactions you have in the `Classifier` community.
 If you encounter someone violating these terms, please let [Chase Gilliam](https://github.com/Ch4s3) know and we will address it as soon as possible.
