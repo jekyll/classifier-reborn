@@ -2,7 +2,17 @@ require 'rubygems'
 require 'rake'
 require 'rake/testtask'
 require 'rdoc/task'
-require 'bundler/gem_tasks'
+
+require 'bundler/gem_helper'
+
+install_config = case RUBY_PLATFORM
+                 when 'java'
+                  { name: 'classifier-reborn-java' }
+                 else
+                  { name: 'classifier-reborn' }
+                 end
+
+Bundler::GemHelper.install_tasks(install_config)
 
 desc 'Default Task'
 task default: [:test]

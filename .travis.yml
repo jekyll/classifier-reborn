@@ -5,6 +5,7 @@ rvm:
   - 2.2.6
   - 2.3.3
   - 2.4.0
+  - jruby-9.1.13.0
 notifications:
   irc:
     on_success: change
