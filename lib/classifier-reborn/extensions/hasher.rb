@@ -29,7 +29,7 @@ module ClassifierReborn
       words.each do |word|
         next unless word.length > 2 && !STOPWORDS[language].include?(word)
         if enable_stemmer
-          d[word.stem.intern] += 1
+          d[Stemmer.instance.stem(word).intern] += 1
         else
           d[word.intern] += 1
         end

@@ -29,3 +29,10 @@ require_relative 'classifier-reborn/category_namer'
 require_relative 'classifier-reborn/bayes'
 require_relative 'classifier-reborn/lsi'
 require_relative 'classifier-reborn/validators/classifier_validator'
+
+case ENV['RUBY_PLATFORM']
+when 'java'
+  require 'jruby-stemmer'
+else
+  require 'fast-stemmer'
+end
