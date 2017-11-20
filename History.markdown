@@ -1,5 +1,6 @@
 ## HEAD
 ## Major Enhancements
+ * JRuby Support, thanks to [@mach-kernel](https://github.com/mach-kernel) ([#168](https://github.com/jekyll/classifier-reborn/pull/168))
  * Add support to reset trained classifiers to their initial state ([#143](https://github.com/jekyll/classifier-reborn/pull/143))
  * Classifier evaluation and validation ([#142](https://github.com/jekyll/classifier-reborn/pull/142))
  * Abbility to add custom stopwords at classifier initialization ([#129](https://github.com/jekyll/classifier-reborn/pull/129))
