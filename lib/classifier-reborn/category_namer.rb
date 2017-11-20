@@ -2,7 +2,6 @@
 # Copyright:: Copyright (c) 2005 Lucas Carlson
 # License::   LGPL
 
-require 'fast_stemmer'
 require 'classifier-reborn/extensions/hasher'
 
 module ClassifierReborn
