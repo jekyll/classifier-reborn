@@ -53,6 +53,10 @@ For more information read the following documentation topics.
 
 ### Notes on JRuby support
 
+```ruby
+gem 'classifier-reborn-jruby', platforms: :java
+```
+
 While experimental, this gem should work on JRuby without any kind of additional changes. Unfortunately, you will **not** be able to use C bindings to GNU/GSL or similar performance-enhancing native code. Additionally, we do not use `fast_stemmer`, but rather [an implementation](https://tartarus.org/martin/PorterStemmer/java.txt) of the [Porter Stemming](https://tartarus.org/martin/PorterStemmer/) algorithm. Stemming will differ between MRI and JRuby, however you may choose to [disable stemming](https://tartarus.org/martin/PorterStemmer/) and do your own manual preprocessing (or use some other [popular Java library](https://opennlp.apache.org/)). 
 
 If you encounter a problem, please submit your issue with `[JRuby]` in the title.

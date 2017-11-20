@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.rubygems_version = '2.2.2'
   s.required_ruby_version = '>= 1.9.3'
 
-  s.name             = 'classifier-reborn'
+  s.name             = 'classifier-reborn-jruby'
   s.version          = ClassifierReborn::VERSION
   s.license          = 'LGPL'
   s.summary          = 'A general classifier module to allow Bayesian and other types of classifications.'
