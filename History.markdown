@@ -1,4 +1,6 @@
 ## HEAD
+
+## 2.2.0 / 2017-12-14
 ## Major Enhancements
  * JRuby Support, thanks to [@mach-kernel](https://github.com/mach-kernel) ([#168](https://github.com/jekyll/classifier-reborn/pull/168))
  * Add support to reset trained classifiers to their initial state ([#143](https://github.com/jekyll/classifier-reborn/pull/143))
