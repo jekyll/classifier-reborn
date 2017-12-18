@@ -5,6 +5,7 @@
 
 module ClassifierReborn
   module TokenFilter
+    # This filter removes stopwords in the language, from given tokens.
     module Stopword
       STOPWORDS_PATH = [File.expand_path(File.dirname(__FILE__) + '/../../../../data/stopwords')]
 

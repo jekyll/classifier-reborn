@@ -7,6 +7,8 @@ require_relative 'token'
 
 module ClassifierReborn
   module Tokenizer
+    # This tokenizes given input as white-space separated terms.
+    # It mainly aims to tokenize sentences written with a space between words, like English, French, and others.
     module Whitespace
       module_function
 

@@ -5,6 +5,7 @@
 
 module ClassifierReborn
   module TokenFilter
+    # This filter converts given tokens to their stemmed versions in the language.
     module Stemmer
       module_function
 
