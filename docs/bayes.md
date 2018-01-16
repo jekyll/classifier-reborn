@@ -149,7 +149,7 @@ module BigramTokenizer
   def tokenize(str)
     str.each_char
        .each_cons(2)
-       .map do |chars| chars.join end
+       .map do |chars| ClassifierReborn::Tokenizer::Token.new(chars.join) end
   end
 end
 
