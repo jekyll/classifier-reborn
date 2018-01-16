@@ -156,6 +156,34 @@ end
 classifier = ClassifierReborn::Bayes.new tokenizer: BigramTokenizer
 ```
 
+## Custom Token Filters
+
+By default classifier rejects stopwords from tokens.
+This behavior is implemented based on filters for tokens.
+If you want to use more token filters, give them via the `:token_filter` option.
+A filter must be a module having a module function named `filter`.
+
+```ruby
+require 'classifier-reborn'
+
+module CatFilter
+  module_function
+  def filter(tokens)
+    tokens.reject do |token|
+      token == "cat"
+    end
+  end
+end
+
+filters = [
+  CatFilter,
+  # If you want to reject stopwords too, you need to include stopword filter
+  # to the list of token filters manually.
+  ClassifierReborn::TokenFilters::Stopword,
+]
+classifier = ClassifierReborn::Bayes.new token_filters: filters
+```
+
 ## Custom Stopwords
 
 The library ships with stopword files in various languages.
