@@ -4,9 +4,9 @@
 
 require 'set'
 
-require_relative 'tokenizer/whitespace'
-require_relative 'token_filter/stopword'
-require_relative 'token_filter/stemmer'
+require_relative 'extensions/tokenizer/whitespace'
+require_relative 'extensions/token_filter/stopword'
+require_relative 'extensions/token_filter/stemmer'
 require_relative 'category_namer'
 require_relative 'backends/bayes_memory_backend'
 require_relative 'backends/bayes_redis_backend'
