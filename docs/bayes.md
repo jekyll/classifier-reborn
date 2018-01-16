@@ -135,7 +135,7 @@ classifier.train("Cat", "I can has cat")
 classifier.train("Dog", "I don't always bark at night")
 ```
 
-## Custom Tokenizers
+## Custom Tokenizer
 
 By default the classifier tokenizes given inputs as a white-space separeted terms.
 If you want to use different tokenizer, give it via the `:tokenizer` option.
