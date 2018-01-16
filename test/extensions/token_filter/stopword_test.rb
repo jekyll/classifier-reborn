@@ -42,12 +42,14 @@ class TokenFilterStopwordTest < Minitest::Test
 
     TokenFilter::Stopword.add_custom_stopword_path(temp_stopwords_path)
     words = Tokenizer::Whitespace.tokenize("this is a list of cool words!")
-    words = TokenFilter::Stopword.filter(words, language: temp_stopwords_name)
+    TokenFilter::Stopword.language = temp_stopwords_name
+    words = TokenFilter::Stopword.filter(words)
     assert_equal %w(list cool !), words
   end
 
   def teardown
     TokenFilter::Stopword::STOPWORDS.clear
     TokenFilter::Stopword::STOPWORDS_PATH.clear.concat @original_stopwords_path
+    TokenFilter::Stopword.language = 'en'
   end
 end

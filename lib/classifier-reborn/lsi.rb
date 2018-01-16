@@ -46,6 +46,7 @@ module ClassifierReborn
         TokenFilter::Stopword,
         TokenFilter::Symbol,
       ]
+      TokenFilter::Stopword.language = @language
       extend CachedContentNode::InstanceMethods if @cache_node_vectors = options[:cache_node_vectors]
     end
 
@@ -70,7 +71,7 @@ module ClassifierReborn
     #   lsi.add_item ar, *ar.categories { |x| ar.content }
     #
     def add_item(item, *categories, &block)
-      clean_word_hash = Hasher.word_hash((block ? block.call(item) : item.to_s), @language,
+      clean_word_hash = Hasher.word_hash((block ? block.call(item) : item.to_s),
                                          token_filters: @token_filters)
       if clean_word_hash.empty?
         puts "Input: '#{item}' is entirely stopwords or words with 2 or fewer characters. Classifier-Reborn cannot handle this document properly."
@@ -329,7 +330,7 @@ module ClassifierReborn
       if @items[item]
         return @items[item]
       else
-        clean_word_hash = Hasher.word_hash((block ? block.call(item) : item.to_s), @language,
+        clean_word_hash = Hasher.word_hash((block ? block.call(item) : item.to_s),
                                            token_filters: @token_filters)
 
         content_node = ContentNode.new(clean_word_hash, &block) # make the node and extract the data

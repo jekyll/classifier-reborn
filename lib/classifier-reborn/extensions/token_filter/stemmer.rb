@@ -5,11 +5,11 @@
 
 module ClassifierReborn
   module TokenFilter
-    # This filter converts given tokens to their stemmed versions in the language.
+    # This filter converts given tokens to their stemmed versions.
     module Stemmer
       module_function
 
-      def filter(tokens, language: 'en')
+      def filter(tokens)
         tokens.collect do |token|
           if token.stemmable?
             token.stem

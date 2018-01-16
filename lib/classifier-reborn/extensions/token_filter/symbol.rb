@@ -9,7 +9,7 @@ module ClassifierReborn
     module Symbol
       module_function
 
-      def filter(tokens, language: 'en')
+      def filter(tokens)
         tokens.reject do |token|
           /[^\s\p{WORD}]/ === token
         end

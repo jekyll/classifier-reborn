@@ -8,13 +8,14 @@ module ClassifierReborn
     # This filter removes stopwords in the language, from given tokens.
     module Stopword
       STOPWORDS_PATH = [File.expand_path(File.dirname(__FILE__) + '/../../../../data/stopwords')]
+      @language = 'en'
 
       module_function
 
-      def filter(tokens, language: 'en')
+      def filter(tokens)
         tokens.reject do |token|
           token.maybe_stopword? &&
-            (token.length <= 2 || STOPWORDS[language].include?(token))
+            (token.length <= 2 || STOPWORDS[@language].include?(token))
         end
       end
 
@@ -35,6 +36,11 @@ module ClassifierReborn
         end
 
         hash[language]
+      end
+
+      # Changes the language of stopwords
+      def language=(language)
+        @language = language
       end
     end
   end

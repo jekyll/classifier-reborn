@@ -58,6 +58,9 @@ module ClassifierReborn
       if @enable_stemmer && !@token_filters.include?(TokenFilter::Stemmer)
         @token_filters << TokenFilter::Stemmer
       end
+      if @token_filters.include?(TokenFilter::Stopword)
+        TokenFilter::Stopword.language = @language
+      end
 
       populate_initial_categories
 
@@ -73,7 +76,7 @@ module ClassifierReborn
     #     b.train "that", "That text"
     #     b.train "The other", "The other text"
     def train(category, text)
-      word_hash = Hasher.word_hash(text, @language, @enable_stemmer,
+      word_hash = Hasher.word_hash(text, @enable_stemmer,
                                    tokenizer: @tokenizer, token_filters: @token_filters)
       return if word_hash.empty?
       category = CategoryNamer.prepare_name(category)
@@ -104,7 +107,7 @@ module ClassifierReborn
     #     b.train :this, "This text"
     #     b.untrain :this, "This text"
     def untrain(category, text)
-      word_hash = Hasher.word_hash(text, @language, @enable_stemmer,
+      word_hash = Hasher.word_hash(text, @enable_stemmer,
                                    tokenizer: @tokenizer, token_filters: @token_filters)
       return if word_hash.empty?
       category = CategoryNamer.prepare_name(category)
@@ -130,7 +133,7 @@ module ClassifierReborn
     # The largest of these scores (the one closest to 0) is the one picked out by #classify
     def classifications(text)
       score = {}
-      word_hash = Hasher.word_hash(text, @language, @enable_stemmer,
+      word_hash = Hasher.word_hash(text, @enable_stemmer,
                                    tokenizer: @tokenizer, token_filters: @token_filters)
       if word_hash.empty?
         category_keys.each do |category|
