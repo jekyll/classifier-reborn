@@ -17,7 +17,7 @@ module ClassifierReborn
     # interned, and indexes to its frequency in the document.
     def word_hash(str, language = 'en', enable_stemmer = true, clean: false,
                   tokenizer: Tokenizer::Whitespace,
-                  token_filters: [])
+                  token_filters: [TokenFilter::Stopword])
       if token_filters.include?(TokenFilter::Stemmer)
         unless enable_stemmer
           token_filters.reject! do |token_filter|
