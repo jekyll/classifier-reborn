@@ -15,7 +15,7 @@ module ClassifierReborn
 
     # Return a Hash of strings => ints. Each word in the string is stemmed,
     # interned, and indexes to its frequency in the document.
-    def word_hash(str, language = 'en', enable_stemmer = true, clean: false,
+    def word_hash(str, language = 'en', enable_stemmer = true,
                   tokenizer: Tokenizer::Whitespace,
                   token_filters: [TokenFilter::Stopword])
       if token_filters.include?(TokenFilter::Stemmer)
@@ -27,7 +27,7 @@ module ClassifierReborn
       else
         token_filters << TokenFilter::Stemmer if enable_stemmer
       end
-      words = tokenizer.tokenize(str, clean: clean)
+      words = tokenizer.tokenize(str)
       token_filters.each do |token_filter|
         words = token_filter.filter(words, language: language)
       end
