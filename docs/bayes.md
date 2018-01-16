@@ -146,7 +146,7 @@ require 'classifier-reborn'
 
 module BigramTokenizer
   module_function
-  def tokenize(str, clean: false)
+  def tokenize(str)
     str.each_char
        .each_cons(2)
        .map do |chars| chars.join end
