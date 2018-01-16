@@ -140,6 +140,7 @@ classifier.train("Dog", "I don't always bark at night")
 By default the classifier tokenizes given inputs as a white-space separeted terms.
 If you want to use different tokenizer, give it via the `:tokenizer` option.
 Tokenizer must be a module having a module function named `tokenize`.
+The function must return tokens as instances of `ClassifierReborn::Tokenizer::Token`.
 
 ```ruby
 require 'classifier-reborn'
@@ -156,7 +157,6 @@ end
 classifier = ClassifierReborn::Bayes.new tokenizer: BigramTokenizer
 ```
 
-Custom tokenizer must return tokens as instances of `ClassifierReborn::Tokenizer::Token`.
 
 ## Custom Token Filters
 
