@@ -170,7 +170,7 @@ module CatFilter
   module_function
   def filter(tokens)
     tokens.reject do |token|
-      token == "cat"
+      /\Acat\z/i === token
     end
   end
 end
