@@ -156,6 +156,8 @@ end
 classifier = ClassifierReborn::Bayes.new tokenizer: BigramTokenizer
 ```
 
+Custom tokenizer must return tokens as instances of `ClassifierReborn::Tokenizer::Token`.
+
 ## Custom Token Filters
 
 By default classifier rejects stopwords from tokens.
