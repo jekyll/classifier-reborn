@@ -15,13 +15,18 @@ module ClassifierReborn
 
     # Return a Hash of strings => ints. Each word in the string is stemmed,
     # interned, and indexes to its frequency in the document.
-    def word_hash(str, language = 'en', enable_stemmer = true, clean: false)
-      words = Tokenizer::Whitespace.tokenize(str, clean: clean)
-      words = TokenFilter::Stopword.filter(words, language: language)
-      if enable_stemmer
-        words = TokenFilter::Stemmer.filter(words, language: language)
+    def word_hash(str, language = 'en', enable_stemmer = true, clean: false,
+                  tokenizer: Tokenizer::Whitespace,
+                  token_filters: [])
+      tikenize_options = {
+        language:       language,
+        enable_stemmer: enable_stemmer,
+        clean:          clean,
+      }
+      words = tokenizer.tokenize(str, tikenize_options)
+      token_filters.each do |token_filter|
+        words = token_filter.filter(words, tikenize_options)
       end
-
       d = Hash.new(0)
       words.each do |word|
         d[word.intern] += 1

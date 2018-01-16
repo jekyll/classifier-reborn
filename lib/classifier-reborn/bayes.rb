@@ -50,6 +50,11 @@ module ClassifierReborn
       @threshold           = options[:threshold]
       @enable_stemmer      = options[:enable_stemmer]
       @backend             = options[:backend]
+      @tokenizer           = options[:tokenizer] || Tokenizer::Whitespace
+      @token_filters       = options[:token_filters] || [TokenFilter::Stopword]
+      if @enable_stemmer and not @token_filters.include?(TokenFilter::Stemmer)
+        @token_filters << TokenFilter::Stemmer
+      end
 
       populate_initial_categories
 
@@ -65,7 +70,8 @@ module ClassifierReborn
     #     b.train "that", "That text"
     #     b.train "The other", "The other text"
     def train(category, text)
-      word_hash = Hasher.word_hash(text, @language, @enable_stemmer)
+      word_hash = Hasher.word_hash(text, @language, @enable_stemmer,
+                                   tokenizer: @tokenizer, token_filters: @token_filters)
       return if word_hash.empty?
       category = CategoryNamer.prepare_name(category)
 
@@ -95,7 +101,8 @@ module ClassifierReborn
     #     b.train :this, "This text"
     #     b.untrain :this, "This text"
     def untrain(category, text)
-      word_hash = Hasher.word_hash(text, @language, @enable_stemmer)
+      word_hash = Hasher.word_hash(text, @language, @enable_stemmer,
+                                   tokenizer: @tokenizer, token_filters: @token_filters)
       return if word_hash.empty?
       category = CategoryNamer.prepare_name(category)
       word_hash.each do |word, count|
@@ -120,7 +127,8 @@ module ClassifierReborn
     # The largest of these scores (the one closest to 0) is the one picked out by #classify
     def classifications(text)
       score = {}
-      word_hash = Hasher.word_hash(text, @language, @enable_stemmer)
+      word_hash = Hasher.word_hash(text, @language, @enable_stemmer,
+                                   tokenizer: @tokenizer, token_filters: @token_filters)
       if word_hash.empty?
         category_keys.each do |category|
           score[category.to_s] = Float::INFINITY
