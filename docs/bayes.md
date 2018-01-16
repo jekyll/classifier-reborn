@@ -135,6 +135,27 @@ classifier.train("Cat", "I can has cat")
 classifier.train("Dog", "I don't always bark at night")
 ```
 
+## Custom Tokenizers
+
+By default the classifier tokenizes given inputs as a white-space separeted terms.
+If you want to use different tokenizer, give it via the `:tokenizer` option.
+Tokenizer must be a module having a module function named `tokenize`.
+
+```ruby
+require 'classifier-reborn'
+
+module BigramTokenizer
+  module_function
+  def tokenize(str, clean: false)
+    str.each_char
+       .each_cons(2)
+       .map do |chars| chars.join end
+  end
+end
+
+classifier = ClassifierReborn::Bayes.new tokenizer: BigramTokenizer
+```
+
 ## Custom Stopwords
 
 The library ships with stopword files in various languages.
