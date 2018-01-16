@@ -19,10 +19,18 @@ module ClassifierReborn
                   tokenizer: Tokenizer::Whitespace,
                   token_filters: [])
       tikenize_options = {
-        language:       language,
-        enable_stemmer: enable_stemmer,
-        clean:          clean,
+        language: language,
+        clean:    clean,
       }
+      if token_filters.include?(TokenFilter::Stemmer)
+        unless enable_stemmer
+          token_filters.reject! do |token_filter|
+            token_filter == TokenFilter::Stemmer
+          end
+        end
+      else
+        token_filters << TokenFilter::Stemmer if enable_stemmer
+      end
       words = tokenizer.tokenize(str, tikenize_options)
       token_filters.each do |token_filter|
         words = token_filter.filter(words, tikenize_options)
