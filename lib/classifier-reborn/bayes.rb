@@ -52,7 +52,7 @@ module ClassifierReborn
       @backend             = options[:backend]
       @tokenizer           = options[:tokenizer] || Tokenizer::Whitespace
       @token_filters       = options[:token_filters] || [TokenFilter::Stopword]
-      if @enable_stemmer and not @token_filters.include?(TokenFilter::Stemmer)
+      if @enable_stemmer && !@token_filters.include?(TokenFilter::Stemmer)
         @token_filters << TokenFilter::Stemmer
       end
 
