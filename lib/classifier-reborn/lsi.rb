@@ -19,7 +19,7 @@ require_relative 'lsi/content_node'
 require_relative 'lsi/cached_content_node'
 require_relative 'lsi/summarizer'
 require_relative 'extensions/token_filter/stopword'
-require_relative 'extensions/token_filter/stemmer'
+require_relative 'extensions/token_filter/symbol'
 
 module ClassifierReborn
   # This class implements a Latent Semantic Indexer, which can search, classify and cluster
