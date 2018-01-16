@@ -18,10 +18,6 @@ module ClassifierReborn
     def word_hash(str, language = 'en', enable_stemmer = true, clean: false,
                   tokenizer: Tokenizer::Whitespace,
                   token_filters: [])
-      tikenize_options = {
-        language: language,
-        clean:    clean,
-      }
       if token_filters.include?(TokenFilter::Stemmer)
         unless enable_stemmer
           token_filters.reject! do |token_filter|
@@ -31,9 +27,9 @@ module ClassifierReborn
       else
         token_filters << TokenFilter::Stemmer if enable_stemmer
       end
-      words = tokenizer.tokenize(str, tikenize_options)
+      words = tokenizer.tokenize(str, clean: clean)
       token_filters.each do |token_filter|
-        words = token_filter.filter(words, tikenize_options)
+        words = token_filter.filter(words, language: language)
       end
       d = Hash.new(0)
       words.each do |word|
