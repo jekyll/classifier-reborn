@@ -31,7 +31,7 @@ class Matrix
         (1..qrot.row_size - 1).each do |col|
           next if row == col
 
-          h = Math.atan((2 * qrot[row, col]) / (qrot[row, row] - qrot[col, col])) / 2.0
+          h = Math.atan((2.0 * qrot[row, col]) / (qrot[row, row] - qrot[col, col])) / 2.0
           hcos = Math.cos(h)
           hsin = Math.sin(h)
           mzrot = Matrix.identity(qrot.row_size)
