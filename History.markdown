@@ -1,5 +1,8 @@
 ## HEAD
 
+### Minor Enhancements
+* Improved handling of Zero division and Zero vector normalization. ([#173](https://github.com/jekyll/classifier-reborn/pull/173))
+
 ## 2.2.0 / 2017-12-14
 ## Major Enhancements
  * JRuby Support, thanks to [@mach-kernel](https://github.com/mach-kernel) ([#168](https://github.com/jekyll/classifier-reborn/pull/168))
