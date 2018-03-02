@@ -129,13 +129,15 @@ class BayesianTest < Minitest::Test
                                    most lacks the idealization"
     @classifier.train_uninteresting %"Grasslands such as savannah and prairie where grasses are dominant are 
                                     estimated to constitute forty percent of the land area of the Earth"
-    yaml = @classifier.export('test/fixtures/export.yml')
-    reference_file = File.read('test/fixtures/reference.yml')
-    assert_equal(yaml, reference_file)
+    exported_data = @classifier.export
+    reference_data = YAML.load(File.read('test/fixtures/reference.yml'))
+    assert_equal(exported_data, reference_data)
   end
 
   def test_import
-    classifier = ClassifierReborn::Bayes.import!('test/fixtures/reference.yml')
+    classifier = ClassifierReborn::Bayes.new
+    reference_data = YAML.load(File.read('test/fixtures/reference.yml'))
+    classifier.import!(reference_data)
     assert_equal('Interesting', classifier.classify('Dutch painting of the Golden Age'))
   end
 end

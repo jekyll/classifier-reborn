@@ -3,7 +3,6 @@
 # License::   LGPL
 
 require 'set'
-require 'yaml'
 
 require_relative 'extensions/tokenizer/whitespace'
 require_relative 'extensions/token_filter/stopword'
@@ -262,17 +261,31 @@ module ClassifierReborn
       populate_initial_categories
     end
 
-    # Read the yaml_data_file and populate the classifier
-    def self.import!(file_path)
-      data = File.read(file_path)
-      YAML.load(data)
+    # Read the data and populate the backend in use
+    def import!(data)
+      @auto_categorize = data[:auto_categorize]
+      @categories = data[:categories]
+      @category_counts = data[:category_counts]
+      @category_word_count = data[:category_word_count]
+      @enable_stemmer = data[:enable_stemmer]
+      @enable_threshold = data[:enable_threshold]
+      @language = data[:language]
+      @threshold = data[:threshold]
+      @total_words = data[:total_words]
     end
 
-    # Writes a file by calling #to_yaml on self
-    def export(file_path)
-      yaml = to_yaml
-      File.open(file_path, 'w') { |f| f.write(yaml) }
-      yaml
+    def export
+      {
+        auto_categorize: @auto_categorize,
+        categories: @categories,
+        category_counts: @category_counts,
+        category_word_count: @category_word_count,
+        enable_stemmer: @enable_stemmer,
+        enable_threshold: @enable_threshold,
+        language: @language,
+        threshold: @threshold,
+        total_words: @total_words
+      }
     end
 
     private
