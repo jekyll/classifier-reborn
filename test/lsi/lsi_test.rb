@@ -30,6 +30,14 @@ class LSITest < Minitest::Test
     assert !lsi.needs_rebuild?
   end
 
+  def test_zero_vector_normalization
+    lsi = ClassifierReborn::LSI.new auto_rebuild: false
+    lsi.add_item @str1[0...8], 'Dog'
+    lsi.add_item @str2, 'Dog'
+    lsi.add_item @str3, 'Cat'
+    lsi.build_index(0.75)
+  end
+
   def test_basic_categorizing
     lsi = ClassifierReborn::LSI.new
     lsi.add_item @str2, 'Dog'

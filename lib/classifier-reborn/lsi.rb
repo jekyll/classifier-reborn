@@ -12,6 +12,7 @@ begin
 rescue LoadError
   $GSL = false
   require_relative 'extensions/vector'
+  require_relative 'extensions/zero_vector'
 end
 
 require_relative 'lsi/word_list'
@@ -142,9 +143,13 @@ module ClassifierReborn
         tdm = Matrix.rows(tda).trans
         ntdm = build_reduced_matrix(tdm, cutoff)
 
-        ntdm.row_size.times do |col|
+        ntdm.column_size.times do |col|
           doc_list[col].lsi_vector = ntdm.column(col) if doc_list[col]
-          doc_list[col].lsi_norm = ntdm.column(col).normalize if doc_list[col]
+          if ntdm.column(col).zero?
+            doc_list[col].lsi_norm = ntdm.column(col) if doc_list[col]
+          else
+            doc_list[col].lsi_norm = ntdm.column(col).normalize if doc_list[col]
+          end
         end
       end
 
