@@ -3,6 +3,7 @@
 # License::   LGPL
 
 require 'set'
+require 'yaml'
 
 require_relative 'extensions/tokenizer/whitespace'
 require_relative 'extensions/token_filter/stopword'
@@ -259,6 +260,19 @@ module ClassifierReborn
     def reset
       @backend.reset
       populate_initial_categories
+    end
+
+    # Read the yaml_data_file and populate the classifier
+    def self.import!(file_path)
+      data = File.read(file_path)
+      YAML.load(data)
+    end
+
+    # Writes a file by calling #to_yaml on self
+    def export(file_path)
+      yaml = to_yaml
+      File.open(file_path, 'w') { |f| f.write(yaml) }
+      yaml
     end
 
     private

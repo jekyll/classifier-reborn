@@ -1,0 +1,47 @@
+--- !ruby/object:ClassifierReborn::Bayes
+categories:
+  :Interesting:
+    :dutch: 1
+    :paint: 2
+    :golden: 1
+    :ag: 1
+    :includ: 1
+    :gener: 1
+    :european: 1
+    :period: 1
+    :baroqu: 1
+    :often: 1
+    :show: 1
+    :mani: 1
+    :it: 1
+    :characterist: 1
+    :lack: 1
+    :ideal: 1
+    :,: 1
+  :Uninteresting:
+    :grassland: 1
+    :such: 1
+    :savannah: 1
+    :prairi: 1
+    :where: 1
+    :grass: 1
+    :domin: 1
+    :estim: 1
+    :constitut: 1
+    :forti: 1
+    :percent: 1
+    :land: 1
+    :area: 1
+    :earth: 1
+total_words: 32
+category_counts:
+  :Interesting: 1
+  :Uninteresting: 1
+category_word_count:
+  :Interesting: 18
+  :Uninteresting: 14
+language: en
+auto_categorize: false
+enable_threshold: false
+threshold: 0.0
+enable_stemmer: true
