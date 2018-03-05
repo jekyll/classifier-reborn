@@ -25,12 +25,31 @@ class HasherTest < Minitest::Test
     assert_equal hash, Hasher.word_hash("term", tokenizer: BigramTokenizer, token_filters: [])
   end
 
+  class BigramTokenizerClass
+    def call(str)
+      BigramTokenizer.call(str)
+    end
+
+    def self.call(str)
+      BigramTokenizer.call(str)
+    end
+  end
+
+  def test_custom_tokenizer_class
+    hash = { te: 1, er: 1, rm: 1 }
+    assert_equal hash, Hasher.word_hash("term", tokenizer: BigramTokenizerClass, token_filters: [])
+  end
+
+  def test_custom_tokenizer_instance
+    hash = { te: 1, er: 1, rm: 1 }
+    bigram_tokenizer = BigramTokenizerClass.new
+    assert_equal hash, Hasher.word_hash("term", tokenizer: bigram_tokenizer, token_filters: [])
+  end
+
   def test_custom_tokenizer_lambda
     hash = { te: 1, er: 1, rm: 1 }
     bigram_tokenizer = lambda do |str|
-      str.each_char
-         .each_cons(2)
-         .map do |chars| ::ClassifierReborn::Tokenizer::Token.new(chars.join) end
+      BigramTokenizer.call(str)
     end
     assert_equal hash, Hasher.word_hash("term", tokenizer: bigram_tokenizer, token_filters: [])
   end
@@ -49,12 +68,31 @@ class HasherTest < Minitest::Test
     assert_equal hash, Hasher.word_hash("cat dog", token_filters: [CatFilter])
   end
 
+  class CatFilterClass
+    def call(tokens)
+      CatFilter.call(tokens)
+    end
+
+    def self.call(tokens)
+      CatFilter.call(tokens)
+    end
+  end
+
+  def test_custom_token_filters_class
+    hash = { dog: 1 }
+    assert_equal hash, Hasher.word_hash("cat dog", token_filters: [CatFilterClass])
+  end
+
+  def test_custom_token_filters_instance
+    hash = { dog: 1 }
+    cat_filter = CatFilterClass.new
+    assert_equal hash, Hasher.word_hash("cat dog", token_filters: [cat_filter])
+  end
+
   def test_custom_token_filters_lambda
     hash = { dog: 1 }
     cat_filter = lambda do |tokens|
-      tokens.reject do |token|
-        /\Acat\z/i === token
-      end
+      CatFilter.call(tokens)
     end
     assert_equal hash, Hasher.word_hash("cat dog", token_filters: [cat_filter])
   end
