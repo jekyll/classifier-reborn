@@ -9,7 +9,7 @@ module ClassifierReborn
     module Stemmer
       module_function
 
-      def filter(tokens)
+      def call(tokens)
         tokens.collect do |token|
           if token.stemmable?
             token.stem

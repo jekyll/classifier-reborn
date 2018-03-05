@@ -12,7 +12,7 @@ module ClassifierReborn
 
       module_function
 
-      def filter(tokens)
+      def call(tokens)
         tokens.reject do |token|
           token.maybe_stopword? &&
             (token.length <= 2 || STOPWORDS[@language].include?(token))

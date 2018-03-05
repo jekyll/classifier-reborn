@@ -139,7 +139,7 @@ classifier.train("Dog", "I don't always bark at night")
 
 By default the classifier tokenizes given inputs as a white-space separeted terms.
 If you want to use different tokenizer, give it via the `:tokenizer` option.
-Tokenizer must be a module having a module function named `tokenize`.
+Tokenizer must be an object having a module function named `call`, or a lambda.
 The function must return tokens as instances of `ClassifierReborn::Tokenizer::Token`.
 
 ```ruby
@@ -147,7 +147,7 @@ require 'classifier-reborn'
 
 module BigramTokenizer
   module_function
-  def tokenize(str)
+  def call(str)
     str.each_char
        .each_cons(2)
        .map do |chars| ClassifierReborn::Tokenizer::Token.new(chars.join) end
@@ -157,28 +157,48 @@ end
 classifier = ClassifierReborn::Bayes.new tokenizer: BigramTokenizer
 ```
 
+or
+
+```ruby
+require 'classifier-reborn'
+
+bigram_tokenizer = lambda do |str|
+  str.each_char
+     .each_cons(2)
+     .map do |chars| ClassifierReborn::Tokenizer::Token.new(chars.join) end
+end
+
+classifier = ClassifierReborn::Bayes.new tokenizer: bigram_tokenizer
+```
 
 ## Custom Token Filters
 
 By default classifier rejects stopwords from tokens.
 This behavior is implemented based on filters for tokens.
 If you want to use more token filters, give them via the `:token_filter` option.
-A filter must be a module having a module function named `filter`.
+A filter must be an object having a module function named `call`, or a lambda.
 
 ```ruby
 require 'classifier-reborn'
 
 module CatFilter
   module_function
-  def filter(tokens)
+  def call(tokens)
     tokens.reject do |token|
-      /\Acat\z/i === token
+      /cat/i === token
     end
   end
 end
 
+white_filter = lambda do |tokens|
+  tokens.reject do |token|
+    /white/i === token
+  end
+done
+
 filters = [
   CatFilter,
+  white_filter
   # If you want to reject stopwords too, you need to include stopword filter
   # to the list of token filters manually.
   ClassifierReborn::TokenFilters::Stopword,

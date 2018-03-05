@@ -12,7 +12,7 @@ module ClassifierReborn
     module Whitespace
       module_function
 
-      def tokenize(str)
+      def call(str)
         tokens = str.gsub(/[^\p{WORD}\s]/, '').downcase.split.collect do |word|
           Token.new(word, stemmable: true, maybe_stopword: true)
         end

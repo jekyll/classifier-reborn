@@ -13,30 +13,50 @@ class HasherTest < Minitest::Test
 
   module BigramTokenizer
     module_function
-    def tokenize(str)
+    def call(str)
       str.each_char
          .each_cons(2)
          .map do |chars| ::ClassifierReborn::Tokenizer::Token.new(chars.join) end
     end
   end
 
-  def test_custom_tokenizer
+  def test_custom_tokenizer_module
     hash = { te: 1, er: 1, rm: 1 }
     assert_equal hash, Hasher.word_hash("term", tokenizer: BigramTokenizer, token_filters: [])
   end
 
+  def test_custom_tokenizer_lambda
+    hash = { te: 1, er: 1, rm: 1 }
+    bigram_tokenizer = lambda do |str|
+      str.each_char
+         .each_cons(2)
+         .map do |chars| ::ClassifierReborn::Tokenizer::Token.new(chars.join) end
+    end
+    assert_equal hash, Hasher.word_hash("term", tokenizer: bigram_tokenizer, token_filters: [])
+  end
+
   module CatFilter
     module_function
-    def filter(tokens)
+    def call(tokens)
       tokens.reject do |token|
         /\Acat\z/i === token
       end
     end
   end
 
-  def test_custom_token_filters
+  def test_custom_token_filters_module
     hash = { dog: 1 }
     assert_equal hash, Hasher.word_hash("cat dog", token_filters: [CatFilter])
+  end
+
+  def test_custom_token_filters_lambda
+    hash = { dog: 1 }
+    cat_filter = lambda do |tokens|
+      tokens.reject do |token|
+        /\Acat\z/i === token
+      end
+    end
+    assert_equal hash, Hasher.word_hash("cat dog", token_filters: [cat_filter])
   end
 
   def teardown

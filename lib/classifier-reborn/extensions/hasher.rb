@@ -27,9 +27,9 @@ module ClassifierReborn
       else
         token_filters << TokenFilter::Stemmer if enable_stemmer
       end
-      words = tokenizer.tokenize(str)
+      words = tokenizer.call(str)
       token_filters.each do |token_filter|
-        words = token_filter.filter(words)
+        words = token_filter.call(words)
       end
       d = Hash.new(0)
       words.each do |word|

@@ -6,7 +6,7 @@ class TokenFilterSymbolTest < Minitest::Test
     words = %w(term ! ?).collect do |word|
       Tokenizer::Token.new(word)
     end
-    words = TokenFilter::Symbol.filter(words)
+    words = TokenFilter::Symbol.call(words)
     assert_equal %w(term), words
   end
 end
