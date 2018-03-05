@@ -139,7 +139,7 @@ classifier.train("Dog", "I don't always bark at night")
 
 By default the classifier tokenizes given inputs as a white-space separeted terms.
 If you want to use different tokenizer, give it via the `:tokenizer` option.
-Tokenizer must be an object having a module function named `call`, or a lambda.
+Tokenizer must be an object having a method named `call`, or a lambda.
 The function must return tokens as instances of `ClassifierReborn::Tokenizer::Token`.
 
 ```ruby
@@ -176,7 +176,7 @@ classifier = ClassifierReborn::Bayes.new tokenizer: bigram_tokenizer
 By default classifier rejects stopwords from tokens.
 This behavior is implemented based on filters for tokens.
 If you want to use more token filters, give them via the `:token_filter` option.
-A filter must be an object having a module function named `call`, or a lambda.
+A filter must be an object having a method named `call`, or a lambda.
 
 ```ruby
 require 'classifier-reborn'
