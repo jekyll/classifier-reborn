@@ -21,7 +21,7 @@ task default: [:test]
 desc 'Run all unit tests'
 Rake::TestTask.new(:test) do |t|
   t.libs << 'lib'
-  t.pattern = 'test/*/*_test.rb'
+  t.pattern = 'test/**/*_test.rb'
   t.verbose = true
 end
 
@@ -29,7 +29,7 @@ end
 desc 'Run all benchmarks'
 Rake::TestTask.new(:bench) do |t|
   t.libs << 'lib'
-  t.pattern = 'test/*/*_benchmark.rb'
+  t.pattern = 'test/**/*_benchmark.rb'
   t.verbose = true
 end
 

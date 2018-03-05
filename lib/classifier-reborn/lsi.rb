@@ -19,6 +19,8 @@ require_relative 'lsi/word_list'
 require_relative 'lsi/content_node'
 require_relative 'lsi/cached_content_node'
 require_relative 'lsi/summarizer'
+require_relative 'extensions/token_filter/stopword'
+require_relative 'extensions/token_filter/symbol'
 
 module ClassifierReborn
   # This class implements a Latent Semantic Indexer, which can search, classify and cluster
@@ -41,6 +43,11 @@ module ClassifierReborn
       @version = 0
       @built_at_version = -1
       @language = options[:language] || 'en'
+      @token_filters = [
+        TokenFilter::Stopword,
+        TokenFilter::Symbol,
+      ]
+      TokenFilter::Stopword.language = @language
       extend CachedContentNode::InstanceMethods if @cache_node_vectors = options[:cache_node_vectors]
     end
 
@@ -65,7 +72,8 @@ module ClassifierReborn
     #   lsi.add_item ar, *ar.categories { |x| ar.content }
     #
     def add_item(item, *categories, &block)
-      clean_word_hash = Hasher.clean_word_hash((block ? block.call(item) : item.to_s), @language)
+      clean_word_hash = Hasher.word_hash((block ? block.call(item) : item.to_s),
+                                         token_filters: @token_filters)
       if clean_word_hash.empty?
         puts "Input: '#{item}' is entirely stopwords or words with 2 or fewer characters. Classifier-Reborn cannot handle this document properly."
       else
@@ -327,7 +335,8 @@ module ClassifierReborn
       if @items[item]
         return @items[item]
       else
-        clean_word_hash = Hasher.clean_word_hash((block ? block.call(item) : item.to_s), @language)
+        clean_word_hash = Hasher.word_hash((block ? block.call(item) : item.to_s),
+                                           token_filters: @token_filters)
 
         content_node = ContentNode.new(clean_word_hash, &block) # make the node and extract the data
 
