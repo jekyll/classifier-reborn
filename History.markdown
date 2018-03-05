@@ -1,10 +1,13 @@
 ## HEAD
 
+## Major Enhancements
+* Separate tokenizer from hasher, allowing custom tokenizers. ([#162](https://github.com/jekyll/classifier-reborn/pull/162))
+
 ### Minor Enhancements
 * Improved handling of Zero division and Zero vector normalization. ([#173](https://github.com/jekyll/classifier-reborn/pull/173))
 
 ## 2.2.0 / 2017-12-14
-## Major Enhancements
+
  * JRuby Support, thanks to [@mach-kernel](https://github.com/mach-kernel) ([#168](https://github.com/jekyll/classifier-reborn/pull/168))
  * Add support to reset trained classifiers to their initial state ([#143](https://github.com/jekyll/classifier-reborn/pull/143))
  * Classifier evaluation and validation ([#142](https://github.com/jekyll/classifier-reborn/pull/142))
