@@ -1,4 +1,5 @@
 # encoding: utf-8
+require 'yaml'
 
 module BayesianCommonTests
   def test_good_training
