@@ -1,5 +1,9 @@
 ---
 :auto_categorize: false
+:enable_stemmer: true
+:enable_threshold: false
+:language: en
+:threshold: 0.0
 :categories:
   :Interesting:
     :dutch: 1
@@ -35,13 +39,11 @@
     :area: 1
     :earth: 1
 :category_counts:
-  :Interesting: 1
-  :Uninteresting: 1
-:category_word_count:
-  :Interesting: 18
-  :Uninteresting: 14
-:enable_stemmer: true
-:enable_threshold: false
-:language: en
-:threshold: 0.0
+  :Interesting:
+    :training: 1
+    :word: 18
+  :Uninteresting:
+    :training: 1
+    :word: 14
+:category_word_count: 
 :total_words: 32

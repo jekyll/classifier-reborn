@@ -1,3 +1,4 @@
+require_relative 'data_handler'
 require_relative 'no_redis_error'
 # require redis when we run #intialize. This way only people using this backend
 # will need to install and load the backend without having to
@@ -6,6 +7,7 @@ require_relative 'no_redis_error'
 module ClassifierReborn
   # This class provides Redis as the storage backend for the classifier data structures
   class BayesRedisBackend
+    include DataHandler
     # The class can be created with the same arguments that the redis gem accepts
     # E.g.,
     #      b = ClassifierReborn::BayesRedisBackend.new

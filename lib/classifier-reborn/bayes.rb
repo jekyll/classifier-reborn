@@ -1,7 +1,6 @@
 # Author::    Lucas Carlson  (mailto:lucas@rufy.com)
 # Copyright:: Copyright (c) 2005 Lucas Carlson
 # License::   LGPL
-
 require 'set'
 
 require_relative 'extensions/tokenizer/whitespace'
@@ -261,31 +260,25 @@ module ClassifierReborn
       populate_initial_categories
     end
 
-    # Read the data and populate the backend in use
     def import!(data)
       @auto_categorize = data[:auto_categorize]
-      @categories = data[:categories]
-      @category_counts = data[:category_counts]
-      @category_word_count = data[:category_word_count]
       @enable_stemmer = data[:enable_stemmer]
       @enable_threshold = data[:enable_threshold]
+      @initial_categories = data[:categories].keys.map(&:to_s)
       @language = data[:language]
       @threshold = data[:threshold]
-      @total_words = data[:total_words]
+      @backend.import!(data)
     end
 
     def export
+      backend_data = @backend.export
       {
         auto_categorize: @auto_categorize,
-        categories: @categories,
-        category_counts: @category_counts,
-        category_word_count: @category_word_count,
         enable_stemmer: @enable_stemmer,
         enable_threshold: @enable_threshold,
         language: @language,
-        threshold: @threshold,
-        total_words: @total_words
-      }
+        threshold: @threshold
+      }.merge(backend_data)
     end
 
     private
