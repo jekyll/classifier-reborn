@@ -6,7 +6,7 @@
 
 ---
 
-## [Read the Docs](http://www.classifier-reborn.com/)
+## [Read the Docs](https://www.classifier-reborn.com/)
 
 ## Getting Started
 
@@ -45,11 +45,11 @@ irb(main):013:0> lsi.find_related("This text is around cats!", 2)
 There is much more that can be done using Bayes and LSI beyond these quick examples.
 For more information read the following documentation topics.
 
-* [Installation and Dependencies](http://www.classifier-reborn.com/)
-* [Bayesian Classifier](http://www.classifier-reborn.com/bayes)
-* [Latent Semantic Indexer (LSI)](http://www.classifier-reborn.com/lsi)
-* [Classifier Validation](http://www.classifier-reborn.com/validation)
-* [Development and Contributions](http://www.classifier-reborn.com/development) (*Optional Docker instructions included*)
+* [Installation and Dependencies](https://www.classifier-reborn.com/)
+* [Bayesian Classifier](https://www.classifier-reborn.com/bayes)
+* [Latent Semantic Indexer (LSI)](https://www.classifier-reborn.com/lsi)
+* [Classifier Validation](https://www.classifier-reborn.com/validation)
+* [Development and Contributions](https://www.classifier-reborn.com/development) (*Optional Docker instructions included*)
 
 ### Notes on JRuby support
 
