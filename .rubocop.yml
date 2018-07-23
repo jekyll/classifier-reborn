@@ -1,6 +1,3 @@
-Style/IfUnlessModifier:
-  MaxLineLength: 150
-
 Metrics/LineLength:
   Max: 146
 
@@ -28,7 +25,7 @@ Metrics/ClassLength:
 SingleLineBlockParams:
   Enabled: false
 
-Lint/Eval:
+Security/Eval:
   Enabled: false
 
 Lint/AssignmentInCondition:
@@ -37,10 +34,10 @@ Lint/AssignmentInCondition:
 SignalException:
   Enabled: false
 
-Style/FileName:
+Naming/FileName:
   Enabled: false
 
-Style/MethodName:
+Naming/MethodName:
   Enabled: false
 
 Lint/UnusedBlockArgument:
