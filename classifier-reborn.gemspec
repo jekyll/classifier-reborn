@@ -22,7 +22,6 @@ Gem::Specification.new do |s|
   s.executables      = all_files.grep(%r{^bin/}) { |f| File.basename(f) }
   s.require_paths    = ['lib']
 
-  s.has_rdoc         = true
   s.rdoc_options     = ['--charset=UTF-8']
   s.extra_rdoc_files = %w(README.markdown LICENSE)
 
