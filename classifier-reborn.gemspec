@@ -1,5 +1,4 @@
-# coding: utf-8
-lib = File.expand_path('../lib', __FILE__)
+lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'classifier-reborn/version'
 
@@ -23,15 +22,15 @@ Gem::Specification.new do |s|
   s.require_paths    = ['lib']
 
   s.rdoc_options     = ['--charset=UTF-8']
-  s.extra_rdoc_files = %w(README.markdown LICENSE)
+  s.extra_rdoc_files = %w[README.markdown LICENSE]
 
   s.add_runtime_dependency('fast-stemmer', '~> 1.0')
 
-  s.add_development_dependency('rake')
-  s.add_development_dependency('rdoc')
   s.add_development_dependency('minitest')
   s.add_development_dependency('minitest-reporters')
-  s.add_development_dependency('rubocop')
   s.add_development_dependency('pry')
+  s.add_development_dependency('rake')
+  s.add_development_dependency('rdoc')
   s.add_development_dependency('redis')
+  s.add_development_dependency('rubocop')
 end

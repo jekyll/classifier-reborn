@@ -7,9 +7,9 @@ require 'bundler/gem_helper'
 
 install_config = case RUBY_PLATFORM
                  when 'java'
-                  { name: 'classifier-reborn-jruby' }
+                   { name: 'classifier-reborn-jruby' }
                  else
-                  { name: 'classifier-reborn' }
+                   { name: 'classifier-reborn' }
                  end
 
 Bundler::GemHelper.install_tasks(install_config)
