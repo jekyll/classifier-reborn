@@ -8,7 +8,6 @@ begin
   require 'gsl' # requires https://github.com/SciRuby/rb-gsl
   require_relative 'extensions/vector_serialize'
   $GSL = true
-
 rescue LoadError
   $GSL = false
   require_relative 'extensions/vector'
@@ -133,6 +132,7 @@ module ClassifierReborn
     # turning the LSI class into a simple vector search engine.
     def build_index(cutoff = 0.75)
       return unless needs_rebuild?
+
       make_word_list
 
       doc_list = @items.values
@@ -247,6 +247,7 @@ module ClassifierReborn
     # it is actually the same algorithm, just applied on a smaller document.
     def search(string, max_nearest = 3)
       return [] if needs_rebuild?
+
       carry = proximity_norms_for_content(string)
       unless carry.nil?
         result = carry.collect { |x| x[0] }
@@ -308,6 +309,7 @@ module ClassifierReborn
     # it's supposed to.
     def highest_ranked_stems(doc, count = 3)
       raise 'Requested stem ranking on non-indexed content!' unless @items[doc]
+
       content_vector_array = node_for_content(doc).lsi_vector.to_a
       top_n = content_vector_array.sort.reverse[0..count - 1]
       top_n.collect { |x| @word_list.word_for_index(content_vector_array.index(x)) }

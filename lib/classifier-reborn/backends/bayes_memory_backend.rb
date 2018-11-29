@@ -69,7 +69,7 @@ module ClassifierReborn
     private
 
     def category_counts(category)
-      @category_counts[category] ||= {training: 0, word: 0}
+      @category_counts[category] ||= { training: 0, word: 0 }
     end
   end
 end

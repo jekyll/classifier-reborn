@@ -13,6 +13,7 @@ class HasherTest < Minitest::Test
 
   module BigramTokenizer
     module_function
+
     def call(str)
       str.each_char
          .each_cons(2)
@@ -56,6 +57,7 @@ class HasherTest < Minitest::Test
 
   module CatFilter
     module_function
+
     def call(tokens)
       tokens.reject do |token|
         /\Acat\z/i === token

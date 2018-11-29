@@ -191,6 +191,7 @@ class LSITest < Minitest::Test
 
   def test_invalid_searching_when_using_gsl
     return unless $GSL
+
     lsi = ClassifierReborn::LSI.new
     lsi.add_item @str1, 'Dog'
     lsi.add_item @str2, 'Dog'

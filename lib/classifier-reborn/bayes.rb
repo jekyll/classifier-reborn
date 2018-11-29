@@ -29,12 +29,11 @@ module ClassifierReborn
     #   backend:          BayesMemoryBackend.new  Alternatively, BayesRedisBackend.new for persistent storage
     def initialize(*args)
       @initial_categories = []
-      options = { language:         'en',
+      options = { language: 'en',
                   enable_threshold: false,
-                  threshold:        0.0,
-                  enable_stemmer:   true,
-                  backend:          BayesMemoryBackend.new
-                }
+                  threshold: 0.0,
+                  enable_stemmer: true,
+                  backend: BayesMemoryBackend.new }
       args.flatten.each do |arg|
         if arg.is_a?(Hash)
           options.merge!(arg)
@@ -79,6 +78,7 @@ module ClassifierReborn
       word_hash = Hasher.word_hash(text, @enable_stemmer,
                                    tokenizer: @tokenizer, token_filters: @token_filters)
       return if word_hash.empty?
+
       category = CategoryNamer.prepare_name(category)
 
       # Add the category dynamically or raise an error
@@ -110,9 +110,11 @@ module ClassifierReborn
       word_hash = Hasher.word_hash(text, @enable_stemmer,
                                    tokenizer: @tokenizer, token_filters: @token_filters)
       return if word_hash.empty?
+
       category = CategoryNamer.prepare_name(category)
       word_hash.each do |word, count|
         next if @backend.total_words < 0
+
         orig = @backend.category_word_frequency(category, word) || 0
         @backend.update_category_word_frequency(category, word, -count)
         if @backend.category_word_frequency(category, word) <= 0

@@ -1,9 +1,8 @@
 module ClassifierReborn
   module ClassifierValidator
-
     module_function
 
-    def cross_validate(classifier, sample_data, fold=10, *options)
+    def cross_validate(classifier, sample_data, fold = 10, *options)
       classifier = ClassifierReborn::const_get(classifier).new(options) if classifier.is_a?(String)
       sample_data.shuffle!
       partition_size = sample_data.length / fold
@@ -48,7 +47,7 @@ module ClassifierReborn
       if conf_mats.length > 1
         conf_mats.each_with_index do |conf_mat, i|
           run_report = build_run_report(conf_mat)
-          print_run_report(run_report, i+1)
+          print_run_report(run_report, i + 1)
           conf_mat.each do |actual, cols|
             cols.each do |predicted, v|
               accumulated_conf_mat[actual][predicted] += v
@@ -78,11 +77,11 @@ module ClassifierReborn
         end
       end
       total = correct + incorrect
-      {total: total, correct: correct, incorrect: incorrect, accuracy: divide(correct, total)}
+      { total: total, correct: correct, incorrect: incorrect, accuracy: divide(correct, total) }
     end
 
     def conf_mat_to_tab(conf_mat)
-      conf_tab = Hash.new {|h, k| h[k] = {p: {t: 0, f: 0}, n: {t: 0, f: 0}}}
+      conf_tab = Hash.new { |h, k| h[k] = { p: { t: 0, f: 0 }, n: { t: 0, f: 0 } } }
       conf_mat.each_key do |positive|
         conf_mat.each do |actual, cols|
           cols.each do |predicted, v|
@@ -93,7 +92,7 @@ module ClassifierReborn
       conf_tab
     end
 
-    def print_run_report(stats, prefix="", print_header=false)
+    def print_run_report(stats, prefix = "", print_header = false)
       puts "#{"Run".rjust([3, prefix.length].max)}     Total   Correct Incorrect  Accuracy" if print_header
       puts "#{prefix.to_s.rjust(3)} #{stats[:total].to_s.rjust(9)} #{stats[:correct].to_s.rjust(9)} #{stats[:incorrect].to_s.rjust(9)} #{stats[:accuracy].round(5).to_s.ljust(7, '0').rjust(9)}"
     end
@@ -101,15 +100,15 @@ module ClassifierReborn
     def print_conf_mat(conf_mat)
       header = ["Predicted ->"] + conf_mat.keys + ["Total", "Recall"]
       cell_size = header.map(&:length).max
-      header = header.map{|h| h.rjust(cell_size)}.join(" ")
+      header = header.map { |h| h.rjust(cell_size) }.join(" ")
       puts " Confusion Matrix ".center(header.length, "-")
       puts header
       puts "-" * header.length
-      predicted_totals = conf_mat.keys.map{|predicted| [predicted, 0]}.to_h
+      predicted_totals = conf_mat.keys.map { |predicted| [predicted, 0] }.to_h
       correct = 0
       conf_mat.each do |k, rec|
         actual_total = rec.values.reduce(:+)
-        puts ([k.ljust(cell_size)] + rec.values.map{|v| v.to_s.rjust(cell_size)} + [actual_total.to_s.rjust(cell_size), divide(rec[k], actual_total).round(5).to_s.rjust(cell_size)]).join(" ")
+        puts ([k.ljust(cell_size)] + rec.values.map { |v| v.to_s.rjust(cell_size) } + [actual_total.to_s.rjust(cell_size), divide(rec[k], actual_total).round(5).to_s.rjust(cell_size)]).join(" ")
         rec.each do |cat, val|
           predicted_totals[cat] += val
           correct += val if cat == k
@@ -117,8 +116,8 @@ module ClassifierReborn
       end
       total = predicted_totals.values.reduce(:+)
       puts "-" * header.length
-      puts (["Total".ljust(cell_size)] + predicted_totals.values.map{|v| v.to_s.rjust(cell_size)} + [total.to_s.rjust(cell_size), "".rjust(cell_size)]).join(" ")
-      puts (["Precision".ljust(cell_size)] + predicted_totals.keys.map{|k| divide(conf_mat[k][k], predicted_totals[k]).round(5).to_s.rjust(cell_size)} + ["Accuracy ->".rjust(cell_size), divide(correct, total).round(5).to_s.rjust(cell_size)]).join(" ")
+      puts (["Total".ljust(cell_size)] + predicted_totals.values.map { |v| v.to_s.rjust(cell_size) } + [total.to_s.rjust(cell_size), "".rjust(cell_size)]).join(" ")
+      puts (["Precision".ljust(cell_size)] + predicted_totals.keys.map { |k| divide(conf_mat[k][k], predicted_totals[k]).round(5).to_s.rjust(cell_size) } + ["Accuracy ->".rjust(cell_size), divide(correct, total).round(5).to_s.rjust(cell_size)]).join(" ")
     end
 
     def print_conf_tab(conf_tab)
@@ -135,19 +134,19 @@ module ClassifierReborn
       negatives = tab[:n][:t] + tab[:p][:f]
       total     = positives + negatives
       {
-        total_population:   positives + negatives,
+        total_population: positives + negatives,
         condition_positive: positives,
         condition_negative: negatives,
-        true_positive:      tab[:p][:t],
-        true_negative:      tab[:n][:t],
-        false_positive:     tab[:p][:f],
-        false_negative:     tab[:n][:f],
-        prevalence:         divide(positives, total),
-        specificity:        divide(tab[:n][:t], negatives),
-        recall:             divide(tab[:p][:t], positives),
-        precision:          divide(tab[:p][:t], tab[:p][:t] + tab[:p][:f]),
-        accuracy:           divide(tab[:p][:t] + tab[:n][:t], total),
-        f1_score:           divide(2 * tab[:p][:t], 2 * tab[:p][:t] + tab[:p][:f] + tab[:n][:f])
+        true_positive: tab[:p][:t],
+        true_negative: tab[:n][:t],
+        false_positive: tab[:p][:f],
+        false_negative: tab[:n][:f],
+        prevalence: divide(positives, total),
+        specificity: divide(tab[:n][:t], negatives),
+        recall: divide(tab[:p][:t], positives),
+        precision: divide(tab[:p][:t], tab[:p][:t] + tab[:p][:f]),
+        accuracy: divide(tab[:p][:t] + tab[:n][:t], total),
+        f1_score: divide(2 * tab[:p][:t], 2 * tab[:p][:t] + tab[:p][:f] + tab[:n][:f])
       }
     end
 
@@ -159,7 +158,7 @@ module ClassifierReborn
     end
 
     def empty_conf_mat(categories)
-      categories.map{|actual| [actual, categories.map{|predicted| [predicted, 0]}.to_h]}.to_h
+      categories.map { |actual| [actual, categories.map { |predicted| [predicted, 0] }.to_h] }.to_h
     end
 
     def divide(dividend, divisor)

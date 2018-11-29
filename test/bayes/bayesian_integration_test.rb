@@ -33,8 +33,8 @@ class BayesianIntegrationTest < Minitest::Test
     train_model @memory_classifier
     train_model @redis_classifier
     assert_equal classification_scores(@memory_classifier).hash, classification_scores(@redis_classifier).hash
-    untrain_model @memory_classifier, TRAINING_SIZE/2
-    untrain_model @redis_classifier, TRAINING_SIZE/2
+    untrain_model @memory_classifier, TRAINING_SIZE / 2
+    untrain_model @redis_classifier, TRAINING_SIZE / 2
     assert_equal classification_scores(@memory_classifier).hash, classification_scores(@redis_classifier).hash
   end
 
@@ -45,9 +45,10 @@ class BayesianIntegrationTest < Minitest::Test
     end
   end
 
-  def untrain_model(classifier, limit=Float::INFINITY)
+  def untrain_model(classifier, limit = Float::INFINITY)
     @training_set.each_with_index do |line, i|
       break if i >= limit
+
       parts = line.strip.split("\t")
       classifier.untrain(parts.first, parts.last)
     end

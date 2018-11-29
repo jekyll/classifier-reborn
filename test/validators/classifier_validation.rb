@@ -69,7 +69,7 @@ class ClassifierValidation < Minitest::Test
   def test_lsi_classifier_5_fold_cross_validate
     lsi = ClassifierReborn::LSI.new
     required_methods = [:train, :classify, :categories]
-    unless required_methods.reduce(true){|m, o| m && lsi.respond_to?(o)}
+    unless required_methods.reduce(true) { |m, o| m && lsi.respond_to?(o) }
       puts "TODO: LSI is not validatable until all of the #{required_methods} methods are implemented!"
       skip
     end
