@@ -2,8 +2,6 @@
 
 [![Gem Version](https://badge.fury.io/rb/classifier-reborn.svg)](https://rubygems.org/gems/classifier-reborn)
 [![Build Status](https://img.shields.io/travis/jekyll/classifier-reborn/master.svg)](https://travis-ci.org/jekyll/classifier-reborn)
-[![Dependency Status](https://img.shields.io/gemnasium/jekyll/classifier-reborn.svg)](https://gemnasium.com/jekyll/classifier-reborn)
-
 ---
 
 ## [Read the Docs](https://www.classifier-reborn.com/)
