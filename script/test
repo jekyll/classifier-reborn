@@ -5,7 +5,7 @@
 #   script/test <test_file>
 
 if [ -z "$1" ]; then
-  TEST_FILES="./test/test_*.rb"
+  TEST_FILES="./test/**/*_test.rb"
 else
   TEST_FILES="$@"
 fi
