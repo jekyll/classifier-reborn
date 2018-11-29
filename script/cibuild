@@ -1,2 +1,6 @@
 #!/usr/bin/env bash
-./script/test
+
+set -e
+
+bundle exec rake test
+script/fmt
