@@ -1,10 +1,15 @@
-## HEAD
+## 2.3.0
 
 ## Major Enhancements
 * Separate tokenizer from hasher, allowing custom tokenizers. ([#162](https://github.com/jekyll/classifier-reborn/pull/162))
 
 ### Minor Enhancements
 * Improved handling of Zero division and Zero vector normalization. ([#173](https://github.com/jekyll/classifier-reborn/pull/173))
+
+### Development Fixes
+* remove deprecated has_rdoc in gemspec
+* auto-gen-config for Rubocop
+* auto-correct offenses
 
 ## 2.2.0 / 2017-12-14
 
@@ -35,17 +40,17 @@
  * README file cleaned up to point to the documentation site ([#121](https://github.com/jekyll/classifier-reborn/pull/121))
  * Added and corrected RDoc for ceratin classes and methods ([#122](https://github.com/jekyll/classifier-reborn/pull/122))
  * Added favicon link and forced display ([#120](https://github.com/jekyll/classifier-reborn/pull/120))
- * Updated the truncated LICENSE file ([#116](https://github.com/jekyll/classifier-reborn/pull/116)) 
- * Docs visual improvement and refactoring ([#119](https://github.com/jekyll/classifier-reborn/pull/119)) 
- * Fixed relative URL issue on nav links and added benchmark data ([#118](https://github.com/jekyll/classifier-reborn/pull/118)) 
- * Added custom layout with navigation ([#117](https://github.com/jekyll/classifier-reborn/pull/117)) 
- * Created a static site for documentation ([#115](https://github.com/jekyll/classifier-reborn/pull/115)) 
- * Removed redis gem from Dockerfile as it is added in gemspec ([#113](https://github.com/jekyll/classifier-reborn/pull/113)) 
- * Speed up Docker image rebilding ([#112](https://github.com/jekyll/classifier-reborn/pull/112)) 
+ * Updated the truncated LICENSE file ([#116](https://github.com/jekyll/classifier-reborn/pull/116))
+ * Docs visual improvement and refactoring ([#119](https://github.com/jekyll/classifier-reborn/pull/119))
+ * Fixed relative URL issue on nav links and added benchmark data ([#118](https://github.com/jekyll/classifier-reborn/pull/118))
+ * Added custom layout with navigation ([#117](https://github.com/jekyll/classifier-reborn/pull/117))
+ * Created a static site for documentation ([#115](https://github.com/jekyll/classifier-reborn/pull/115))
+ * Removed redis gem from Dockerfile as it is added in gemspec ([#113](https://github.com/jekyll/classifier-reborn/pull/113))
+ * Speed up Docker image rebilding ([#112](https://github.com/jekyll/classifier-reborn/pull/112))
  * Improved Docker based development documentation ([#106](https://github.com/jekyll/classifier-reborn/pull/106))
  * Benchmark refactoring, improving efficiency, enhanced reporting ([#107](https://github.com/jekyll/classifier-reborn/pull/107))
  * Add Vietnamese stopwords ([#110](https://github.com/jekyll/classifier-reborn/pull/110))
- * Added stop words for Arabic, Bengali, Chinese, Hindi, and Russian ([#105](https://github.com/jekyll/classifier-reborn/pull/105)) 
+ * Added stop words for Arabic, Bengali, Chinese, Hindi, and Russian ([#105](https://github.com/jekyll/classifier-reborn/pull/105))
  * Dockerfile and documentation ([#104](https://github.com/jekyll/classifier-reborn/pull/104))
  * Remove hard dep on Redis and update bin ([#96](https://github.com/jekyll/classifier-reborn/pull/96))
  * Documented Redis backend performance ([#103](https://github.com/jekyll/classifier-reborn/pull/103))
