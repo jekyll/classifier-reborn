@@ -12,7 +12,7 @@ module GSL
 
   class Matrix
     class <<self
-       alias_method :diag, :diagonal
+       alias diag diagonal
     end
   end
 end

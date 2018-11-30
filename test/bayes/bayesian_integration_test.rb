@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 require File.dirname(__FILE__) + '/../test_helper'
 require_relative '../data/test_data_loader'
 
@@ -11,7 +9,7 @@ class BayesianIntegrationTest < Minitest::Test
     begin
       @memory_classifier = ClassifierReborn::Bayes.new 'Ham', 'Spam'
       @redis_backend = ClassifierReborn::BayesRedisBackend.new
-      @redis_backend.instance_variable_get(:@redis).config(:set, "save", "")
+      @redis_backend.instance_variable_get(:@redis).config(:set, 'save', '')
       @redis_classifier = ClassifierReborn::Bayes.new 'Ham', 'Spam', backend: @redis_backend
     rescue Redis::CannotConnectError => e
       skip(e)
@@ -58,7 +56,7 @@ class BayesianIntegrationTest < Minitest::Test
     @testing_set.collect do |line|
       parts = line.strip.split("\t")
       result, score = classifier.classify_with_score(parts.last)
-      score.infinite? ? "irrelevant" : "#{result}:#{score}"
+      score.infinite? ? 'irrelevant' : "#{result}:#{score}"
     end
   end
 end

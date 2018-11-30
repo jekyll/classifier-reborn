@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 module BayesianCommonBenchmarks
   MAX_RECORDS = 5000
 
@@ -11,16 +9,15 @@ module BayesianCommonBenchmarks
       puts ([suite] + BayesianCommonBenchmarks.bench_range).join("\t")
     end
 
-    def after_suite(suite)
-    end
+    def after_suite(suite); end
 
     def report
       super
       puts
-      puts('Finished in %.5fs' % total_time)
-      print('%d tests, %d assertions, ' % [count, assertions])
+      puts(format('Finished in %.5fs', total_time))
+      print(format('%d tests, %d assertions, ', count, assertions))
       color = failures.zero? && errors.zero? ? :green : :red
-      print(send(color) { '%d failures, %d errors, ' } % [failures, errors])
+      print(format(send(color) { '%d failures, %d errors, ' }, failures, errors))
       print(yellow { '%d skips' } % skips)
       puts
     end

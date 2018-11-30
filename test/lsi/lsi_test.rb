@@ -72,7 +72,7 @@ class LSITest < Minitest::Test
 
     scored_categories = lsi.scored_categories('dog bird cat')
     assert_equal 2, scored_categories.size
-    assert_equal %w(Bird Dog), scored_categories.map(&:first)
+    assert_equal %w[Bird Dog], scored_categories.map(&:first)
   end
 
   def test_external_classifying
@@ -186,7 +186,7 @@ class LSITest < Minitest::Test
     lsi.add_item @str4, 'Cat'
     lsi.add_item @str5, 'Bird'
 
-    assert_equal [:dog, :text, :deal], lsi.highest_ranked_stems(@str1)
+    assert_equal %i[dog text deal], lsi.highest_ranked_stems(@str1)
   end
 
   def test_invalid_searching_when_using_gsl
@@ -203,7 +203,7 @@ class LSITest < Minitest::Test
 
   def test_warn_when_adding_bad_document
     lsi = ClassifierReborn::LSI.new
-    assert_output(/Input: 'i can' is entirely stopwords or words with 2 or fewer characters. Classifier-Reborn cannot handle this document properly./) { lsi.add_item("i can") }
+    assert_output(/Input: 'i can' is entirely stopwords or words with 2 or fewer characters. Classifier-Reborn cannot handle this document properly./) { lsi.add_item('i can') }
   end
 
   def test_summary

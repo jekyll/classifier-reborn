@@ -10,14 +10,14 @@ class Matrix
     Matrix.diagonal(*s)
   end
 
-  alias_method :trans, :transpose
+  alias trans transpose
 
   def SV_decomp(maxSweeps = 20)
-    if row_size >= column_size
-      q = trans * self
-    else
-      q = self * trans
-    end
+    q = if row_size >= column_size
+          trans * self
+        else
+          self * trans
+        end
 
     qrot    = q.dup
     v       = Matrix.identity(q.row_size)
@@ -31,11 +31,11 @@ class Matrix
         (1..qrot.row_size - 1).each do |col|
           next if row == col
 
-          if (2.0 * qrot[row, col]) == (qrot[row, row] - qrot[col, col])
-            h = Math.atan(1) / 2.0
-          else
-            h = Math.atan((2.0 * qrot[row, col]) / (qrot[row, row] - qrot[col, col])) / 2.0
-          end
+          h = if (2.0 * qrot[row, col]) == (qrot[row, row] - qrot[col, col])
+                Math.atan(1) / 2.0
+              else
+                Math.atan((2.0 * qrot[row, col]) / (qrot[row, row] - qrot[col, col])) / 2.0
+              end
           hcos = Math.cos(h)
           hsin = Math.sin(h)
           mzrot = Matrix.identity(qrot.row_size)

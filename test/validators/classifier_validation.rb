@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 require File.dirname(__FILE__) + '/../test_helper'
 require File.dirname(__FILE__) + '/../../lib/classifier-reborn/validators/classifier_validator'
 require_relative '../data/test_data_loader'
@@ -21,18 +19,18 @@ class ClassifierValidation < Minitest::Test
     def before_test(test)
       super
       validation_name = test.name.gsub(/^test_/, '')
-      puts " #{validation_name} ".center(REPORT_WIDTH, "=")
+      puts " #{validation_name} ".center(REPORT_WIDTH, '=')
     end
 
     def after_test(test)
       super
-      puts "-" * REPORT_WIDTH
+      puts '-' * REPORT_WIDTH
       puts
     end
 
     def report
       super
-      puts('Finished in %.5fs' % total_time)
+      puts(format('Finished in %.5fs', total_time))
       puts
     end
   end
@@ -55,20 +53,18 @@ class ClassifierValidation < Minitest::Test
   end
 
   def test_bayes_classifier_3_fold_cross_validate_redis
-    begin
-      backend = ClassifierReborn::BayesRedisBackend.new
-      backend.instance_variable_get(:@redis).config(:set, "save", "")
-      classifier = ClassifierReborn::Bayes.new backend: backend
-      ClassifierValidator.cross_validate(classifier, @sample_data, 3)
-    rescue Redis::CannotConnectError => e
-      puts "Unable to connect to Redis server"
-      skip(e)
-    end
+    backend = ClassifierReborn::BayesRedisBackend.new
+    backend.instance_variable_get(:@redis).config(:set, 'save', '')
+    classifier = ClassifierReborn::Bayes.new backend: backend
+    ClassifierValidator.cross_validate(classifier, @sample_data, 3)
+  rescue Redis::CannotConnectError => e
+    puts 'Unable to connect to Redis server'
+    skip(e)
   end
 
   def test_lsi_classifier_5_fold_cross_validate
     lsi = ClassifierReborn::LSI.new
-    required_methods = [:train, :classify, :categories]
+    required_methods = %i[train classify categories]
     unless required_methods.reduce(true) { |m, o| m && lsi.respond_to?(o) }
       puts "TODO: LSI is not validatable until all of the #{required_methods} methods are implemented!"
       skip

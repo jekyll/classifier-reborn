@@ -3,7 +3,7 @@ require 'tempfile'
 
 class TokenizerWhitespaceTest < Minitest::Test
   def test_tokenize
-    tokens = %w(here are some good words of tests i hope you love them ' . !)
+    tokens = %w[here are some good words of tests i hope you love them ' . !]
     stemmabilities = [true, true, true, true, true, true, true, true, true, true, true, true, false, false, false]
     maybe_stopwords = [true, true, true, true, true, true, true, true, true, true, true, true, false, false, false]
 

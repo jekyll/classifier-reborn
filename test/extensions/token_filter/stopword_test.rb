@@ -28,10 +28,10 @@ class TokenFilterStopwordTest < Minitest::Test
 
   def test_add_custom_stopword_path
     # Create stopword tempfile in current directory
-    temp_stopwords = Tempfile.new('xy', "#{File.dirname(__FILE__) + "/"}")
+    temp_stopwords = Tempfile.new('xy', (File.dirname(__FILE__) + '/').to_s)
 
     # Add some stopwords to tempfile
-    temp_stopwords << "this words fun"
+    temp_stopwords << 'this words fun'
     temp_stopwords.close
 
     # Get path of tempfile
@@ -41,10 +41,10 @@ class TokenFilterStopwordTest < Minitest::Test
     temp_stopwords_name = File.basename(temp_stopwords.path)
 
     TokenFilter::Stopword.add_custom_stopword_path(temp_stopwords_path)
-    words = Tokenizer::Whitespace.call("this is a list of cool words!")
+    words = Tokenizer::Whitespace.call('this is a list of cool words!')
     TokenFilter::Stopword.language = temp_stopwords_name
     words = TokenFilter::Stopword.call(words)
-    assert_equal %w(list cool !), words
+    assert_equal %w[list cool !], words
   end
 
   def teardown

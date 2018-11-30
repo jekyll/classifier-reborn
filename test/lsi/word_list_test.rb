@@ -3,7 +3,7 @@ require_relative '../test_helper'
 class WordListTest < Minitest::Test
   def test_size_does_not_count_words_twice
     list = ClassifierReborn::WordList.new
-    assert list.size == 0
+    assert list.size.zero?
 
     list.add_word('hello')
     assert list.size == 1
@@ -19,7 +19,7 @@ class WordListTest < Minitest::Test
     list = ClassifierReborn::WordList.new
     list.add_word('hello')
     list.add_word('world')
-    assert list['hello'] == 0
+    assert list['hello'].zero?
     assert list['world'] == 1
   end
 

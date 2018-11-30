@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 require File.dirname(__FILE__) + '/../test_helper'
 require_relative './bayesian_common_tests'
 
@@ -7,15 +5,13 @@ class BayesianRedisTest < Minitest::Test
   include BayesianCommonTests
 
   def setup
-    begin
-      @old_stopwords = TokenFilter::Stopword::STOPWORDS['en']
-      @backend = ClassifierReborn::BayesRedisBackend.new
-      @backend.instance_variable_get(:@redis).config(:set, "save", "")
-      @alternate_backend = ClassifierReborn::BayesRedisBackend.new(db: 1)
-      @classifier = ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting', backend: @backend
-    rescue Redis::CannotConnectError => e
-      skip(e)
-    end
+    @old_stopwords = TokenFilter::Stopword::STOPWORDS['en']
+    @backend = ClassifierReborn::BayesRedisBackend.new
+    @backend.instance_variable_get(:@redis).config(:set, 'save', '')
+    @alternate_backend = ClassifierReborn::BayesRedisBackend.new(db: 1)
+    @classifier = ClassifierReborn::Bayes.new 'Interesting', 'Uninteresting', backend: @backend
+  rescue Redis::CannotConnectError => e
+    skip(e)
   end
 
   def teardown

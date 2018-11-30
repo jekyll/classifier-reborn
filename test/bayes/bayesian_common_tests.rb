@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 module BayesianCommonTests
   def test_good_training
     assert_equal ['love'], @classifier.train_interesting('love')
@@ -22,7 +20,7 @@ module BayesianCommonTests
   end
 
   def test_categories
-    assert_equal %w(Interesting Uninteresting).sort, @classifier.categories.sort
+    assert_equal %w[Interesting Uninteresting].sort, @classifier.categories.sort
   end
 
   def test_categories_from_array
@@ -31,7 +29,7 @@ module BayesianCommonTests
 
   def test_add_category
     @classifier.add_category 'Test'
-    assert_equal %w(Test Interesting Uninteresting).sort, @classifier.categories.sort
+    assert_equal %w[Test Interesting Uninteresting].sort, @classifier.categories.sort
   end
 
   def test_dynamic_category_succeeds_with_auto_categorize
@@ -81,12 +79,12 @@ module BayesianCommonTests
 
     b.threshold = -4.0
 
-    ['one', 'two', 'three', 'four', 'five'].each do |a_number|
+    %w[one two three four five].each do |a_number|
       b.train_number(a_number)
       b.train_number(a_number)
     end
 
-    ['one', 'two', 'three', 'four', 'five'].each do |a_number|
+    %w[one two three four five].each do |a_number|
       assert_equal 'Number', b.classify(a_number)
     end
 
@@ -102,14 +100,14 @@ module BayesianCommonTests
     assert b.threshold_enabled?
     assert_equal 0.0, b.threshold # default
 
-    %w(
+    %w[
       http://example.com/about
       http://example.com/contact
       http://example.com/download
       http://example.com/login
       http://example.com/logout
       http://example.com/blog/2015-04-01
-    ).each do |url|
+    ].each do |url|
       b.train_normal(url)
     end
 
@@ -181,9 +179,9 @@ module BayesianCommonTests
 
   def test_reset
     @classifier.add_category 'Test'
-    assert_equal %w(Test Interesting Uninteresting).sort, @classifier.categories.sort
+    assert_equal %w[Test Interesting Uninteresting].sort, @classifier.categories.sort
     @classifier.reset
-    assert_equal %w(Interesting Uninteresting).sort, @classifier.categories.sort
+    assert_equal %w[Interesting Uninteresting].sort, @classifier.categories.sort
     classifier = empty_classifier
     classifier.train('Ruby', 'A really sweet language')
     assert classifier.categories.include?('Ruby')
@@ -194,7 +192,7 @@ module BayesianCommonTests
   private
 
   def another_classifier
-    ClassifierReborn::Bayes.new %w(Interesting Uninteresting), backend: @alternate_backend
+    ClassifierReborn::Bayes.new %w[Interesting Uninteresting], backend: @alternate_backend
   end
 
   def auto_categorize_classifier
@@ -214,7 +212,7 @@ module BayesianCommonTests
   end
 
   def empty_string_stopwords_classifier
-    ClassifierReborn::Bayes.new stopwords: "", backend: @alternate_backend
+    ClassifierReborn::Bayes.new stopwords: '', backend: @alternate_backend
   end
 
   def empty_array_stopwords_classifier
@@ -222,7 +220,7 @@ module BayesianCommonTests
   end
 
   def array_stopwords_classifier
-    ClassifierReborn::Bayes.new stopwords: ["these", "are", "custom", "stopwords"], backend: @alternate_backend
+    ClassifierReborn::Bayes.new stopwords: %w[these are custom stopwords], backend: @alternate_backend
   end
 
   def file_stopwords_classifier

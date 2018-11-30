@@ -54,18 +54,12 @@ module ClassifierReborn
       @backend             = options[:backend]
       @tokenizer           = options[:tokenizer] || Tokenizer::Whitespace
       @token_filters       = options[:token_filters] || [TokenFilter::Stopword]
-      if @enable_stemmer && !@token_filters.include?(TokenFilter::Stemmer)
-        @token_filters << TokenFilter::Stemmer
-      end
-      if @token_filters.include?(TokenFilter::Stopword)
-        TokenFilter::Stopword.language = @language
-      end
+      @token_filters << TokenFilter::Stemmer if @enable_stemmer && !@token_filters.include?(TokenFilter::Stemmer)
+      TokenFilter::Stopword.language = @language if @token_filters.include?(TokenFilter::Stopword)
 
       populate_initial_categories
 
-      if options.key?(:stopwords)
-        custom_stopwords options[:stopwords]
-      end
+      custom_stopwords options[:stopwords] if options.key?(:stopwords)
     end
 
     # Provides a general training method for all categories specified in Bayes#new
@@ -168,7 +162,7 @@ module ClassifierReborn
     # Return the classification without the score
     def classify(text)
       result, score = classify_with_score(text)
-      result = nil if score < @threshold || score == Float::INFINITY if threshold_enabled?
+      result = nil if threshold_enabled? && (score < @threshold || score == Float::INFINITY)
       result
     end
 
@@ -256,7 +250,7 @@ module ClassifierReborn
       @backend.add_category(category)
     end
 
-    alias_method :append_category, :add_category
+    alias append_category add_category
 
     def reset
       @backend.reset
@@ -277,7 +271,7 @@ module ClassifierReborn
         if stopwords.strip.empty?
           stopwords = []
         elsif File.exist?(stopwords)
-          stopwords = File.read(stopwords).force_encoding("utf-8").split
+          stopwords = File.read(stopwords).force_encoding('utf-8').split
         else
           return # Do not overwrite the default
         end

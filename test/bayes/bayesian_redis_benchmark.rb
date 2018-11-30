@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 require File.dirname(__FILE__) + '/../test_helper'
 require_relative './bayesian_common_benchmarks'
 require_relative '../data/test_data_loader'
@@ -21,7 +19,7 @@ class BayesianRedisBenchmark < Minitest::Benchmark
     self.class.bench_range.each_with_index do |n, i|
       begin
         redis_backend = ClassifierReborn::BayesRedisBackend.new(db: i)
-        redis_backend.instance_variable_get(:@redis).config(:set, "save", "")
+        redis_backend.instance_variable_get(:@redis).config(:set, 'save', '')
         @classifiers[n] = ClassifierReborn::Bayes.new 'Ham', 'Spam', backend: redis_backend
       rescue Redis::CannotConnectError => e
         skip(e)

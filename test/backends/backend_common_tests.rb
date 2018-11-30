@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 module BackendCommonTests
   def test_initial_values
     assert @backend.total_words.zero?
@@ -45,15 +43,15 @@ module BackendCommonTests
 
   def test_category_word_frequency
     @backend.add_category(:Interesting)
-    refute @backend.word_in_category?(:Interesting, "foo")
-    assert_equal 0, @backend.category_word_frequency(:Interesting, "foo")
-    @backend.update_category_word_frequency(:Interesting, "foo", 10)
-    assert @backend.word_in_category?(:Interesting, "foo")
-    assert_equal 10, @backend.category_word_frequency(:Interesting, "foo")
-    @backend.update_category_word_frequency(:Interesting, "foo", -7)
-    assert_equal 3, @backend.category_word_frequency(:Interesting, "foo")
-    @backend.delete_category_word(:Interesting, "foo")
-    refute @backend.word_in_category?(:Interesting, "foo")
+    refute @backend.word_in_category?(:Interesting, 'foo')
+    assert_equal 0, @backend.category_word_frequency(:Interesting, 'foo')
+    @backend.update_category_word_frequency(:Interesting, 'foo', 10)
+    assert @backend.word_in_category?(:Interesting, 'foo')
+    assert_equal 10, @backend.category_word_frequency(:Interesting, 'foo')
+    @backend.update_category_word_frequency(:Interesting, 'foo', -7)
+    assert_equal 3, @backend.category_word_frequency(:Interesting, 'foo')
+    @backend.delete_category_word(:Interesting, 'foo')
+    refute @backend.word_in_category?(:Interesting, 'foo')
   end
 
   def test_reset

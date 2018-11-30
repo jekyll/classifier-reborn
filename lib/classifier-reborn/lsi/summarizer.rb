@@ -27,7 +27,7 @@ module ClassifierReborn
       chunks.each { |chunk| lsi << chunk unless chunk.strip.empty? || chunk.strip.split.size == 1 }
       lsi.build_index
       summaries = lsi.highest_relative_content count
-      summaries.reject { |chunk| !summaries.include? chunk }.map(&:strip).join(separator)
+      summaries.select { |chunk| summaries.include? chunk }.map(&:strip).join(separator)
     end
   end
 end

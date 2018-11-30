@@ -38,11 +38,11 @@ module ClassifierReborn
     # Creates the raw vector out of word_hash using word_list as the
     # key for mapping the vector space.
     def raw_vector_with(word_list)
-      if $GSL
-        vec = GSL::Vector.alloc(word_list.size)
-      else
-        vec = Array.new(word_list.size, 0)
-      end
+      vec = if $GSL
+              GSL::Vector.alloc(word_list.size)
+            else
+              Array.new(word_list.size, 0)
+            end
 
       @word_hash.each_key do |word|
         vec[word_list[word]] = @word_hash[word] if word_list[word]
