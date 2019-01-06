@@ -1,22 +1,19 @@
 language: ruby
 rvm:
-  - 2.2.6
-  - 2.3.3
-  - 2.4.0
-  - jruby-9.1.9.0
+  - 2.4
+  - 2.6
+  - jruby-9.2.5.0
 gemfile:
   - Gemfile
   - Gemfile-jruby
 
 matrix:
   exclude:
-    - rvm: jruby-9.1.9.0
+    - rvm: jruby-9.2.5.0
       gemfile: Gemfile
-    - rvm: 2.2.6
+    - rvm: 2.4
       gemfile: Gemfile-jruby
-    - rvm: 2.3.3
-      gemfile: Gemfile-jruby
-    - rvm: 2.4.0
+    - rvm: 2.6
       gemfile: Gemfile-jruby
 
 notifications:
