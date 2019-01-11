@@ -1,4 +1,4 @@
-## 2.3.0
+## HEAD
 
 ## Major Enhancements
 * Separate tokenizer from hasher, allowing custom tokenizers. ([#162](https://github.com/jekyll/classifier-reborn/pull/162))
