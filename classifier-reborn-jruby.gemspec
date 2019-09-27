@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.summary          = 'A general classifier module to allow Bayesian and other types of classifications.'
   s.authors          = ['Lucas Carlson', 'Parker Moore', 'Chase Gilliam']
   s.email            = ['lucas@rufy.com', 'parkrmoore@gmail.com', 'chase.gilliam@gmail.com']
-  s.homepage         = 'https://github.com/jekyll/classifier-reborn'
+  s.homepage         = 'https://github.com/jekyll/classifier-reborn/'
 
   all_files          = `git ls-files -z`.split("\x0")
   s.files            = all_files.grep(%r{^(bin|lib|data)/})
