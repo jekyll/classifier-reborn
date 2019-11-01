@@ -6,13 +6,16 @@ require_relative 'no_redis_error'
 module ClassifierReborn
   # This class provides Redis as the storage backend for the classifier data structures
   class BayesRedisBackend
-    # The class can be created with the same arguments that the redis gem accepts
+    # The class can be given an existing redis connection, or it can create
+    # a new connection for you with the same arguments that the
+    # {redis gem}[https://github.com/redis/redis-rb] accepts
     # E.g.,
     #      b = ClassifierReborn::BayesRedisBackend.new
     #      b = ClassifierReborn::BayesRedisBackend.new host: "10.0.1.1", port: 6380, db: 2
     #      b = ClassifierReborn::BayesRedisBackend.new url: "redis://:secret@10.0.1.1:6380/2"
     #
     # Options available are:
+    #   redis_conn:         an existing redis connection
     #   url:                lambda { ENV["REDIS_URL"] }
     #   scheme:             "redis"
     #   host:               "127.0.0.1"
@@ -33,7 +36,7 @@ module ClassifierReborn
         raise NoRedisError
       end
 
-      @redis = Redis.new(options)
+      @redis = options.fetch(:redis_conn, Redis.new(options))
       @redis.setnx(:total_words, 0)
       @redis.setnx(:total_trainings, 0)
     end
