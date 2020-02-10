@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Author::    David Fayram  (mailto:dfayram@lensmen.net)
 # Copyright:: Copyright (c) 2005 David Fayram II
 # License::   LGPL

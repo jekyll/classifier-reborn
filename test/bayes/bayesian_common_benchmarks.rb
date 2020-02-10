@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module BayesianCommonBenchmarks
   MAX_RECORDS = 5000
 

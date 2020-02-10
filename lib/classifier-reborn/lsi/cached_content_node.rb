@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Author::    Kelley Reynolds  (mailto:kelley@insidesystems.net)
 # Copyright:: Copyright (c) 2015 Kelley Reynolds
 # License::   LGPL

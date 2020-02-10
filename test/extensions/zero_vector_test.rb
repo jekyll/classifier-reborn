@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ZeroVectorTest < Minitest::Test
   def test_zero?
     vec0 = Vector[]

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.dirname(__FILE__) + '/../test_helper'
 require File.dirname(__FILE__) + '/../../lib/classifier-reborn/validators/classifier_validator'
 require_relative '../data/test_data_loader'

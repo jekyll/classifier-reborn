@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ClassifierReborn
   class BayesMemoryBackend
     attr_reader :total_words, :total_trainings
