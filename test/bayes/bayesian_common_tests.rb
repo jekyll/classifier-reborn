@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module BayesianCommonTests
   def test_good_training
     assert_equal ['love'], @classifier.train_interesting('love')

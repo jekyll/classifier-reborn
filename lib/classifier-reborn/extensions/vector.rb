@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Author::    Ernest Ellingson
 # Copyright:: Copyright (c) 2005
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module BackendCommonTests
   def test_initial_values
     assert @backend.total_words.zero?

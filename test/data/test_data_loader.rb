@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TestDataLoader
   def self.sms_data
     @@sms_data ||= load_sms_data

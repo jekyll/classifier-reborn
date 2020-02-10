@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'no_redis_error'
 # require redis when we run #intialize. This way only people using this backend
 # will need to install and load the backend without having to
