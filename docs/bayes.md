@@ -201,7 +201,7 @@ filters = [
   white_filter
   # If you want to reject stopwords too, you need to include stopword filter
   # to the list of token filters manually.
-  ClassifierReborn::TokenFilters::Stopword,
+  ClassifierReborn::TokenFilter::Stopword,
 ]
 classifier = ClassifierReborn::Bayes.new token_filters: filters
 ```
