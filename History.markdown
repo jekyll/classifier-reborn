@@ -13,6 +13,10 @@
   * auto-correct offenses
   * Freeze all Ruby string literals (#190)
 
+### Documentation
+
+  * Updated Bayes docs for filters (#191)
+
 ## 2.2.0 / 2017-12-14
 
   * JRuby Support, thanks to [@mach-kernel](https://github.com/mach-kernel) ([#168](https://github.com/jekyll/classifier-reborn/pull/168))
