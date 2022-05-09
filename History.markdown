@@ -12,6 +12,7 @@
   * auto-gen-config for Rubocop
   * auto-correct offenses
   * Freeze all Ruby string literals (#190)
+  * Migrate TravisCI to GitHub Actions &amp; Update Tested Ruby Versions (#195)
 
 ### Documentation
 
