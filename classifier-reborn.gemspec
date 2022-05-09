@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
   s.extra_rdoc_files = %w[README.markdown LICENSE]
 
   s.add_runtime_dependency('fast-stemmer', '~> 1.0')
+  s.add_runtime_dependency('matrix', '~> 0.4')
 
   s.add_development_dependency('minitest')
   s.add_development_dependency('minitest-reporters')
