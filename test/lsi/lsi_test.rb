@@ -163,7 +163,7 @@ class LSITest < Minitest::Test
   end
 
   def test_clears_cached_content_node_cache
-    return unless $GSL
+    skip "transposed_search_vector is only used by GSL implementation" unless $GSL
 
     lsi = ClassifierReborn::LSI.new(cache_node_vectors: true)
     lsi.add_item @str1, 'Dog'
@@ -192,7 +192,7 @@ class LSITest < Minitest::Test
   end
 
   def test_invalid_searching_when_using_gsl
-    return unless $GSL
+    skip "Only GSL currently raises invalid search error" unless $GSL
 
     lsi = ClassifierReborn::LSI.new
     lsi.add_item @str1, 'Dog'
