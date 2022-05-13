@@ -13,6 +13,7 @@
   * auto-correct offenses
   * Freeze all Ruby string literals (#190)
   * Migrate TravisCI to GitHub Actions &amp; Update Tested Ruby Versions (#195)
+  * Test Native and GSL Implementations (#196)
 
 ### Documentation
 
