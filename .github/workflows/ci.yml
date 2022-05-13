@@ -14,17 +14,17 @@ on:
 
 jobs:
   ci:
-    name: "Run Tests (Ruby ${{ matrix.ruby_version }}, GSL: ${{ matrix.gsl }})"
+    name: "Run Tests (Ruby ${{ matrix.ruby_version }}, Linalg: ${{ matrix.linalg_gem }})"
     runs-on: "ubuntu-latest"
     env:
       # See https://github.com/marketplace/actions/setup-ruby-jruby-and-truffleruby#matrix-of-gemfiles
       BUNDLE_GEMFILE: ${{ matrix.gemfile }}
-      LOAD_GSL: ${{ matrix.gsl }}
+      LINALG_GEM: ${{ matrix.linalg_gem }}
     strategy:
       fail-fast: false
       matrix:
         ruby_version: ["2.7", "3.0", "3.1", "jruby-9.3.4.0"]
-        gsl: [true, false]
+        linalg_gem: ["none", "gsl", "numo"]
         # We use `include` to assign the correct Gemfile for each ruby_version
         include:
           - ruby_version: "2.7"
@@ -39,17 +39,23 @@ jobs:
           # Ruby 3.0 does not work with the latest released gsl gem
           # https://github.com/SciRuby/rb-gsl/issues/67
           - ruby_version: "3.0"
-            gsl: true
+            linalg_gem: "gsl"
           # Ruby 3.1 does not work with the latest released gsl gem
           # https://github.com/SciRuby/rb-gsl/issues/67
           - ruby_version: "3.1"
-            gsl: true
+            linalg_gem: "gsl"
           # jruby-9.3.4.0 doesn't easily build the gsl gem on a GitHub worker. Skipping for now.
           - ruby_version: "jruby-9.3.4.0"
-            gsl: true
+            linalg_gem: "gsl"
+          # jruby-9.3.4.0 doesn't easily build the numo gems on a GitHub worker. Skipping for now.
+          - ruby_version: "jruby-9.3.4.0"
+            linalg_gem: "numo"
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+      - name: Install Lapack
+        if: ${{ matrix.linalg_gem == 'numo' }}
+        run: sudo apt-get install -y liblapacke-dev libopenblas-dev
       - name: "Set up ${{ matrix.label }}"
         uses: ruby/setup-ruby@v1
         with:

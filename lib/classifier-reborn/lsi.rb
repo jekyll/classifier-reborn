@@ -4,16 +4,28 @@
 # Copyright:: Copyright (c) 2005 David Fayram II
 # License::   LGPL
 
+# Try to load Numo first - it's the most current and the most well-supported.
+# Fall back to GSL.
+# Fall back to native vector.
 begin
   raise LoadError if ENV['NATIVE_VECTOR'] == 'true' # to test the native vector class, try `rake test NATIVE_VECTOR=true`
+  raise LoadError if ENV['GSL'] == 'true' # to test with gsl, try `rake test GSL=true`
 
-  require 'gsl' # requires https://github.com/SciRuby/rb-gsl
-  require_relative 'extensions/vector_serialize'
-  $GSL = true
+  require 'numo/narray' # https://ruby-numo.github.io/narray/
+  require 'numo/linalg' # https://ruby-numo.github.io/linalg/
+  $SVD = :numo
 rescue LoadError
-  $GSL = false
-  require_relative 'extensions/vector'
-  require_relative 'extensions/zero_vector'
+  begin
+    raise LoadError if ENV['NATIVE_VECTOR'] == 'true' # to test the native vector class, try `rake test NATIVE_VECTOR=true`
+
+    require 'gsl' # requires https://github.com/SciRuby/rb-gsl
+    require_relative 'extensions/vector_serialize'
+    $SVD = :gsl
+  rescue LoadError
+    $SVD = :ruby
+    require_relative 'extensions/vector'
+    require_relative 'extensions/zero_vector'
+  end
 end
 
 require_relative 'lsi/word_list'
@@ -140,7 +152,15 @@ module ClassifierReborn
       doc_list = @items.values
       tda = doc_list.collect { |node| node.raw_vector_with(@word_list) }
 
-      if $GSL
+      if $SVD == :numo
+        tdm = Numo::NArray.asarray(tda.map(&:to_a)).transpose
+        ntdm = numo_build_reduced_matrix(tdm, cutoff)
+
+        ntdm.each_over_axis(1).with_index do |col_vec, i|
+          doc_list[i].lsi_vector = col_vec
+          doc_list[i].lsi_norm = col_vec / Numo::Linalg.norm(col_vec)
+        end
+      elsif $SVD == :gsl
         tdm = GSL::Matrix.alloc(*tda).trans
         ntdm = build_reduced_matrix(tdm, cutoff)
 
@@ -201,7 +221,9 @@ module ClassifierReborn
       content_node = node_for_content(doc, &block)
       result =
         @items.keys.collect do |item|
-          val = if $GSL
+          val = if $SVD == :numo
+                  content_node.search_vector.dot(@items[item].transposed_search_vector)
+                elsif $SVD == :gsl
                   content_node.search_vector * @items[item].transposed_search_vector
                 else
                   (Matrix[content_node.search_vector] * @items[item].search_vector)[0]
@@ -220,7 +242,8 @@ module ClassifierReborn
       return [] if needs_rebuild?
 
       content_node = node_for_content(doc, &block)
-      if $GSL && content_node.raw_norm.isnan?.all?
+      if ($SVD == :gsl && content_node.raw_norm.isnan?.all?) ||
+          ($SVD == :numo && content_node.raw_norm.isnan.all?)
         puts "There are no documents that are similar to #{doc}"
       else
         content_node_norms(content_node)
@@ -230,7 +253,9 @@ module ClassifierReborn
     def content_node_norms(content_node)
       result =
         @items.keys.collect do |item|
-          val = if $GSL
+          val = if $SVD == :numo
+                  content_node.search_norm.dot(@items[item].search_norm)
+                elsif $SVD == :gsl
                   content_node.search_norm * @items[item].search_norm.col
                 else
                   (Matrix[content_node.search_norm] * @items[item].search_norm)[0]
@@ -332,7 +357,20 @@ module ClassifierReborn
         s[ord] = 0.0 if s[ord] < s_cutoff
       end
       # Reconstruct the term document matrix, only with reduced rank
-      u * ($GSL ? GSL::Matrix : ::Matrix).diag(s) * v.trans
+      u * ($SVD == :gsl ? GSL::Matrix : ::Matrix).diag(s) * v.trans
+    end
+
+    def numo_build_reduced_matrix(matrix, cutoff = 0.75)
+      s, u, vt = Numo::Linalg.svd(matrix, driver: 'svd', job: 'S')
+
+      # TODO: Better than 75% term (as above)
+      s_cutoff = s.sort.reverse[(s.size * cutoff).round - 1]
+      s.size.times do |ord|
+        s[ord] = 0.0 if s[ord] < s_cutoff
+      end
+
+      # Reconstruct the term document matrix, only with reduced rank
+      u.dot(::Numo::DFloat.eye(s.size) * s).dot(vt)
     end
 
     def node_for_content(item, &block)

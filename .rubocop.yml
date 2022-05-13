@@ -1,7 +1,7 @@
 inherit_from: .rubocop_todo.yml
 
 Style/GlobalVars:
-  AllowedVariables: [$GSL]
+  AllowedVariables: [$SVD]
 
 Naming/MethodName:
   Exclude:

@@ -60,12 +60,34 @@ The only runtime dependency of this gem is Roman Shterenzon's `fast-stemmer` gem
 gem install fast-stemmer
 ```
 
-To speed up `LSI` classification by at least 10x consider installing following libraries.
+In addition, it is **recommended** to install either Numo or GSL to speed up LSI classification by at least 10x.
 
-* [GSL - GNU Scientific Library](http://www.gnu.org/software/gsl)
-* [Ruby/GSL Gem](https://rubygems.org/gems/gsl)
+Note that LSI will work without these libraries, but as soon as they are installed, classifier will make use of them. No configuration changes are needed, we like to keep things ridiculously easy for you.
 
-Note that `LSI` will work without these libraries, but as soon as they are installed, classifier will make use of them. No configuration changes are needed, we like to keep things ridiculously easy for you.
+### Install Numo Gems
+
+[Numo](https://ruby-numo.github.io/narray/) is a set of Numerical Module gems for Ruby that provide a Ruby interface to [LAPACK](http://www.netlib.org/lapack/). If classifier detects that the required Numo gems are installed, it will make use of them to perform LSI faster. 
+
+* Install [LAPACKE](https://www.netlib.org/lapack/lapacke.html)
+  * Ubuntu: `apt-get install liblapacke-dev`
+  * macOS: (Help wanted to verify installation steps) https://stackoverflow.com/questions/38114201/installing-lapack-and-blas-libraries-for-c-on-mac-os
+* Install [OpenBLAS](https://www.openblas.net/)
+  * Ubuntu: `apt-get install libopenblas-dev`
+  * macOS: (Help wanted to verify installation steps) https://stackoverflow.com/questions/38114201/installing-lapack-and-blas-libraries-for-c-on-mac-os
+* Install the [Numo::NArray](https://ruby-numo.github.io/narray/) and [Numo::Linalg](https://ruby-numo.github.io/linalg/) gems
+  * `gem install numo-narray numo-linalg`
+
+### Install GSL Gem
+
+**Note:** The `gsl` gem is currently incompatible with Ruby 3. It is recommended to use Numo instead with Ruby 3.
+
+The [GNU Scientific Library (GSL)](http://www.gnu.org/software/gsl) is an alternative to Numo/LAPACK that can be used to improve LSI performance. (You should install one or the other, but both are not required.)
+
+* Install the [GNU Scientific Library](http://www.gnu.org/software/gsl)
+  * Ubuntu: `apt-get install libgsl-dev`
+* Install the [Ruby/GSL Gem](https://rubygems.org/gems/gsl) (or add it to your Gemfile)
+  * `gem install gsl`
+
 
 ## Further Readings
 
