@@ -19,6 +19,7 @@ jobs:
     env:
       # See https://github.com/marketplace/actions/setup-ruby-jruby-and-truffleruby#matrix-of-gemfiles
       BUNDLE_GEMFILE: ${{ matrix.gemfile }}
+      LOAD_GSL: ${{ matrix.gsl }}
     strategy:
       fail-fast: false
       matrix:
@@ -54,9 +55,6 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby_version }}
           bundler-cache: true
-      - name: Install GSL Gem
-        if: ${{ matrix.gsl }}
-        run: gem install gsl
       - name: Run Minitest based tests
         run: script/test
 
