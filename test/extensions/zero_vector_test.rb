@@ -2,6 +2,8 @@
 
 class ZeroVectorTest < Minitest::Test
   def test_zero?
+    skip "extensions/zero_vector is only used by non-GSL implementation" if $GSL
+
     vec0 = Vector[]
     vec1 = Vector[0]
     vec10 = Vector.elements [0] * 10
