@@ -2,7 +2,7 @@
 
 class ZeroVectorTest < Minitest::Test
   def test_zero?
-    skip "extensions/zero_vector is only used by non-GSL implementation" if $GSL
+    skip "extensions/zero_vector is only used by non-GSL implementation" if $SVD != :ruby
 
     vec0 = Vector[]
     vec1 = Vector[0]

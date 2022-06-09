@@ -29,7 +29,11 @@ module ClassifierReborn
 
     # Method to access the transposed search vector
     def transposed_search_vector
-      search_vector.col
+      if $SVD == :numo
+        search_vector
+      else
+        search_vector.col
+      end
     end
 
     # Use this to fetch the appropriate search vector in normalized form.
@@ -40,7 +44,9 @@ module ClassifierReborn
     # Creates the raw vector out of word_hash using word_list as the
     # key for mapping the vector space.
     def raw_vector_with(word_list)
-      vec = if $GSL
+      vec = if $SVD == :numo
+              Numo::DFloat.zeros(word_list.size)
+            elsif $SVD == :gsl
               GSL::Vector.alloc(word_list.size)
             else
               Array.new(word_list.size, 0)
@@ -51,7 +57,9 @@ module ClassifierReborn
       end
 
       # Perform the scaling transform and force floating point arithmetic
-      if $GSL
+      if $SVD == :numo
+        total_words = vec.sum.to_f
+      elsif $SVD == :gsl
         sum = 0.0
         vec.each { |v| sum += v }
         total_words = sum
@@ -61,7 +69,7 @@ module ClassifierReborn
 
       total_unique_words = 0
 
-      if $GSL
+      if [:numo, :gsl].include?($SVD)
         vec.each { |word| total_unique_words += 1 if word != 0.0 }
       else
         total_unique_words = vec.count { |word| word != 0 }
@@ -85,12 +93,15 @@ module ClassifierReborn
           hash[val] = Math.log(val + 1) / -weighted_total
         end
 
-        vec.collect! do |val|
+        vec = vec.map do |val|
           cached_calcs[val]
         end
       end
 
-      if $GSL
+      if $SVD == :numo
+        @raw_norm   = vec / Numo::Linalg.norm(vec)
+        @raw_vector = vec
+      elsif $SVD == :gsl
         @raw_norm   = vec.normalize
         @raw_vector = vec
       else
