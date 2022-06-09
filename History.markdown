@@ -5,6 +5,7 @@
 ### Minor Enhancements
 
   * Improved handling of Zero division and Zero vector normalization. ([#173](https://github.com/jekyll/classifier-reborn/pull/173))
+  * Support Numo Gem for performing SVD (#198)
 
 ### Development Fixes
 
