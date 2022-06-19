@@ -1,9 +1,8 @@
-## HEAD
-
-  * Separate tokenizer from hasher, allowing custom tokenizers. ([#162](https://github.com/jekyll/classifier-reborn/pull/162))
+## 2.3.0 / 2022-06-19
 
 ### Minor Enhancements
 
+  * Separate tokenizer from hasher, allowing custom tokenizers. ([#162](https://github.com/jekyll/classifier-reborn/pull/162))
   * Improved handling of Zero division and Zero vector normalization. ([#173](https://github.com/jekyll/classifier-reborn/pull/173))
   * Support Numo Gem for performing SVD (#198)
 
