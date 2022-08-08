@@ -74,7 +74,7 @@ Note that LSI will work without these libraries, but as soon as they are install
 * Install [OpenBLAS](https://www.openblas.net/)
   * Ubuntu: `apt-get install libopenblas-dev`
   * macOS: `brew install openblas`
-* Install the [Numo::NArray](https://ruby-numo.github.io/narray/) and [Numo::Linalg](https://ruby-numo.github.io/linalg/) gems. If you're using Bundler, add `numo-narray` and `numo-linalg` to your Gemfile.
+* Install the [Numo::NArray](https://ruby-numo.github.io/narray/) and [Numo::Linalg](https://ruby-numo.github.io/linalg/) gems. If you're using Bundler, add `numo-narray` and `numo-linalg` to your Gemfile. (If using Bundler on macOS, you should set the build config like `bundle config set --global build.numo-linalg --with-openblas-dir=$(brew --prefix openblas) --with-lapack-lib="$(brew --prefix lapack)/lib"`.)
   * Ubuntu: `gem install numo-narray numo-linalg`
   * macOS: `gem install numo-narray`, `gem install numo-linalg -- --with-openblas-dir=$(brew --prefix openblas) --with-lapack-lib="$(brew --prefix lapack)/lib"
 
