@@ -70,12 +70,13 @@ Note that LSI will work without these libraries, but as soon as they are install
 
 * Install [LAPACKE](https://www.netlib.org/lapack/lapacke.html)
   * Ubuntu: `apt-get install liblapacke-dev`
-  * macOS: (Help wanted to verify installation steps) https://stackoverflow.com/questions/38114201/installing-lapack-and-blas-libraries-for-c-on-mac-os
+  * macOS: `brew install lapack`
 * Install [OpenBLAS](https://www.openblas.net/)
   * Ubuntu: `apt-get install libopenblas-dev`
-  * macOS: (Help wanted to verify installation steps) https://stackoverflow.com/questions/38114201/installing-lapack-and-blas-libraries-for-c-on-mac-os
-* Install the [Numo::NArray](https://ruby-numo.github.io/narray/) and [Numo::Linalg](https://ruby-numo.github.io/linalg/) gems
-  * `gem install numo-narray numo-linalg`
+  * macOS: `brew install openblas`
+* Install the [Numo::NArray](https://ruby-numo.github.io/narray/) and [Numo::Linalg](https://ruby-numo.github.io/linalg/) gems. If you're using Bundler, add `numo-narray` and `numo-linalg` to your Gemfile. (If using Bundler on macOS, you should set the build config like `bundle config set --global build.numo-linalg --with-openblas-dir=$(brew --prefix openblas) --with-lapack-lib="$(brew --prefix lapack)/lib"`.)
+  * Ubuntu: `gem install numo-narray numo-linalg`
+  * macOS: `gem install numo-narray`, `gem install numo-linalg -- --with-openblas-dir=$(brew --prefix openblas) --with-lapack-lib="$(brew --prefix lapack)/lib"
 
 ### Install GSL Gem
 
@@ -85,7 +86,7 @@ The [GNU Scientific Library (GSL)](http://www.gnu.org/software/gsl) is an altern
 
 * Install the [GNU Scientific Library](http://www.gnu.org/software/gsl)
   * Ubuntu: `apt-get install libgsl-dev`
-* Install the [Ruby/GSL Gem](https://rubygems.org/gems/gsl) (or add it to your Gemfile)
+* Install the [Ruby/GSL Gem](https://rubygems.org/gems/gsl). If you're using Bundler, add `gsl` to your Gemfile.
   * `gem install gsl`
 
 
