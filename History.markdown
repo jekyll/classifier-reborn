@@ -1,3 +1,9 @@
+## HEAD
+
+### Documentation
+
+  * Update macOS instructions in Numo docs (#199)
+
 ## 2.3.0 / 2022-06-19
 
 ### Minor Enhancements
