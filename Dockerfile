@@ -1,10 +1,9 @@
-FROM ruby:2.4
-MAINTAINER Sawood Alam <https://github.com/ibnesayeed>
+FROM ruby:3.1
 
 ENV LANG C.UTF-8
 
-RUN apt update && apt install -y libgsl0-dev && rm -rf /var/lib/apt/lists/*
-RUN gem install narray nmatrix gsl jekyll github-pages
+RUN apt update && apt install -y liblapacke-dev libopenblas-dev && rm -rf /var/lib/apt/lists/*
+RUN gem install numo-narray numo-linalg jekyll github-pages
 
 RUN cd /tmp \
     && wget http://download.redis.io/redis-stable.tar.gz \
