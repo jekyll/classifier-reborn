@@ -4,6 +4,10 @@
 
   * Update macOS instructions in Numo docs (#199)
 
+### Development Fixes
+
+  * Constrain redis to &lt; 5.0 (#202)
+
 ## 2.3.0 / 2022-06-19
 
 ### Minor Enhancements
