@@ -77,7 +77,7 @@ module ClassifierReborn
     end
 
     def add_category(category)
-      @redis.sadd(:category_keys, category)
+      @redis.sadd?(:category_keys, category)
     end
 
     def category_keys
